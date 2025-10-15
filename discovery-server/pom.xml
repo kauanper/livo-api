@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.livo</groupId>
-	<artifactId>discovery-server</artifactId>
+	<artifactId>discovery-config-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>discovery-server</name>
 	<description>API Livo microservices discovery server</description>
