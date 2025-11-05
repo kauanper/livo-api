@@ -1,28 +1,26 @@
 package com.livo.book_service.controllers;
 
 import com.livo.book_service.dtos.BookResponse;
-import com.livo.book_service.APIs.GoogleBooksService;
+import com.livo.book_service.services.SearchBooksCombinedUseCase;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/books")
 public class BookController {
 
-    private final GoogleBooksService googleBooksService;
+    private final SearchBooksCombinedUseCase searchBooksCombinedUseCase;
 
-    public BookController(GoogleBooksService googleBooksService) {
-        this.googleBooksService = googleBooksService;
+    public BookController(SearchBooksCombinedUseCase searchBooksCombinedUseCase) {
+        this.searchBooksCombinedUseCase = searchBooksCombinedUseCase;
     }
 
-    // Exemplo: GET /books/search?title=Harry%20Potter
     @GetMapping("/search")
-    public ResponseEntity<BookResponse> searchByTitle(@RequestParam String title) {
-        if (title == null || title.isBlank()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        BookResponse response = googleBooksService.searchByTitle(title);
+    public ResponseEntity<BookResponse> searchBooks(@RequestParam String query) {
+        BookResponse response = searchBooksCombinedUseCase.execute(query);
         return ResponseEntity.ok(response);
     }
 }
