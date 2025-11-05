@@ -1,7 +1,7 @@
-package com.livo.book_service;
+package com.livo.book_service.controllers;
 
 import com.livo.book_service.dtos.BookResponse;
-import com.livo.book_service.GoogleBooksService;
+import com.livo.book_service.APIs.GoogleBooksService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

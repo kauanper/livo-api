@@ -1,4 +1,4 @@
-package com.livo.book_service;
+package com.livo.book_service.APIs;
 
 import com.livo.book_service.dtos.BookResponse;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,6 @@ public class GoogleBooksService {
                 .encode()
                 .toUri();
 
-        // Faz a requisição HTTP GET e converte para BookResponse automaticamente
         return restTemplate.getForObject(uri, BookResponse.class);
     }
 }
