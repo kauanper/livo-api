@@ -26,6 +26,8 @@ public class BookResponse {
         private String publishedDate;
         private String description;
         private Integer pageCount;
+        private Double averageRating;
+        private Integer ratingsCount;
         private ImageLinks imageLinks;
         private String language;
     }

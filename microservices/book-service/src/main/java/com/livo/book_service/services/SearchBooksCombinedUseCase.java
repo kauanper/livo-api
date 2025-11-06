@@ -45,13 +45,20 @@ public class SearchBooksCombinedUseCase {
                     String thumbnail = (info.getImageLinks() != null)
                             ? info.getImageLinks().getThumbnail()
                             : null;
+
                     return new BookSummaryResponse(
-                            info.getTitle(),
-                            info.getAuthors(),
-                            info.getPublisher(),
-                            thumbnail
+                            item.getId(),                      // id
+                            info.getTitle(),                   // title
+                            info.getAuthors(),                 // authors
+                            info.getPublisher(),               // publisher
+                            info.getPublishedDate(),           // publishedDate
+                            info.getPageCount(),               // pageCount
+                            info.getAverageRating(),           // averageRating
+                            info.getRatingsCount(),            // ratingsCount
+                            thumbnail                          // thumbnail
                     );
                 })
                 .collect(Collectors.toList());
+
     }
 }
