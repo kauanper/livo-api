@@ -16,8 +16,13 @@ public class BookController {
     private SearchBooksCombinedUseCase searchBooksCombinedUseCase;
 
     @GetMapping("/search")
-    public ResponseEntity<List<BookSummaryResponse>> searchBooks(@RequestParam String query) {
-        List<BookSummaryResponse> response = searchBooksCombinedUseCase.execute(query);
+    public ResponseEntity<List<BookSummaryResponse>> searchBooks(
+            @RequestParam String query,
+            @RequestParam(required = false, defaultValue = "relevance") String orderBy) {
+
+        List<BookSummaryResponse> response = searchBooksCombinedUseCase.execute(query, orderBy);
+
         return ResponseEntity.ok(response);
     }
+
 }

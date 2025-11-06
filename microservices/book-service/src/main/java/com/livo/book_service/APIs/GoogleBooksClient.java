@@ -14,10 +14,11 @@ public class GoogleBooksClient {
 
     private final RestTemplate restTemplate;
 
-    public BookResponse searchBooks(String query) {
+    public BookResponse searchBooks(String query, String orderBy) {
         URI uri = UriComponentsBuilder
                 .fromHttpUrl("https://www.googleapis.com/books/v1/volumes")
                 .queryParam("q", query)
+                .queryParam("orderBy", orderBy != null ? orderBy : "relevance")
                 .build()
                 .encode()
                 .toUri();
