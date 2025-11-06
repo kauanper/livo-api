@@ -17,10 +17,9 @@ public class BookController {
 
     @GetMapping("/search")
     public ResponseEntity<List<BookSummaryResponse>> searchBooks(
-            @RequestParam String query,
-            @RequestParam(required = false, defaultValue = "relevance") String orderBy) {
+            @RequestParam String query) {
 
-        List<BookSummaryResponse> response = searchBooksCombinedUseCase.execute(query, orderBy);
+        List<BookSummaryResponse> response = searchBooksCombinedUseCase.execute(query);
 
         return ResponseEntity.ok(response);
     }

@@ -17,15 +17,15 @@ public class SearchBooksCombinedUseCase {
     private final GoogleBooksClient googleBooksClient;
     private final BookMapper bookMapper;
 
-    public List<BookSummaryResponse> execute(String query, String sort) {
+    public List<BookSummaryResponse> execute(String query) {
 
         if (query == null || query.isBlank()) {
             throw new IllegalArgumentException("O termo de busca não pode estar vazio.");
         }
 
-        BookResponse titleResponse = googleBooksClient.searchBooks("intitle:" + query, sort);
-        BookResponse authorResponse = googleBooksClient.searchBooks("inauthor:" + query, sort);
-        BookResponse subjectResponse = googleBooksClient.searchBooks("subject:" + query, sort);
+        BookResponse titleResponse = googleBooksClient.searchBooks("intitle:" + query);
+        BookResponse authorResponse = googleBooksClient.searchBooks("inauthor:" + query);
+        BookResponse subjectResponse = googleBooksClient.searchBooks("subject:" + query);
 
         Set<String> seenIds = new HashSet<>();
         List<BookResponse.BookItem> allItems = new ArrayList<>();
