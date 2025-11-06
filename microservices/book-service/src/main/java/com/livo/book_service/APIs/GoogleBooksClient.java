@@ -21,7 +21,15 @@ public class GoogleBooksClient {
                 .build()
                 .encode()
                 .toUri();
-
         return restTemplate.getForObject(uri, BookResponse.class);
+    }
+
+    public BookResponse.BookItem getBookById(String volumeId) {
+        URI uri = UriComponentsBuilder
+                .fromHttpUrl("https://www.googleapis.com/books/v1/volumes/" + volumeId)
+                .build()
+                .encode()
+                .toUri();
+        return restTemplate.getForObject(uri, BookResponse.BookItem.class);
     }
 }
