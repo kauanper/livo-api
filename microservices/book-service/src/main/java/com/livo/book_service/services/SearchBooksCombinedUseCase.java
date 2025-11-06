@@ -3,6 +3,7 @@ package com.livo.book_service.services;
 import com.livo.book_service.APIs.GoogleBooksClient;
 import com.livo.book_service.dtos.BookResponse;
 import com.livo.book_service.dtos.BookSummaryResponse;
+import com.livo.book_service.mappers.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,10 @@ import java.util.stream.Collectors;
 public class SearchBooksCombinedUseCase {
 
     private final GoogleBooksClient googleBooksClient;
+    private final BookMapper bookMapper;
 
     public List<BookSummaryResponse> execute(String query) {
+
         if (query == null || query.isBlank()) {
             throw new IllegalArgumentException("O termo de busca não pode estar vazio.");
         }
@@ -37,26 +40,9 @@ public class SearchBooksCombinedUseCase {
             }
         }
 
-        // Converte para formato simplificado
         return allItems.stream()
-                .map(item -> {
-                    var info = item.getVolumeInfo();
-                    String thumbnail = (info.getImageLinks() != null)
-                            ? info.getImageLinks().getThumbnail()
-                            : null;
-
-                    return new BookSummaryResponse(
-                            item.getId(),                      // id
-                            info.getTitle(),                   // title
-                            info.getAuthors(),                 // authors
-                            info.getPublisher(),               // publisher
-                            info.getPublishedDate(),           // publishedDate
-                            info.getPageCount(),               // pageCount
-                            info.getAverageRating(),           // averageRating
-                            info.getRatingsCount(),            // ratingsCount
-                            thumbnail                          // thumbnail
-                    );
-                })
+                .map(bookMapper::toSummary)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
     }

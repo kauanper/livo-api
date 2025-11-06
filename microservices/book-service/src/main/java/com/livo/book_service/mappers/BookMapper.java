@@ -19,15 +19,15 @@ public class BookMapper {
                 : null;
 
         return new BookSummaryResponse(
-                item.getId(),                      // id
-                info.getTitle(),                   // title
-                info.getAuthors(),                 // authors
-                info.getPublisher(),               // publisher
-                info.getPublishedDate(),           // publishedDate
-                info.getPageCount(),               // pageCount
-                info.getAverageRating(),           // averageRating
-                info.getRatingsCount(),            // ratingsCount
-                thumbnail                          // thumbnail
+                item.getId(),
+                info.getTitle(),
+                info.getAuthors(),
+                info.getPublisher(),
+                info.getPublishedDate(),
+                info.getPageCount(),
+                info.getAverageRating(),
+                info.getRatingsCount(),
+                thumbnail
         );
     }
 }
