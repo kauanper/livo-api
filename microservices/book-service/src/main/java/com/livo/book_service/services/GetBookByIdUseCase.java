@@ -19,6 +19,7 @@ public class GetBookByIdUseCase {
         }
 
         var bookItem = googleBooksClient.getBookById(bookId);
+        //lembrar das exception
         return bookMapper.toSummary(bookItem);
     }
 }
