@@ -4,7 +4,6 @@ import com.livo.book_service.APIs.GoogleBooksClient;
 import com.livo.book_service.dtos.BookResponse;
 import com.livo.book_service.dtos.BookSummaryResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,7 +20,6 @@ public class SearchBooksCombinedUseCase {
             throw new IllegalArgumentException("O termo de busca não pode estar vazio.");
         }
 
-        // Chamadas separadas (título, autor, assunto)
         BookResponse titleResponse = googleBooksClient.searchBooks("intitle:" + query);
         BookResponse authorResponse = googleBooksClient.searchBooks("inauthor:" + query);
         BookResponse subjectResponse = googleBooksClient.searchBooks("subject:" + query);
