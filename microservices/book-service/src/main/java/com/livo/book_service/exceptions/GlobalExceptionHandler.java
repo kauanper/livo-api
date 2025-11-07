@@ -1,6 +1,9 @@
 package com.livo.book_service.exceptions;
 
 
+import com.livo.book_service.exceptions.custom.BookNotFoundException;
+import com.livo.book_service.exceptions.custom.ExternalApiException;
+import com.livo.book_service.exceptions.custom.InvalidRequestException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +14,24 @@ import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(BookNotFoundException.class)
+    public ResponseEntity<ApiError> handleBookNotFound(BookNotFoundException ex,
+                                                       HttpServletRequest request) {
+        return buildError(HttpStatus.NOT_FOUND, "Book Not Found", ex, request);
+    }
+
+    @ExceptionHandler(ExternalApiException.class)
+    public ResponseEntity<ApiError> handleExternalApi(ExternalApiException ex,
+                                                      HttpServletRequest request) {
+        return buildError(HttpStatus.BAD_GATEWAY, "External API Error", ex, request);
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<ApiError> handleInvalidRequest(InvalidRequestException ex,
+                                                         HttpServletRequest request) {
+        return buildError(HttpStatus.BAD_REQUEST, "Invalid Request", ex, request);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGeneral(Exception ex,
