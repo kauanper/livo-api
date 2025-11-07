@@ -18,11 +18,12 @@ public class GoogleBooksClient {
 
     private final RestTemplate restTemplate;
 
-    public BookResponse searchBooks(String query) {
+    public BookResponse searchBooks(String query, String orderBy) {
         try {
             URI uri = UriComponentsBuilder
                     .fromHttpUrl("https://www.googleapis.com/books/v1/volumes")
                     .queryParam("q", query)
+                    .queryParam("orderBy", orderBy)
                     .build()
                     .encode()
                     .toUri();
@@ -33,6 +34,7 @@ public class GoogleBooksClient {
             throw new ExternalApiException("Erro ao consultar Google Books: " + ex.getMessage());
         }
     }
+
 
     public BookResponse.BookItem getBookById(String volumeId) {
         try {

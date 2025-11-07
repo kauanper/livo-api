@@ -25,9 +25,9 @@ public class SearchBooksCombinedUseCase {
             throw new IllegalArgumentException("O termo de busca não pode estar vazio.");
         }
 
-        BookResponse titleResponse = googleBooksClient.searchBooks("intitle:" + query);
-        BookResponse authorResponse = googleBooksClient.searchBooks("inauthor:" + query);
-        BookResponse subjectResponse = googleBooksClient.searchBooks("subject:" + query);
+        BookResponse titleResponse = googleBooksClient.searchBooks("intitle:" + query, orderBy);
+        BookResponse authorResponse = googleBooksClient.searchBooks("inauthor:" + query, orderBy);
+        BookResponse subjectResponse = googleBooksClient.searchBooks("subject:" + query, orderBy);
 
         Set<String> seenIds = new HashSet<>();
         List<BookResponse.BookItem> allItems = new ArrayList<>();
@@ -49,6 +49,7 @@ public class SearchBooksCombinedUseCase {
         if(orderBy.equals("newest")){ //(orderBy == relevance) é padrão da API
             allItems = sortingByNewestUseCase.execute(allItems);
         }
+
 
         return allItems.stream()
                 .map(bookMapper::toSummary)
