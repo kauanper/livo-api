@@ -1,6 +1,7 @@
 package com.livo.book_service.APIs;
 
 import com.livo.book_service.dtos.BookResponse;
+import com.livo.book_service.exceptions.custom.BookNotFoundException;
 import com.livo.book_service.exceptions.custom.ExternalApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -44,9 +45,9 @@ public class GoogleBooksClient {
             return restTemplate.getForObject(uri, BookResponse.BookItem.class);
 
         } catch (HttpClientErrorException.NotFound ex) {
-            //responsabilidade da camada service
-            return null;
-
+            throw new BookNotFoundException("Livro com ID '" + volumeId + "' não foi encontrado.");
+        } catch (HttpClientErrorException.BadRequest ex) {
+            throw new BookNotFoundException("O ID '" + volumeId + "' é inválido.");
         } catch (RestClientException ex) {
             throw new ExternalApiException("Erro ao consultar Google Books: " + ex.getMessage());
         }

@@ -22,12 +22,12 @@ public class BookController {
     @GetMapping("/search")
     public ResponseEntity<List<BookSummaryResponse>> searchBooks(
             @RequestParam String query) {
-        /*
+
         List<BookSummaryResponse> response = searchBooksCombinedUseCase.execute(query);
         return ResponseEntity.ok(response);
-        */
 
-        return ResponseEntity.ok(null); //depuração
+
+        //return ResponseEntity.ok(null); //depuração
     }
 
     @GetMapping("/{id}")
