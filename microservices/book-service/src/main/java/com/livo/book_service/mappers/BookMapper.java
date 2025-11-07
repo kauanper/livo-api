@@ -27,7 +27,9 @@ public class BookMapper {
                 info.getPageCount(),
                 info.getAverageRating(),
                 info.getRatingsCount(),
-                thumbnail
+                thumbnail,
+                info.getLanguage(),
+                info.getDescription()
         );
     }
 }

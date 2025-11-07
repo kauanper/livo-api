@@ -37,4 +37,10 @@ public class BookSummaryResponse {
 
     // URL da imagem da capa (campo "volumeInfo.imageLinks.thumbnail")
     private String thumbnail;
+
+    // Linguagem do livro (campo "volumeInfo.language")
+    private String language;
+
+    // Breve descrição do livro (campo "volumeInfo.description")
+    private String description;
 }
