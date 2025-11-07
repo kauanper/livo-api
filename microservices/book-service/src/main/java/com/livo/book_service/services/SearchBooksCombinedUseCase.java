@@ -47,7 +47,7 @@ public class SearchBooksCombinedUseCase {
         }
 
         if(orderBy.equals("newest")){ //(orderBy == relevance) é padrão da API
-
+            allItems = sortingByNewestUseCase.execute(allItems);
         }
 
         return allItems.stream()
