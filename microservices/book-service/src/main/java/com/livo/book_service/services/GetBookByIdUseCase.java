@@ -2,6 +2,8 @@ package com.livo.book_service.services;
 
 import com.livo.book_service.APIs.GoogleBooksClient;
 import com.livo.book_service.dtos.BookSummaryResponse;
+import com.livo.book_service.exceptions.custom.BookNotFoundException;
+import com.livo.book_service.exceptions.custom.InvalidRequestException;
 import com.livo.book_service.mappers.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,17 @@ public class GetBookByIdUseCase {
     private final BookMapper bookMapper;
 
     public BookSummaryResponse execute(String bookId) {
+
         if (bookId == null || bookId.isBlank()) {
-            throw new IllegalArgumentException("O ID do livro não pode estar vazio.");
+            throw new InvalidRequestException("O ID do livro não pode estar vazio.");
         }
 
         var bookItem = googleBooksClient.getBookById(bookId);
-        //lembrar das exception
+
+        if (bookItem == null || bookItem.getVolumeInfo() == null) {
+            throw new BookNotFoundException("Livro com ID '" + bookId + "' não foi encontrado.");
+        }
+
         return bookMapper.toSummary(bookItem);
     }
 }
