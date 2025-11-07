@@ -17,8 +17,9 @@ public class SearchBooksCombinedUseCase {
 
     private final GoogleBooksClient googleBooksClient;
     private final BookMapper bookMapper;
+    private final SortingByNewestUseCase sortingByNewestUseCase;
 
-    public List<BookSummaryResponse> execute(String query) {
+    public List<BookSummaryResponse> execute(String query, String orderBy) {
 
         if (query == null || query.isBlank()) {
             throw new IllegalArgumentException("O termo de busca não pode estar vazio.");
@@ -43,6 +44,10 @@ public class SearchBooksCombinedUseCase {
 
         if(allItems.isEmpty()) {
             throw new EmptyBookListException("Nenhum resultado encontrado para o termo: " + query);
+        }
+
+        if(orderBy.equals("newest")){ //(orderBy == relevance) é padrão da API
+
         }
 
         return allItems.stream()
