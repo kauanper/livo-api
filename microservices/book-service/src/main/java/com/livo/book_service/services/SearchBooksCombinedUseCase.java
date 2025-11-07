@@ -3,6 +3,7 @@ package com.livo.book_service.services;
 import com.livo.book_service.APIs.GoogleBooksClient;
 import com.livo.book_service.dtos.BookResponse;
 import com.livo.book_service.dtos.BookSummaryResponse;
+import com.livo.book_service.exceptions.custom.EmptyBookListException;
 import com.livo.book_service.mappers.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,10 @@ public class SearchBooksCombinedUseCase {
                     }
                 }
             }
+        }
+
+        if(allItems.isEmpty()) {
+            throw new EmptyBookListException("Nenhum resultado encontrado para o termo: " + query);
         }
 
         return allItems.stream()
