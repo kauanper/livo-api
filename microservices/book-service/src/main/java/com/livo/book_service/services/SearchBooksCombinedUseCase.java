@@ -4,6 +4,7 @@ import com.livo.book_service.APIs.GoogleBooksClient;
 import com.livo.book_service.dtos.BookResponse;
 import com.livo.book_service.dtos.BookSummaryResponse;
 import com.livo.book_service.exceptions.custom.EmptyBookListException;
+import com.livo.book_service.exceptions.custom.InvalidRequestException;
 import com.livo.book_service.mappers.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,11 @@ public class SearchBooksCombinedUseCase {
     public List<BookSummaryResponse> execute(String query, String orderBy) {
 
         if (query == null || query.isBlank()) {
-            throw new IllegalArgumentException("O termo de busca não pode estar vazio.");
+            throw new InvalidRequestException("O termo de busca não pode estar vazio.");
+        }
+
+        if (orderBy == null || orderBy.isBlank()) {
+            throw new InvalidRequestException("O termo de busca não pode estar vazio.");
         }
 
         BookResponse titleResponse = googleBooksClient.searchBooks("intitle:" + query, orderBy);
@@ -46,7 +51,7 @@ public class SearchBooksCombinedUseCase {
             throw new EmptyBookListException("Nenhum resultado encontrado para o termo: " + query);
         }
 
-        if(orderBy.equals("newest")){ //(orderBy == relevance) é padrão da API
+        if(orderBy.equals("newest")){
             allItems = sortingByNewestUseCase.execute(allItems);
         }
 
