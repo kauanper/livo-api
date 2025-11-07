@@ -28,12 +28,12 @@ public class SearchBooksCombinedUseCase {
         }
 
         if (orderBy == null || orderBy.isBlank()) {
-            throw new InvalidRequestException("O termo de busca não pode estar vazio.");
+            throw new InvalidRequestException("O valor de Order deve ser informado");
         }
 
         if (!orderBy.equals("relevance") && !orderBy.equals("newest")) {
             throw new OrderByInvalidException("O valor passado em OrderBy não é valido:" + orderBy +
-                    "\nValores validos: relevance || newest");
+                    " Valores validos: relevance || newest");
         }
 
 
