@@ -5,6 +5,7 @@ import com.livo.book_service.dtos.BookResponse;
 import com.livo.book_service.dtos.BookSummaryResponse;
 import com.livo.book_service.exceptions.custom.EmptyBookListException;
 import com.livo.book_service.exceptions.custom.InvalidRequestException;
+import com.livo.book_service.exceptions.custom.OrderByInvalidException;
 import com.livo.book_service.mappers.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,12 @@ public class SearchBooksCombinedUseCase {
         if (orderBy == null || orderBy.isBlank()) {
             throw new InvalidRequestException("O termo de busca não pode estar vazio.");
         }
+
+        if (!orderBy.equals("relevance") && !orderBy.equals("newest")) {
+            throw new OrderByInvalidException("O valor passado em OrderBy não é valido:" + orderBy +
+                    "\nValores validos: relevance || newest");
+        }
+
 
         BookResponse titleResponse = googleBooksClient.searchBooks("intitle:" + query, orderBy);
         BookResponse authorResponse = googleBooksClient.searchBooks("inauthor:" + query, orderBy);

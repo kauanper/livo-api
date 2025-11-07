@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OrderByInvalidException.class)
     public ResponseEntity<ApiError> handleOrderby(OrderByInvalidException ex,
                                                   HttpServletRequest request) {
-        return buildError(HttpStatus.BAD_REQUEST, "OrderBy Invalid: relevance || newest", ex, request);
+        return buildError(HttpStatus.BAD_REQUEST, "OrderBy Invalid", ex, request);
     }
 
     @ExceptionHandler(Exception.class)
