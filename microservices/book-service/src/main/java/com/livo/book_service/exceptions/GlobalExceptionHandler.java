@@ -2,6 +2,7 @@ package com.livo.book_service.exceptions;
 
 
 import com.livo.book_service.exceptions.custom.BookNotFoundException;
+import com.livo.book_service.exceptions.custom.EmptyBookListException;
 import com.livo.book_service.exceptions.custom.ExternalApiException;
 import com.livo.book_service.exceptions.custom.InvalidRequestException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +32,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleInvalidRequest(InvalidRequestException ex,
                                                          HttpServletRequest request) {
         return buildError(HttpStatus.BAD_REQUEST, "Invalid Request", ex, request);
+    }
+
+    @ExceptionHandler(EmptyBookListException.class)
+    public ResponseEntity<ApiError> handleEmptyBookList(EmptyBookListException ex,
+                                                        HttpServletRequest request) {
+        return buildError(HttpStatus.NOT_FOUND, "Empty Book List", ex, request);
     }
 
     @ExceptionHandler(Exception.class)
