@@ -11,7 +11,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
   instance:
     prefer-ip-address: true
     hostname: localhost
@@ -25,3 +25,31 @@ auth:
 
 jwt:
   refreshExpirationMs: 86400000
+
+# User Service Client Configuration
+user:
+  service:
+    # Token opcional para autenticação entre serviços
+    # Se não configurado, as requisições serão feitas sem token
+    token: ${USER_SERVICE_TOKEN:}
+
+# Feign Client Configuration
+feign:
+  client:
+    config:
+      default:
+        # Timeout de conexão em milissegundos
+        connectTimeout: 5000
+        # Timeout de leitura em milissegundos
+        readTimeout: 10000
+        loggerLevel: basic
+      user-service:
+        connectTimeout: 5000
+        readTimeout: 10000
+        loggerLevel: basic
+  # Habilita Apache HttpClient para melhor controle de timeouts
+  httpclient:
+    enabled: true
+    max-connections: 200
+    max-connections-per-route: 50
+    connection-timeout: 5000

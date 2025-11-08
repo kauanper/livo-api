@@ -3,6 +3,7 @@ package com.livo.auth_service.auth;
 import com.livo.auth_service.auth.dto.LoginRequest;
 import com.livo.auth_service.auth.dto.LoginResponse;
 import com.livo.auth_service.auth.token.GenerateToken;
+import com.livo.auth_service.client.UserClient;
 import com.livo.auth_service.refresh_token.RefreshToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class AuthService {
 
     private final GenerateToken generateToken;
+    private final UserClient userClient;
 
     public LoginResponse login(LoginRequest req) {
         var user = userClient.authenticate(req.email(), req.password());
