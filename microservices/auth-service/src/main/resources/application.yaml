@@ -29,8 +29,7 @@ jwt:
 # User Service Client Configuration
 user:
   service:
-    # Token opcional para autenticação entre serviços
-    # Se não configurado, as requisições serão feitas sem token
+    # Token para autenticação entre serviços
     token: ${USER_SERVICE_TOKEN:}
 
 # Feign Client Configuration
@@ -47,7 +46,7 @@ feign:
         connectTimeout: 5000
         readTimeout: 10000
         loggerLevel: basic
-  # Habilita Apache HttpClient para melhor controle de timeouts
+  # Habilita Apache HttpClient para controle de timeouts
   httpclient:
     enabled: true
     max-connections: 200

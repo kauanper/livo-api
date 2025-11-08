@@ -1,5 +1,6 @@
 package com.livo.auth_service.user_client;
 
+import com.livo.auth_service.user_client.dto.UserAuthRequest;
 import com.livo.auth_service.user_client.dto.UserAuthResponse;
 import com.livo.auth_service.user_client.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
@@ -9,10 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-/**
- * Fallback para UserClient quando o User-Service está indisponível.
- * Implementa circuit breaker pattern para evitar falhas em cascata.
- */
+// Fallback para UserClient quando o User-Service está indisponível.
+// Implementa circuit breaker pattern para evitar falhas em cascata.
+
 @Slf4j
 @Component
 public class UserClientFallback implements UserClient {
