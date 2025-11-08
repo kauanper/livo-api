@@ -24,10 +24,10 @@ public class AuthService {
     private final GenerateToken generateToken;
     private final UserClient userClient;
     private final RefreshTokenRepository refreshTokenRepository;
-    
+
     @Value("${auth.jwt.access-token-exp-ms:900000}")
     private Long accessExpMs;
-    
+
     @Value("${auth.jwt.refresh-token-exp-ms:604800000}")
     private Long refreshExpMs;
 

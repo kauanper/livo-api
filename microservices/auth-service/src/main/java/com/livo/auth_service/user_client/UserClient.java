@@ -13,13 +13,13 @@ import java.util.UUID;
 // - Autentica usuários (validar email + senha)
 // - Busca dados do usuário por ID
 // - Busca dados do usuário por email
-// 
+//
 // As senhas são enviadas apenas durante a requisição HTTP (via TLS)
 // nunca são armazenadas ou logadas no Auth-Service.
 @FeignClient(
-    name = "user-service",
-    configuration = UserClientConfig.class
-    // fallback = UserClientFallback.class // Lembrar de descomentar quando configurar circuit breaker
+        name = "user-service",
+        configuration = UserClientConfig.class
+        // fallback = UserClientFallback.class // Lembrar de descomentar quando configurar circuit breaker
 )
 public interface UserClient {
 
