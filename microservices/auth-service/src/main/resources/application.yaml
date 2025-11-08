@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: auth-service
+  jpa:
+    hibernate:
+      ddl-auto: create
+server:
+  port: 8083
+
+# Eureka Client
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+
+# Auth
+auth:
+  jwt:
+    secret-env-var: ${AUTH_JWT_SECRET:default-secret-key}
+    access-token-exp-ms: ${AUTH_ACCESS_EXP_MS:900000}
+    refresh-token-exp-ms: ${AUTH_REFRESH_EXP_MS:604800000}
+
+jwt:
+  refreshExpirationMs: 86400000
