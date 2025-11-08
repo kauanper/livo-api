@@ -1,10 +1,9 @@
 package com.livo.auth_service.user_client;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-/**
- * Exceção customizada para erros na comunicação com User-Service.
- */
+@Getter
 public class UserClientException extends RuntimeException {
     private final HttpStatus httpStatus;
 
@@ -18,8 +17,5 @@ public class UserClientException extends RuntimeException {
         this.httpStatus = httpStatus;
     }
 
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
-    }
 }
 
