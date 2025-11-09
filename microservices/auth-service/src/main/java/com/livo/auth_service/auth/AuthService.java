@@ -24,8 +24,12 @@ public class AuthService {
     private final GenerateToken generateToken;
     private final UserClient userClient;
     private final RefreshTokenRepository refreshTokenRepository;
-    @Value("${auth.jwt.access-exp-ms}") private final Long accessExpMs;
-    @Value("${auth.jwt.refresh-exp-ms}") private final Long refreshExpMs;
+    
+    @Value("${auth.jwt.access-token-exp-ms:900000}")
+    private Long accessExpMs;
+    
+    @Value("${auth.jwt.refresh-token-exp-ms:604800000}")
+    private Long refreshExpMs;
 
     public LoginResponse login(LoginRequest req) {
         var user = userClient.authenticate(new UserAuthRequest(req.email(), req.password()));
@@ -40,15 +44,13 @@ public class AuthService {
         String refresh = UUID.randomUUID().toString();
         String hash = DigestUtils.sha256Hex(refresh);
 
-        RefreshToken refreshToken = new RefreshToken(
-                UUID.randomUUID(),
-                user.getBody().getId().toString(),
-                hash,
-                null,
-                Instant.now(),
-                Instant.now().plusMillis(refreshExpMs),
-                false
-        );
+        RefreshToken refreshToken = new RefreshToken();
+        refreshToken.setUserId(user.getBody().getId().toString());
+        refreshToken.setTokenHash(hash);
+        refreshToken.setDevice(null);
+        refreshToken.setIssuedAt(Instant.now());
+        refreshToken.setExpiryDate(Instant.now().plusMillis(refreshExpMs));
+        refreshToken.setRevoked(false);
         refreshTokenRepository.save(refreshToken);
 
         long accessExpSeconds = this.accessExpMs / 1000;
