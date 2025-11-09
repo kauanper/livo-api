@@ -17,9 +17,11 @@ public class RefreshTokenService {
 
     public RefreshToken createRefreshToken(String userId) {
         var token = new RefreshToken();
-        token.setUser(userId);
+        token.setUserId(userId);
+        token.setIssuedAt(Instant.now());
         token.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         token.setTokenHash(UUID.randomUUID().toString());
+        token.setRevoked(false);
         return refreshTokenRepository.save(token);
     }
 
