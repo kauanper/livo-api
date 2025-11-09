@@ -14,11 +14,11 @@ import java.util.UUID;
 @Entity
 public class RefreshToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, unique = true)
-    private String user;
+    @Column(name = "user_id", nullable = false, unique = true)
+    private String userId;
 
     @Column(nullable = false, unique = true)
     private String tokenHash;
