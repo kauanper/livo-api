@@ -14,11 +14,11 @@ import java.util.UUID;
 @Service
 public class GenerateToken {
 
-    @Value("${api.token.token.secret}")
-    private static String secret;
+    @Value("${auth.jwt.secret-env-var:default-secret-key-for-testing-purposes-only-min-256-bits}")
+    private String secret;
 
-    @Value("${auth.jwt.access-exp-ms}")
-    private static Long accessExpMs;
+    @Value("${auth.jwt.access-token-exp-ms:900000}")
+    private Long accessExpMs;
 
     public String generateAccessToken(String userId, String email, String username) {
         var now = Instant.now();
