@@ -8,6 +8,6 @@ public record RefreshRequest(
         String refreshToken,
 
         @NotNull(message = "O id do usuário deve ser informado")
-        Long userId
+        String userId
 ) {
 }

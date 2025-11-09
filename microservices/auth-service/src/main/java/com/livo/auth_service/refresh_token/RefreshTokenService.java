@@ -14,13 +14,12 @@ public class RefreshTokenService {
     private Long refreshTokenDurationMs;
 
     private final RefreshTokenRepository refreshTokenRepository;
-    private final UserRepository userRepository;
 
-    public RefreshToken createRefreshToken(Long userId) {
+    public RefreshToken createRefreshToken(String userId) {
         var token = new RefreshToken();
-        token.setUser(userRepository.findById(userId).get());
+        token.setUser(userId);
         token.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
-        token.setToken(UUID.randomUUID().toString());
+        token.setTokenHash(UUID.randomUUID().toString());
         return refreshTokenRepository.save(token);
     }
 
