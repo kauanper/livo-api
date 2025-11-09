@@ -34,13 +34,7 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    /**
-     * Autentica um usuário validando email e senha.
-     * 
-     * @param request Requisição contendo email e senha
-     * @return ResponseEntity com UserAuthResponse se autenticação bem-sucedida
-     * @throws org.springframework.web.server.ResponseStatusException se credenciais inválidas
-     */
+    // Autentica um usuário validando email e senha.
     public ResponseEntity<UserAuthResponse> authenticate(UserAuthRequest request) {
         Optional<User> userOpt = userRepository.findByEmail(request.email());
         
@@ -66,13 +60,6 @@ public class UserService {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Busca usuário por ID.
-     * 
-     * @param id UUID do usuário
-     * @return ResponseEntity com UserDto se encontrado
-     * @throws org.springframework.web.server.ResponseStatusException se não encontrado
-     */
     public ResponseEntity<UserDto> getById(UUID id) {
         Optional<User> userOpt = userRepository.findById(id);
         
@@ -86,13 +73,6 @@ public class UserService {
         return ResponseEntity.ok(dto);
     }
 
-    /**
-     * Busca usuário por email.
-     * 
-     * @param email Email do usuário
-     * @return ResponseEntity com UserDto se encontrado
-     * @throws org.springframework.web.server.ResponseStatusException se não encontrado
-     */
     public ResponseEntity<UserDto> getByEmail(String email) {
         Optional<User> userOpt = userRepository.findByEmail(email);
         
@@ -106,9 +86,6 @@ public class UserService {
         return ResponseEntity.ok(dto);
     }
 
-    /**
-     * Converte entidade User para UserDto (sem senha).
-     */
     private UserDto toUserDto(User user) {
         return new UserDto(
             user.getId(),

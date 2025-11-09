@@ -27,37 +27,22 @@ public class UserController {
         return ResponseEntity.ok("User service funcionando!");
     }
 
-    /**
-     * Endpoint interno para autenticação de usuário.
-     * Usado pelo Auth-Service para validar credenciais.
-     * 
-     * @param request Requisição contendo email e senha
-     * @return ResponseEntity com dados do usuário autenticado (sem senha)
-     */
+    // Endpoint interno para autenticação de usuário.
+    // Usado pelo Auth-Service para validar credenciais.
     @PostMapping("/internal/authenticate")
     public ResponseEntity<UserAuthResponse> authenticate(@RequestBody @Valid UserAuthRequest request) {
         return userService.authenticate(request);
     }
 
-    /**
-     * Endpoint interno para buscar usuário por ID.
-     * Usado pelo Auth-Service para obter dados do usuário.
-     * 
-     * @param id UUID do usuário
-     * @return ResponseEntity com dados do usuário (sem senha)
-     */
+    // Endpoint interno para buscar usuário por ID.
+    // Usado pelo Auth-Service para obter dados do usuário.
     @GetMapping("/internal/users/{id}")
     public ResponseEntity<UserDto> getById(@PathVariable("id") UUID id) {
         return userService.getById(id);
     }
 
-    /**
-     * Endpoint interno para buscar usuário por email.
-     * Usado pelo Auth-Service para obter dados do usuário.
-     * 
-     * @param email Email do usuário
-     * @return ResponseEntity com dados do usuário (sem senha)
-     */
+    // Endpoint interno para buscar usuário por email.
+    // Usado pelo Auth-Service para obter dados do usuário.
     @GetMapping("/internal/users/email/{email}")
     public ResponseEntity<UserDto> getByEmail(@PathVariable("email") String email) {
         return userService.getByEmail(email);
