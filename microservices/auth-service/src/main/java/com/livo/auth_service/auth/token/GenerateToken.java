@@ -17,6 +17,9 @@ public class GenerateToken {
     @Value("${api.token.token.secret}")
     private static String secret;
 
+    @Value("${auth.jwt.access-exp-ms}")
+    private static Long accessExpMs;
+
     public String generateAccessToken(String userId, String email, String username) {
         var now = Instant.now();
         return Jwts.builder()
@@ -25,7 +28,7 @@ public class GenerateToken {
                 .claim("email", email)
                 .claim("username", username)
                 .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plusMillis()))
+                .setExpiration(Date.from(now.plusMillis(accessExpMs)))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
