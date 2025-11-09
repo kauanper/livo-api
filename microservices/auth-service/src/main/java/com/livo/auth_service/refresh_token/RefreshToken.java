@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.User;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -15,15 +15,22 @@ import java.time.Instant;
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private String user;
 
     @Column(nullable = false, unique = true)
-    private String token;
+    private String tokenHash;
+
+    private String device;
+
+    @Column(nullable = false)
+    private Instant issuedAt;
 
     @Column(nullable = false)
     private Instant expiryDate;
+
+    private boolean revoked;
 }

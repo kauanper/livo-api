@@ -3,9 +3,13 @@ package com.livo.auth_service.auth;
 import com.livo.auth_service.auth.dto.LoginRequest;
 import com.livo.auth_service.auth.dto.LoginResponse;
 import com.livo.auth_service.auth.token.GenerateToken;
-import com.livo.auth_service.client.UserClient;
+import com.livo.auth_service.refresh_token.RefreshTokenRepository;
+import com.livo.auth_service.user_client.UserClient;
 import com.livo.auth_service.refresh_token.RefreshToken;
+import com.livo.auth_service.user_client.dto.UserAuthRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,18 +23,37 @@ public class AuthService {
 
     private final GenerateToken generateToken;
     private final UserClient userClient;
+    private final RefreshTokenRepository refreshTokenRepository;
+    @Value("${auth.jwt.access-exp-ms}") private final Long accessExpMs;
+    @Value("${auth.jwt.refresh-exp-ms}") private final Long refreshExpMs;
 
     public LoginResponse login(LoginRequest req) {
-        var user = userClient.authenticate(req.email(), req.password());
-        if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        var user = userClient.authenticate(new UserAuthRequest(req.email(), req.password()));
+        if (user == null || user.getBody() == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
-        String accessToken = generateToken.generateAccessToken(user.getEmail(), user.getPassword());
+        String accessToken = generateToken.generateAccessToken(
+                String.valueOf(user.getBody().getId()),
+                user.getBody().getEmail(),
+                user.getBody().getUsername()
+        );
+
         String refresh = UUID.randomUUID().toString();
-        String hash = HashUtil.sha256Hex(refresh);
-        RefreshToken rt = new RefreshToken(UUID.randomUUID().toString(), user.getId(), hash, null, Instant.now(),
-                Instant.now().plusMillis(refreshExpMs), false);
-        refreshRepo.save(rt);
-        return new LoginResponse(accessToken, accessExpSeconds, refresh, refreshExpSeconds);
+        String hash = DigestUtils.sha256Hex(refresh);
 
+        RefreshToken refreshToken = new RefreshToken(
+                UUID.randomUUID(),
+                user.getBody().getId().toString(),
+                hash,
+                null,
+                Instant.now(),
+                Instant.now().plusMillis(refreshExpMs),
+                false
+        );
+        refreshTokenRepository.save(refreshToken);
+
+        long accessExpSeconds = this.accessExpMs / 1000;
+        long refreshExpSeconds = refreshExpMs / 1000;
+
+        return new LoginResponse(accessToken, accessExpSeconds, refresh, refreshExpSeconds);
     }
 }
