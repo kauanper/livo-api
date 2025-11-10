@@ -23,7 +23,7 @@ eureka:
 # Auth
 auth:
   jwt:
-    secret-env-var: ${AUTH_JWT_SECRET:default-secret-key}
+    secret-env-var: ${AUTH_JWT_SECRET:default-secret-key-que-deve-ser-super-super-segura-ao-usuario}
     access-token-exp-ms: ${AUTH_ACCESS_EXP_MS:900000}       # 15 minutos
     refresh-token-exp-ms: ${AUTH_REFRESH_EXP_MS:604800000}  # 7 dias
 
