@@ -56,3 +56,8 @@ feign:
     max-connections: 200
     max-connections-per-route: 50
     connection-timeout: 5000
+
+# Logging
+logging:
+  level:
+    org.springframework.security: DEBUG
