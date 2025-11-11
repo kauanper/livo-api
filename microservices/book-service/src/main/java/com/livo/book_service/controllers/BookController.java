@@ -28,7 +28,6 @@ public class BookController {
         return ResponseEntity.ok(searchBooksUseCase.execute(query, type, orderBy));
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<BookSummaryResponse> getBookById(@PathVariable String id) {
         BookSummaryResponse book = getBookByIdUseCase.execute(id);
