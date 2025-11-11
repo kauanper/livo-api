@@ -5,6 +5,7 @@ import com.livo.book_service.exceptions.custom.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -41,6 +42,20 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleOrderby(OrderByInvalidException ex,
                                                   HttpServletRequest request) {
         return buildError(HttpStatus.BAD_REQUEST, "OrderBy Invalid", ex, request);
+    }
+
+    @ExceptionHandler(TypeInvalidException.class)
+    public ResponseEntity<ApiError> handleType(TypeInvalidException ex,
+                                                  HttpServletRequest request) {
+        return buildError(HttpStatus.BAD_REQUEST, "Type Invalid", ex, request);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ApiError> handleMissingParam(MissingServletRequestParameterException ex,
+                                                       HttpServletRequest request) {
+        String message = String.format("O parâmetro obrigatório '%s' está faltando.", ex.getParameterName());
+        return buildError(HttpStatus.BAD_REQUEST, "Missing Request Parameter",
+                new InvalidRequestException(message), request);
     }
 
     @ExceptionHandler(Exception.class)

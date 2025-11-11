@@ -18,12 +18,15 @@ public class GoogleBooksClient {
 
     private final RestTemplate restTemplate;
 
+    private static final String API_KEY = "AIzaSyAUXlkrJPjReOwiVzMz_6weuWHM3wxsRgY"; //lembrar de gerar uma nova e por .env
+
     public BookResponse searchBooks(String query, String orderBy) {
         try {
             URI uri = UriComponentsBuilder
                     .fromHttpUrl("https://www.googleapis.com/books/v1/volumes")
                     .queryParam("q", query)
                     .queryParam("orderBy", orderBy)
+                    .queryParam("key", API_KEY)
                     .build()
                     .encode()
                     .toUri();
@@ -35,11 +38,11 @@ public class GoogleBooksClient {
         }
     }
 
-
     public BookResponse.BookItem getBookById(String volumeId) {
         try {
             URI uri = UriComponentsBuilder
                     .fromHttpUrl("https://www.googleapis.com/books/v1/volumes/" + volumeId)
+                    .queryParam("key", API_KEY)
                     .build()
                     .encode()
                     .toUri();
