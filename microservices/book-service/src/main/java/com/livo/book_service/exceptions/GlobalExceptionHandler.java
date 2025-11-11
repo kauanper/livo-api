@@ -43,6 +43,12 @@ public class GlobalExceptionHandler {
         return buildError(HttpStatus.BAD_REQUEST, "OrderBy Invalid", ex, request);
     }
 
+    @ExceptionHandler(TypeInvalidException.class)
+    public ResponseEntity<ApiError> handleType(TypeInvalidException ex,
+                                                  HttpServletRequest request) {
+        return buildError(HttpStatus.BAD_REQUEST, "Type Invalid", ex, request);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGeneral(Exception ex,
                                                   HttpServletRequest request) {

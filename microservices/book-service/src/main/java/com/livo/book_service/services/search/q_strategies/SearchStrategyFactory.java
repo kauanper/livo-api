@@ -1,6 +1,7 @@
 package com.livo.book_service.services.search.q_strategies;
 
 import com.livo.book_service.exceptions.custom.InvalidRequestException;
+import com.livo.book_service.exceptions.custom.TypeInvalidException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class SearchStrategyFactory {
     public SearchStrategy get(String type) {
         SearchStrategy strategy = strategies.get(type);
         if (strategy == null) {
-            throw new InvalidRequestException("Tipo de pesquisa inválido: " + type);
+            throw new TypeInvalidException("Tipo de pesquisa inválido: " + type);
         }
         return strategy;
     }
