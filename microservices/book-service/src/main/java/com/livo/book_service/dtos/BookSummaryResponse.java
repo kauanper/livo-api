@@ -43,4 +43,7 @@ public class BookSummaryResponse {
 
     // Breve descrição do livro (campo "volumeInfo.description")
     private String description;
+
+    // ver se o usuario possui esse livro na sua biblioteca pessoal
+    private Boolean personalLibrary;
 }

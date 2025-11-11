@@ -38,6 +38,8 @@ public class SearchBooksUseCase {
         OrderByStrategy orderStrategy = orderByStrategyFactory.get(orderBy);
         items = orderStrategy.sort(items);
 
+        //logica para avizualizar se o user possui na biblioteca pessoal
+
         return items.stream()
                 .map(mapper::toSummary)
                 .toList();

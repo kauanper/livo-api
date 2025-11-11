@@ -2,7 +2,6 @@ package com.livo.book_service.controllers;
 
 import com.livo.book_service.dtos.BookSummaryResponse;
 import com.livo.book_service.services.GetBookByIdUseCase;
-import com.livo.book_service.services.SearchBooksCombinedUseCase;
 import com.livo.book_service.services.search.SearchBooksUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
