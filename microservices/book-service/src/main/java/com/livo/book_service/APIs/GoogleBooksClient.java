@@ -18,7 +18,7 @@ public class GoogleBooksClient {
 
     private final RestTemplate restTemplate;
 
-    private static final String API_KEY = "AIzaSyAUXlkrJPjReOwiVzMz_6weuWHM3wxsRgY";
+    private static final String API_KEY = "AIzaSyAUXlkrJPjReOwiVzMz_6weuWHM3wxsRgY"; //lembrar de gerar uma nova e por .env
 
     public BookResponse searchBooks(String query, String orderBy) {
         try {

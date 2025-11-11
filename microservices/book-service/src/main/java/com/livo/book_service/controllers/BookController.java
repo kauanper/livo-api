@@ -26,9 +26,6 @@ public class BookController {
 
         List<BookSummaryResponse> response = searchBooksCombinedUseCase.execute(query, orderBy);
         return ResponseEntity.ok(response);
-
-
-        //return ResponseEntity.ok(null); //depuração
     }
 
     @GetMapping("/{id}")
