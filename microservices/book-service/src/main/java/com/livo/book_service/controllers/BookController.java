@@ -3,6 +3,7 @@ package com.livo.book_service.controllers;
 import com.livo.book_service.dtos.BookSummaryResponse;
 import com.livo.book_service.services.GetBookByIdUseCase;
 import com.livo.book_service.services.SearchBooksCombinedUseCase;
+import com.livo.book_service.services.search.SearchBooksUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.util.List;
 public class BookController {
 
     @Autowired
-    private SearchBooksCombinedUseCase searchBooksCombinedUseCase;
+    private SearchBooksUseCase searchBooksUseCase;
 
     @Autowired
     GetBookByIdUseCase getBookByIdUseCase;
@@ -22,11 +23,12 @@ public class BookController {
     @GetMapping("/search")
     public ResponseEntity<List<BookSummaryResponse>> searchBooks(
             @RequestParam String query,
+            @RequestParam String type,
             @RequestParam String orderBy) {
 
-        List<BookSummaryResponse> response = searchBooksCombinedUseCase.execute(query, orderBy);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(searchBooksUseCase.execute(query, type, orderBy));
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<BookSummaryResponse> getBookById(@PathVariable String id) {

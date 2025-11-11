@@ -26,7 +26,7 @@ public class SearchBooksUseCase {
 
         validate(query, type, orderBy);
 
-        // Strategy para tipo de busca (q)
+        //strategy para tipo de busca (q)
         SearchStrategy searchStrategy = searchStrategyFactory.get(type);
         List<BookResponse.BookItem> items = searchStrategy.search(query, orderBy);
 
@@ -34,7 +34,7 @@ public class SearchBooksUseCase {
             throw new EmptyBookListException("Nenhum livro encontrado.");
         }
 
-        // Strategy para ordenação
+        //strategy para ordenação
         OrderByStrategy orderStrategy = orderByStrategyFactory.get(orderBy);
         items = orderStrategy.sort(items);
 
