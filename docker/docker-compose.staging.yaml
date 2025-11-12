@@ -163,7 +163,7 @@ services:
 #      dockerfile: Dockerfile
 #    container_name: library-service
 #    ports:
-#      - "8083:8083"
+#      - "8085:8085"
 #    depends_on:
 #      - postgres-library
 #      - discovery-server
