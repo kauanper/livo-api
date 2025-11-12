@@ -1,0 +1,215 @@
+version: '3.9'
+
+services:
+  # ---------------------- #
+  # 🐘 POSTGRES INSTANCES  #
+  # ---------------------- #
+  postgres-user:
+    image: postgres:14-alpine
+    container_name: postgres-user
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${USER_DB}
+    volumes:
+      - pgdata-user:/var/lib/postgresql/data
+    networks:
+      - livo-network
+
+  postgres-library:
+    image: postgres:14-alpine
+    container_name: postgres-library
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${LIBRARY_DB}
+    volumes:
+      - pgdata-library:/var/lib/postgresql/data
+    networks:
+      - livo-network
+
+  postgres-book:
+    image: postgres:14-alpine
+    container_name: postgres-book
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${BOOK_DB}
+    volumes:
+      - pgdata-book:/var/lib/postgresql/data
+    networks:
+      - livo-network
+
+  postgres-review:
+    image: postgres:14-alpine
+    container_name: postgres-review
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${REVIEW_DB}
+    volumes:
+      - pgdata-review:/var/lib/postgresql/data
+    networks:
+      - livo-network
+
+  # ---------------------- #
+  # 🧰 PGADMIN             #
+  # ---------------------- #
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: me@example.com
+      PGADMIN_DEFAULT_PASSWORD: 12345678
+    volumes:
+      - pgadmindata-dev:/var/lib/pgadmin/data
+    depends_on:
+      - postgres-user
+      - postgres-library
+    networks:
+      - livo-network
+
+  # ---------------------- #
+  # 🧭 EUREKA DISCOVERY     #
+  # ---------------------- #
+  discovery-server:
+    build:
+      context: ../discovery-server
+      dockerfile: Dockerfile
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    networks:
+      - livo-network
+
+  # ---------------------- #
+  # 🚪 API GATEWAY         #
+  # ---------------------- #
+  api-gateway:
+    build:
+      context: ../api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-server
+    environment:
+      EUREKA_SERVER_URL: http://discovery-server:8761/eureka
+    networks:
+      - livo-network
+
+  # ---------------------- #
+  # 👤 USER SERVICE        #
+  # ---------------------- #
+  user-service:
+    build:
+      context: ../microservices/user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres-user
+      - discovery-server
+    environment:
+      APP_PROFILE: staging
+      SPRING_DATASOURCE_URL: ${USER_SPRING_DATASOURCE_URL_DOCKER}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+    networks:
+      - livo-network
+
+  # ---------------------- #
+  # 🔐 AUTH SERVICE        #
+  # ---------------------- #
+  auth-service:
+    build:
+      context: ../microservices/auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - discovery-server
+    environment:
+      APP_PROFILE: staging
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+    networks:
+      - livo-network
+    #restart: always
+
+  # ---------------------- #
+  # 📚 BOOK SERVICE        #
+  # ---------------------- #
+  book-service:
+    build:
+      context: ../microservices/book-service
+      dockerfile: Dockerfile
+    container_name: book-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - postgres-book
+      - discovery-server
+    environment:
+      APP_PROFILE: staging
+      SPRING_DATASOURCE_URL: ${BOOK_SPRING_DATASOURCE_URL_DOCKER}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+    networks:
+      - livo-network
+
+
+#  # ---------------------- #
+#  # 🏛️ LIBRARY SERVICE     #
+#  # ---------------------- #
+#  library-service:
+#    build:
+#      context: ../microservices/library-service
+#      dockerfile: Dockerfile
+#    container_name: library-service
+#    ports:
+#      - "8085:8085"
+#    depends_on:
+#      - postgres-library
+#      - discovery-server
+#    environment:
+#      APP_PROFILE: staging
+#      SPRING_DATASOURCE_URL: ${LIBRARY_SPRING_DATASOURCE_URL_DOCKER}
+#      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+#      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+#    networks:
+#      - livo-network
+
+# ---------------------- #
+# 🌐 NETWORK & VOLUMES    #
+# ---------------------- #
+networks:
+  livo-network:
+    driver: bridge
+
+volumes:
+  pgdata-user:
+    driver: local
+  pgdata-library:
+    driver: local
+  pgdata-book:
+    driver: local
+  pgdata-review:
+    driver: local
+  pgadmindata-dev:
+    driver: local
