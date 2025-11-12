@@ -1,0 +1,167 @@
+version: '3.9'
+
+services:
+  # ---------------------- #
+  # 🐘 POSTGRES INSTANCES  #
+  # ---------------------- #
+  postgres-user:
+    image: postgres:14-alpine
+    container_name: postgres-user
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${user_db}
+    volumes:
+      - pgdata-user:/var/lib/postgresql/data
+    networks:
+      - livo-network
+
+  postgres-library:
+    image: postgres:14-alpine
+    container_name: postgres-library
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${LIBRARY_DB}
+    volumes:
+      - pgdata-library:/var/lib/postgresql/data
+    networks:
+      - livo-network
+
+  postgres-book:
+    image: postgres:14-alpine
+    container_name: postgres-book
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${BOOK_DB}
+    volumes:
+      - pgdata-book:/var/lib/postgresql/data
+    networks:
+      - livo-network
+
+  postgres-review:
+    image: postgres:14-alpine
+    container_name: postgres-review
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${REVIEW_DB}
+    volumes:
+      - pgdata-review:/var/lib/postgresql/data
+    networks:
+      - livo-network
+
+  # ---------------------- #
+  # 🧰 PGADMIN             #
+  # ---------------------- #
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: me@example.com
+      PGADMIN_DEFAULT_PASSWORD: 12345678
+    volumes:
+      - pgadmindata-dev:/var/lib/pgadmin/data
+    depends_on:
+      - postgres-user
+      - postgres-library
+    networks:
+      - livo-network
+
+  # ---------------------- #
+  # 🧭 EUREKA DISCOVERY     #
+  # ---------------------- #
+  discovery-server:
+    build:
+      context: ../discovery-server
+      dockerfile: Dockerfile
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    networks:
+      - livo-network
+
+  # ---------------------- #
+  # 🚪 API GATEWAY         #
+  # ---------------------- #
+  api-gateway:
+    build:
+      context: ../api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-server
+    environment:
+      EUREKA_SERVER_URL: http://discovery-server:8761/eureka
+    networks:
+      - livo-network
+
+  # ---------------------- #
+  # 👤 USER SERVICE        #
+  # ---------------------- #
+  user-service:
+    build:
+      context: ../microservices/user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres-user
+      - discovery-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-user:5432/userdb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: 12345678
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
+    networks:
+      - livo-network
+
+  # ---------------------- #
+  # 📚 LIBRARY SERVICE     #
+  # ---------------------- #
+  library-service:
+    build:
+      context: ../microservices/library-service
+      dockerfile: Dockerfile
+    container_name: library-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - postgres-library
+      - discovery-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-library:5432/librarydb
+      SPRING_DATASOURCE_USERNAME: library
+      SPRING_DATASOURCE_PASSWORD: 12345678
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
+    networks:
+      - livo-network
+
+# ---------------------- #
+# 🌐 NETWORK & VOLUMES    #
+# ---------------------- #
+networks:
+  livo-network:
+    driver: bridge
+
+volumes:
+  pgdata-user:
+    driver: local
+  pgdata-library:
+    driver: local
+  pgadmindata-dev:
+    driver: local
