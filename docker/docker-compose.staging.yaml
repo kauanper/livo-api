@@ -132,6 +132,24 @@ services:
       - livo-network
 
   # ---------------------- #
+  # 🔐 AUTH SERVICE        #
+  # ---------------------- #
+  auth-service:
+    build:
+      context: ../microservices/auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - discovery-server
+    environment:
+      APP_PROFILE: staging
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+    networks:
+      - livo-network
+
+  # ---------------------- #
   # 📚 BOOK SERVICE        #
   # ---------------------- #
   book-service:
