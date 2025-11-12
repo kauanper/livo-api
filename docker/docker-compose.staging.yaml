@@ -148,6 +148,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
     networks:
       - livo-network
+    #restart: always
 
   # ---------------------- #
   # 📚 BOOK SERVICE        #
