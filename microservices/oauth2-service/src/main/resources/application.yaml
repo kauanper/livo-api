@@ -16,11 +16,8 @@ spring:
               - openid
               - profile
               - email
+              - https://www.googleapis.com/auth/books
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
         provider:
           google:
             issuer-uri: https://accounts.google.com
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
