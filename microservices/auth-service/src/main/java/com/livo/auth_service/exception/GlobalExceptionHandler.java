@@ -59,21 +59,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(error);
     }
 
-    @ExceptionHandler(io.jsonwebtoken.JwtException.class)
-    public ResponseEntity<ErrorResponseDTO> handleJwtException(io.jsonwebtoken.JwtException e) {
-        String message = Optional.ofNullable(e.getMessage()).orElse("Token inválido");
-        log.warn("JWT error: {}", message, e);
-
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        ErrorResponseDTO body = new ErrorResponseDTO(
-                e.getCause().toString(),
-                e.getMessage(),
-                status.value(),
-                status.getReasonPhrase()
-        );
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
-    }
-
     @ExceptionHandler(UserClientException.class)
     public ResponseEntity<ErrorResponseDTO> handleUserClientException(UserClientException e, WebRequest request) {
         String message = Optional.ofNullable(e.getMessage()).orElse("Erro no serviço de usuários");
