@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth-protected")
+@RequestMapping("auth/auth-protected")
 public class AuthTestController {
 
     @GetMapping()

@@ -25,6 +25,9 @@ public class GatewayConfig {
                         .filters(f -> f.filter(filter)
                                 .addRequestHeader("X-Debug-Authorization", "#{request.headers['Authorization']}"))
                         .uri("lb://auth-service"))
+                .route("book-service", r -> r.path("/books/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://book-service"))
                 .build();
     }
 }
