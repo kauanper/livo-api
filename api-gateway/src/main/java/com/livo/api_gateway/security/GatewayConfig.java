@@ -15,8 +15,16 @@ public class GatewayConfig {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("auth-service", r -> r.path("/auth/**").filters(f -> f.filter(filter)).uri("lb://auth-service"))
-                .route("user-service", r -> r.path("/user/**").filters(f -> f.filter(filter)).uri("lb://user-service"))
+                .route("auth-service", r -> r.path("/auth/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://auth-service"))
+                .route("user-service", r -> r.path("/user/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://user-service"))
+                .route("auth-service", r -> r.path("/auth/**")
+                        .filters(f -> f.filter(filter)
+                                .addRequestHeader("X-Debug-Authorization", "#{request.headers['Authorization']}"))
+                        .uri("lb://auth-service"))
                 .build();
     }
 }

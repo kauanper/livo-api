@@ -14,11 +14,14 @@ public class GatewayFilterChain {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) throws Exception {
         http
-            .csrf(ServerHttpSecurity.CsrfSpec::disable)
-            .authorizeExchange(exchange -> exchange
-                    .pathMatchers("/auth", "/health").permitAll()
-                    .pathMatchers(HttpMethod.POST, "/user").permitAll()
-                    .anyExchange().authenticated());
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
+                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
+                .authorizeExchange(exchange -> exchange
+                        .pathMatchers("/auth/**", "/health/**").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/user", "/user/**").permitAll()
+                        .anyExchange().authenticated()
+                );
         return http.build();
     }
 }
