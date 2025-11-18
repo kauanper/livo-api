@@ -1,9 +1,11 @@
 package com.livo.library_service.library;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "user_book", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "book_id"})
