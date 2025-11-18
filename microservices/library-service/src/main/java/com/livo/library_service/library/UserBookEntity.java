@@ -18,5 +18,7 @@ public class UserBookEntity {
 
     private UUID userId;
     private String bookId;
+
+    //implementar status
 }
 
