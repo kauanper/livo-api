@@ -2,6 +2,7 @@ package com.livo.library_service.library.mappers;
 
 import com.livo.library_service.library.UserBookEntity;
 import com.livo.library_service.library.dtos.AssociationRegisterDTO;
+import com.livo.library_service.library.dtos.AssociationResponseDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,6 +21,19 @@ public class AssociationMappers {
         // entity.setStatus(ainda não implementado
 
         return entity;
+    }
+
+    public static AssociationResponseDTO toResponseDTO(UserBookEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        return new AssociationResponseDTO(
+                entity.getId(),
+                entity.getThumbnail(),
+                entity.getReadingProgress(),
+                entity.getPersonalRatting()
+        );
     }
 
 }
