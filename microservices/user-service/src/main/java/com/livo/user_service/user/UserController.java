@@ -21,7 +21,7 @@ public class UserController {
     public ResponseEntity<?> create(@RequestBody @Valid UserRegisterDTO dto) {
         return userService.register(dto);
     }
-
+    
     @GetMapping
     public ResponseEntity<?> test() {
         return ResponseEntity.ok("User service funcionando!");
