@@ -17,12 +17,12 @@ public class CreateAssociationUseCase {
     private final AssociationMappers associationMappers;
 
 
+    //lembrar das validações
     public AssociationResponseDTO execute(AssociationRegisterDTO register) {
 
         UserBookEntity entity = associationMappers.toEntity(register);
         UserBookEntity saved = libraryRepository.save(entity);
 
-
-        return null;
+        return AssociationMappers.toResponseDTO(saved);
     }
 }

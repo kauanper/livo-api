@@ -19,6 +19,6 @@ public class LibraryController {
     @PostMapping
     public ResponseEntity<AssociationResponseDTO> saveCategoria(@RequestBody @Valid AssociationRegisterDTO dto){
         AssociationResponseDTO response = createAssociationUseCase.execute(dto);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(response);
     }
 }
