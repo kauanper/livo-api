@@ -1,16 +1,17 @@
 package com.livo.library_service.library.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.livo.library_service.library.dtos.AssociationRegisterDTO;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/library")
 public class LibraryController {
 
     @PostMapping
-    public String getLibrary() {
-        return "prestou";
+    public ResponseEntity<AssociationRegisterDTO> saveCategoria(@RequestBody @Valid AssociationRegisterDTO dto){
+        AssociationRegisterDTO response;
+        return ResponseEntity.ok(null);
     }
 }
