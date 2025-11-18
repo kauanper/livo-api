@@ -29,3 +29,4 @@ public class UserBookEntity {
 
 }
 
+// representação da biblioteca
