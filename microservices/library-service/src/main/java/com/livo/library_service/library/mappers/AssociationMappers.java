@@ -2,7 +2,9 @@ package com.livo.library_service.library.mappers;
 
 import com.livo.library_service.library.UserBookEntity;
 import com.livo.library_service.library.dtos.AssociationRegisterDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AssociationMappers {
     public static UserBookEntity toEntity(AssociationRegisterDTO dto) {
         if (dto == null) {
