@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface LibraryRepository extends JpaRepository<UserBookEntity, Long> {
     List<UserBookEntity> findAllByUserId(UUID userId);
+    boolean existsByUserIdAndBookId(UUID userId, String bookId);
 }

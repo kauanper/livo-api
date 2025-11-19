@@ -2,6 +2,7 @@ package com.livo.library_service.library.services;
 
 import com.livo.library_service.library.LibraryRepository;
 import com.livo.library_service.library.UserBookEntity;
+import com.livo.library_service.library.custonExceptions.ExistingAssociationException;
 import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
 import com.livo.library_service.library.mappers.AssociationMappers;
@@ -34,6 +35,11 @@ public class CreateAssociationUseCase {
             bookClient.getBookById(register.getBookId());
         } catch (FeignException.NotFound ex) {
             throw new BookNotFoundException(register.getBookId());
+        }
+
+        boolean exists = libraryRepository.existsByUserIdAndBookId(register.getUserId(), register.getBookId());
+        if (exists) {
+            throw new ExistingAssociationException();
         }
 
         UserBookEntity entity = associationMappers.toEntity(register);
