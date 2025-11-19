@@ -1,8 +1,8 @@
 package com.livo.library_service.library.mappers;
 
 import com.livo.library_service.library.UserBookEntity;
-import com.livo.library_service.library.dtos.AssociationRegisterDTO;
-import com.livo.library_service.library.dtos.AssociationResponseDTO;
+import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
+import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
 import org.springframework.stereotype.Component;
 
 @Component

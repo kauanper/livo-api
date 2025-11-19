@@ -1,4 +1,4 @@
-package com.livo.library_service.library.dtos;
+package com.livo.library_service.library.dtos.association;
 
 public record AssociationResponseDTO(
         Long id,

@@ -2,7 +2,7 @@ package com.livo.library_service.library.services;
 
 import com.livo.library_service.library.LibraryRepository;
 import com.livo.library_service.library.UserBookEntity;
-import com.livo.library_service.library.dtos.AssociationResponseDTO;
+import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
 import com.livo.library_service.library.mappers.AssociationMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

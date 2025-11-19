@@ -1,10 +1,11 @@
 package com.livo.library_service.library;
 
-import com.livo.library_service.library.dtos.AssociationRegisterDTO;
-import com.livo.library_service.library.dtos.AssociationResponseDTO;
+import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
+import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
 import com.livo.library_service.library.services.CreateAssociationUseCase;
 import com.livo.library_service.library.services.DeleteByIdUseCase;
 import com.livo.library_service.library.services.ListLibraryBooksUseCase;
+import com.livo.library_service.shared.clients.UserClient;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,9 @@ public class LibraryController {
     private DeleteByIdUseCase deleteByIdUseCase;
     @Autowired
     private ListLibraryBooksUseCase listLibraryBooksUseCase;
+    @Autowired
+    private UserClient userClient;
+
 
     @PostMapping
     public ResponseEntity<AssociationResponseDTO> save(@RequestBody @Valid AssociationRegisterDTO dto){
@@ -40,6 +44,12 @@ public class LibraryController {
     public ResponseEntity<List<AssociationResponseDTO>> getLibraryByUserId(@PathVariable UUID userId) {
         List<AssociationResponseDTO> books = listLibraryBooksUseCase.execute(userId);
         return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/test/user/{id}")
+    public ResponseEntity<?> testUserFeign(@PathVariable UUID id) {
+        var user = userClient.getById(id);
+        return ResponseEntity.ok(user);
     }
 
 }
