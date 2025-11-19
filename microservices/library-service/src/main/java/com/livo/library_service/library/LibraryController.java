@@ -1,4 +1,4 @@
-package com.livo.library_service.library.controllers;
+package com.livo.library_service.library;
 
 import com.livo.library_service.library.dtos.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.AssociationResponseDTO;
