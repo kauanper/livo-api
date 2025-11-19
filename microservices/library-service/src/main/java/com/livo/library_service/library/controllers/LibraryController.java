@@ -30,14 +30,14 @@ public class LibraryController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{userBookId}")
-    public ResponseEntity<AssociationResponseDTO> deleteById(@PathVariable Long userBookId){
+    @DeleteMapping("/book/{userBookId}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long userBookId) {
         deleteByIdUseCase.execute(userBookId);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<AssociationResponseDTO>> getLibraryByUserId(@PathVariable UUID userId){
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<AssociationResponseDTO>> getLibraryByUserId(@PathVariable UUID userId) {
         List<AssociationResponseDTO> books = listLibraryBooksUseCase.execute(userId);
         return ResponseEntity.ok(books);
     }
