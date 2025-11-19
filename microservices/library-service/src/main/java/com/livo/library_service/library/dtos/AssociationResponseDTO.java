@@ -7,3 +7,4 @@ public record AssociationResponseDTO(
         Integer personalRatting
 ) {
 }
+//dto que vai ser listado no front

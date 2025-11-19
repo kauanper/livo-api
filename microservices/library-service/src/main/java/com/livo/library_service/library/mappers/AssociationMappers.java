@@ -18,6 +18,7 @@ public class AssociationMappers {
         entity.setThumbnail(dto.getThumbnail());
         entity.setReadingProgress(0); //user não começou a ler
         entity.setPersonalRatting(null); //user não deu seu voto pessoal
+        entity.setTitle(dto.getTitle());
         // entity.setStatus(ainda não implementado
 
         return entity;
