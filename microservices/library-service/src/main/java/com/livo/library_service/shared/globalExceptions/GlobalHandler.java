@@ -2,6 +2,7 @@ package com.livo.library_service.shared.globalExceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -9,6 +10,23 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 @RestControllerAdvice
 public class GlobalHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        var errorField = ex.getBindingResult().getFieldError();
+        String fieldName = errorField != null ? errorField.getField() : "unknown";
+        String message = errorField != null ? errorField.getDefaultMessage() : "Invalid input";
+
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                fieldName,
+                message,
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation Error"
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponseDTO> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
