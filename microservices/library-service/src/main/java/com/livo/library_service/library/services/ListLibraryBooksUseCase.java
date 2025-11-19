@@ -2,6 +2,7 @@ package com.livo.library_service.library.services;
 
 import com.livo.library_service.library.LibraryRepository;
 import com.livo.library_service.library.UserBookEntity;
+import com.livo.library_service.library.custonExceptions.EmptyPersonalLibraryException;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
 import com.livo.library_service.library.mappers.AssociationMappers;
 import com.livo.library_service.shared.clients.UserClient;
@@ -31,6 +32,10 @@ public class ListLibraryBooksUseCase {
         }
 
         List<UserBookEntity> entities = libraryRepository.findAllByUserId(userId);
+
+        if (entities.isEmpty()) {
+            throw new EmptyPersonalLibraryException();
+        }
 
         return entities.stream()
                 .map(AssociationMappers::toResponseDTO)
