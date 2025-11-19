@@ -32,9 +32,9 @@ public class AssociationMappers {
         return new AssociationResponseDTO(
                 entity.getId(),
                 entity.getThumbnail(),
+                entity.getTitle(),
                 entity.getReadingProgress(),
                 entity.getPersonalRatting()
         );
     }
-
 }
