@@ -30,10 +30,10 @@ public class LibraryController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/book/{userBookId}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long userBookId) {
+    @DeleteMapping("/{userBookId}")
+    public ResponseEntity<String> deleteById(@PathVariable Long userBookId) {
         deleteByIdUseCase.execute(userBookId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Associação removida com sucesso.");
     }
 
     @GetMapping("/user/{userId}")
