@@ -24,8 +24,6 @@ public class LibraryController {
     private DeleteByIdUseCase deleteByIdUseCase;
     @Autowired
     private ListLibraryBooksUseCase listLibraryBooksUseCase;
-    @Autowired
-    private UserClient userClient;
 
 
     @PostMapping
@@ -44,12 +42,6 @@ public class LibraryController {
     public ResponseEntity<List<AssociationResponseDTO>> getLibraryByUserId(@PathVariable UUID userId) {
         List<AssociationResponseDTO> books = listLibraryBooksUseCase.execute(userId);
         return ResponseEntity.ok(books);
-    }
-
-    @GetMapping("/test/user/{id}")
-    public ResponseEntity<?> testUserFeign(@PathVariable UUID id) {
-        var user = userClient.getById(id);
-        return ResponseEntity.ok(user);
     }
 
 }
