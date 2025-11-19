@@ -6,6 +6,7 @@ import com.livo.library_service.library.dtos.book.BookSummaryResponse;
 import com.livo.library_service.library.services.CreateAssociationUseCase;
 import com.livo.library_service.library.services.DeleteByIdUseCase;
 import com.livo.library_service.library.services.ListLibraryBooksUseCase;
+import com.livo.library_service.search_book.SearchBookUseCase;
 import com.livo.library_service.shared.clients.BookClient;
 import com.livo.library_service.shared.clients.UserClient;
 import jakarta.validation.Valid;
@@ -26,6 +27,8 @@ public class LibraryController {
     private DeleteByIdUseCase deleteByIdUseCase;
     @Autowired
     private ListLibraryBooksUseCase listLibraryBooksUseCase;
+    @Autowired
+    private SearchBookUseCase searchBookUseCase;
 
 
     @PostMapping
@@ -43,6 +46,13 @@ public class LibraryController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<AssociationResponseDTO>> getLibraryByUserId(@PathVariable UUID userId) {
         List<AssociationResponseDTO> books = listLibraryBooksUseCase.execute(userId);
+        return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/user/{userId}/search/{term}")
+    public ResponseEntity<List<AssociationResponseDTO>> searchBooks(@PathVariable UUID userId,
+                                                                    @PathVariable String term) {
+        List<AssociationResponseDTO> books = searchBookUseCase.execute(userId, term);
         return ResponseEntity.ok(books);
     }
 }
