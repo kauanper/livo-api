@@ -27,7 +27,7 @@ public class ListLibraryBooksUseCase {
         try {
             userClient.getById(userId);
         } catch (FeignException.NotFound e) {
-            throw new UserNotFoundException("Usuário não encontrado: " + userId);
+            throw new UserNotFoundException(userId);
         }
 
         List<UserBookEntity> entities = libraryRepository.findAllByUserId(userId);
