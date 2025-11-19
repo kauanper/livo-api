@@ -1,6 +1,5 @@
 package com.livo.library_service.library.controllers;
 
-import com.livo.library_service.library.LibraryRepository;
 import com.livo.library_service.library.dtos.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.AssociationResponseDTO;
 import com.livo.library_service.library.services.CreateAssociationUseCase;
@@ -17,8 +16,14 @@ public class LibraryController {
     private CreateAssociationUseCase createAssociationUseCase;
 
     @PostMapping
-    public ResponseEntity<AssociationResponseDTO> saveCategoria(@RequestBody @Valid AssociationRegisterDTO dto){
+    public ResponseEntity<AssociationResponseDTO> save(@RequestBody @Valid AssociationRegisterDTO dto){
         AssociationResponseDTO response = createAssociationUseCase.execute(dto);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{userBookId}")
+    public ResponseEntity<AssociationResponseDTO> deleteById(@PathVariable Long userBookId){
+
+        return ResponseEntity.ok().build();
     }
 }
