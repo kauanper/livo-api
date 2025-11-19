@@ -18,4 +18,7 @@ public class AssociationRegisterDTO {
     private String bookId;
 
     private String thumbnail;
+
+    @NotNull(message = "Title é obrigatório")
+    private String title;
 }
