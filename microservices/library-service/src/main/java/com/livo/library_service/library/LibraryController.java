@@ -2,9 +2,11 @@ package com.livo.library_service.library;
 
 import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
+import com.livo.library_service.library.dtos.book.BookSummaryResponse;
 import com.livo.library_service.library.services.CreateAssociationUseCase;
 import com.livo.library_service.library.services.DeleteByIdUseCase;
 import com.livo.library_service.library.services.ListLibraryBooksUseCase;
+import com.livo.library_service.shared.clients.BookClient;
 import com.livo.library_service.shared.clients.UserClient;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,4 +46,13 @@ public class LibraryController {
         return ResponseEntity.ok(books);
     }
 
+    @Autowired
+    private BookClient bookClient;
+
+    // Rota de teste para buscar um livro no book-service via Feign
+    @GetMapping("/test/book/{id}")
+    public ResponseEntity<BookSummaryResponse> testGetBook(@PathVariable String id) {
+        BookSummaryResponse book = bookClient.getBookById(id);
+        return ResponseEntity.ok(book);
+    }
 }
