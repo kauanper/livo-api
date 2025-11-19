@@ -21,6 +21,7 @@ public class UserBookEntity {
     private String bookId;
 
     //atributos para não sobre carregar a ApiGoogleBook
+    @Column(columnDefinition = "TEXT")
     private String thumbnail;
 
     //para ajudar na logica interna
