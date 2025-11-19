@@ -28,7 +28,7 @@ public class GlobalHandler {
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleBookNotFound(BookNotFoundException ex) {
         ErrorResponseDTO error = new ErrorResponseDTO(
-                ex.getMessage(),
+                ex.getField(),
                 ex.getMessage(),
                 HttpStatus.NOT_FOUND.value(),
                 "Book Not Found"

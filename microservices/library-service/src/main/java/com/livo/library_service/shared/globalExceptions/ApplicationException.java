@@ -7,4 +7,8 @@ public abstract class ApplicationException extends RuntimeException {
         super(message);
         this.field = field;
     }
+
+    public String getField() {
+        return field;
+    }
 }
