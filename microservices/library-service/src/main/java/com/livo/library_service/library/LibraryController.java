@@ -45,14 +45,4 @@ public class LibraryController {
         List<AssociationResponseDTO> books = listLibraryBooksUseCase.execute(userId);
         return ResponseEntity.ok(books);
     }
-
-    @Autowired
-    private BookClient bookClient;
-
-    // Rota de teste para buscar um livro no book-service via Feign
-    @GetMapping("/test/book/{id}")
-    public ResponseEntity<BookSummaryResponse> testGetBook(@PathVariable String id) {
-        BookSummaryResponse book = bookClient.getBookById(id);
-        return ResponseEntity.ok(book);
-    }
 }
