@@ -46,11 +46,25 @@ services:
     networks:
       - livo-network
 
+  postgres-auth:
+    image: postgres:14-alpine
+    container_name: postgres-auth
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${AUTH_DB}
+    volumes:
+      - pgdata-auth:/var/lib/postgresql/data
+    networks:
+      - livo-network
+
   postgres-review:
     image: postgres:14-alpine
     container_name: postgres-review
     ports:
-      - "5436:5432"
+      - "5437:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -145,6 +159,9 @@ services:
       - discovery-server
     environment:
       APP_PROFILE: staging
+      SPRING_DATASOURCE_URL: ${AUTH_SPRING_DATASOURCE_URL_DOCKER}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD} 
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
     networks:
       - livo-network
@@ -208,6 +225,8 @@ volumes:
   pgdata-library:
     driver: local
   pgdata-book:
+    driver: local
+  pgdata-auth:
     driver: local
   pgdata-review:
     driver: local
