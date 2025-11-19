@@ -37,4 +37,17 @@ public class GlobalHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(ApplicationException.class)
+    public ResponseEntity<ErrorResponseDTO> handleApplicationException(ApplicationException ex) {
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                ex.getField(),
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND.value(),
+                ex.getClass().getSimpleName()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+
 }
