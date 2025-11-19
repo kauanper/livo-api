@@ -1,4 +1,4 @@
-package com.livo.library_service.library.custonExceptions;
+package com.livo.library_service.shared.globalExceptions.custon;
 
 import com.livo.library_service.shared.globalExceptions.ApplicationException;
 

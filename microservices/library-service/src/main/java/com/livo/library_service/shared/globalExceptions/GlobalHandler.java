@@ -1,7 +1,5 @@
 package com.livo.library_service.shared.globalExceptions;
 
-import com.livo.library_service.library.custonExceptions.BookNotFoundException;
-import com.livo.library_service.shared.globalExceptions.custon.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -26,18 +24,6 @@ public class GlobalHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(BookNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleBookNotFound(BookNotFoundException ex) {
-        ErrorResponseDTO error = new ErrorResponseDTO(
-                ex.getField(),
-                ex.getMessage(),
-                HttpStatus.NOT_FOUND.value(),
-                "Book Not Found"
-        );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<ErrorResponseDTO> handleApplicationException(ApplicationException ex) {
         ErrorResponseDTO error = new ErrorResponseDTO(
@@ -49,16 +35,4 @@ public class GlobalHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleUserNotFound(UserNotFoundException ex) {
-        ErrorResponseDTO error = new ErrorResponseDTO(
-                ex.getField(),
-                ex.getMessage(),
-                HttpStatus.NOT_FOUND.value(),
-                "User Not Found"
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
 }
