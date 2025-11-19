@@ -15,4 +15,3 @@ public interface UserClient {
     @GetMapping("/user/internal/users/{id}")
     UserDto getById(@PathVariable("id") UUID id);
 }
-
