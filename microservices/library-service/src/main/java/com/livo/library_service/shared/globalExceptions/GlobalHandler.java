@@ -33,6 +33,7 @@ public class GlobalHandler {
                 ex.getClass().getSimpleName()
         );
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        return ResponseEntity.status(ex.getStatus()).body(error);
     }
+
 }

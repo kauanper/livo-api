@@ -8,7 +8,7 @@ public class EmptyPersonalLibraryException extends ApplicationException {
         super(
                 null,
                 String.format("Sua biblioteca pessoal ainda está vazia."),
-                HttpStatus.NOT_FOUND
+                HttpStatus.OK
         );
     }
 }
