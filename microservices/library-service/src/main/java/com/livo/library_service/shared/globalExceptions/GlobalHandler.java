@@ -29,7 +29,7 @@ public class GlobalHandler {
         ErrorResponseDTO error = new ErrorResponseDTO(
                 ex.getField(),
                 ex.getMessage(),
-                HttpStatus.NOT_FOUND.value(),
+                ex.getStatus().value(),
                 ex.getClass().getSimpleName()
         );
 
