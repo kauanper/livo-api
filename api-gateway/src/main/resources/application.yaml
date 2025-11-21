@@ -29,7 +29,7 @@ spring:
         - id: library-service
           uri: lb://library-service
           predicates:
-            - Path:/library/**
+            - Path=/library/**
 
 eureka:
   client:
