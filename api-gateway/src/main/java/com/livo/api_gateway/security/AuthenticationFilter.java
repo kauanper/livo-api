@@ -7,16 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
 @RefreshScope
 @Component
-public class AuthenticationFilter implements GatewayFilter {
+public class AuthenticationFilter implements GlobalFilter, Ordered {
 
     @Autowired
     private RouterValidator validator;
@@ -31,24 +32,29 @@ public class AuthenticationFilter implements GatewayFilter {
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
         String authHeader = request.getHeaders().getFirst("Authorization");
+
         log.debug("Gateway filter - path={}, Authorization present={}", path, authHeader != null);
 
+        // Apenas valida se a rota for segura
         if (validator.isSecured.test(request)) {
-            if (this.isAuthMissing(request)) {
+
+            if (!request.getHeaders().containsKey("Authorization")) {
                 log.warn("Missing Authorization header for secured request: {}", path);
                 return this.onError(exchange, "Authorization header is missing in request");
             }
 
-            final String token = this.getAuthHeader(request).substring(7);
+            String token = authHeader.substring(7);
 
             try {
                 jwtUtil.validateToken(token);
                 log.debug("Token valid for path={}", path);
+
             } catch (JwtException e) {
                 log.warn("Invalid/expired token for path={}: {}", path, e.getMessage());
                 return this.onError(exchange, "Authorization header is invalid or expired");
             }
         }
+
         return chain.filter(exchange);
     }
 
@@ -58,11 +64,8 @@ public class AuthenticationFilter implements GatewayFilter {
         return response.setComplete();
     }
 
-    private String getAuthHeader(ServerHttpRequest request) {
-        return request.getHeaders().getOrEmpty("Authorization").getFirst();
-    }
-
-    private boolean isAuthMissing(ServerHttpRequest request) {
-        return !request.getHeaders().containsKey("Authorization");
+    @Override
+    public int getOrder() {
+        return -1; // garante que roda antes dos filtros padrões
     }
 }

@@ -44,7 +44,7 @@ public class AuthService {
         String refresh = UUID.randomUUID().toString();
         String hash = DigestUtils.sha256Hex(refresh);
 
-        RefreshToken refreshToken = new RefreshToken();
+        RefreshToken refreshToken = refreshTokenRepository.findByUserId(user.getBody().getId().toString()).orElse(new RefreshToken());
         refreshToken.setUserId(user.getBody().getId().toString());
         refreshToken.setTokenHash(hash);
         refreshToken.setDevice(null);

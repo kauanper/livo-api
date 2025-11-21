@@ -16,7 +16,7 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public RefreshToken createRefreshToken(String userId) {
-        var token = new RefreshToken();
+        var token = refreshTokenRepository.findByUserId(userId).orElse(new RefreshToken());
         token.setUserId(userId);
         token.setIssuedAt(Instant.now());
         token.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
