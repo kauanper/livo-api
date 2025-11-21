@@ -1,0 +1,61 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: auth-service
+  profiles:
+    active: ${APP_PROFILE:dev}
+
+# Eureka Client
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+
+# Auth
+auth:
+  jwt:
+    secret-env-var: ${JWT_SECRET:jwt-secret-long-test-key-for-development}
+    access-token-exp-ms: ${AUTH_ACCESS_EXP_MS:900000}       # 15 minutos
+    refresh-token-exp-ms: ${AUTH_REFRESH_EXP_MS:604800000}  # 7 dias
+
+jwt:
+  refreshExpirationMs: 86400000
+
+# User Service Client Configuration
+user:
+  service:
+    # Token para autenticação entre serviços
+    token: ${USER_SERVICE_TOKEN:}
+
+# Feign Client Configuration
+feign:
+  client:
+    config:
+      default:
+        # Timeout de conexão em milissegundos
+        connectTimeout: 5000
+        # Timeout de leitura em milissegundos
+        readTimeout: 10000
+        loggerLevel: basic
+      user-service:
+        connectTimeout: 5000
+        readTimeout: 10000
+        loggerLevel: basic
+  # Habilita Apache HttpClient para controle de timeouts
+  httpclient:
+    enabled: true
+    max-connections: 200
+    max-connections-per-route: 50
+    connection-timeout: 5000
+
+# Logging
+logging:
+  level:
+    org.springframework.security: DEBUG

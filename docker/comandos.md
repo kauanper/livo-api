@@ -47,3 +47,14 @@ Em casos que builds frequentes, pode ser necessário liberar memória do docker,
 
 **Limpa cache de build (libera bastante espaço)**  
 `docker builder prune`  
+
+# Instruções
+O docker compose possui muitos bancos de dados e serviços, por isso pode demorar um pouco a subir, segue algumas instruções para veriricar seu bom funcionamento:
+- esperar alguns segundos após sua inicialização
+- verificar o discovery server na rota http://localhost:8761/
+- veja se os seguintes serviços estão listados e com o status "up"
+  - API-GATEWAY
+  - AUTH-SERVICE
+  - BOOK-SERVICE
+  - USER-SERVICE
+  - LIBRARY-SERVICE
