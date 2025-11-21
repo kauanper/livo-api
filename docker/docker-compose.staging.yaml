@@ -120,6 +120,7 @@ services:
       - discovery-server
     environment:
       EUREKA_SERVER_URL: http://discovery-server:8761/eureka
+      JWT_SECRET: ${JWT_SECRET}
     networks:
       - livo-network
 
@@ -138,6 +139,7 @@ services:
       - discovery-server
     environment:
       APP_PROFILE: staging
+      JWT_SECRET: ${JWT_SECRET}
       SPRING_DATASOURCE_URL: ${USER_SPRING_DATASOURCE_URL_DOCKER}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
@@ -159,6 +161,7 @@ services:
       - discovery-server
     environment:
       APP_PROFILE: staging
+      JWT_SECRET: ${JWT_SECRET}
       SPRING_DATASOURCE_URL: ${AUTH_SPRING_DATASOURCE_URL_DOCKER}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD} 

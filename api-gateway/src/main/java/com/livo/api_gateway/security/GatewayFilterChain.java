@@ -20,7 +20,7 @@ public class GatewayFilterChain {
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/auth/**", "/health/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "/user", "/user/**").permitAll()
-                        .anyExchange().authenticated()
+                        .anyExchange().permitAll()
                 );
         return http.build();
     }
