@@ -51,8 +51,8 @@ public class LibraryController {
         return ResponseEntity.ok(books);
     }
 
-    @GetMapping("/user/{userId}/search/{term}")
-    public ResponseEntity<List<AssociationResponseDTO>> searchBooks(@PathVariable UUID userId,
+    @GetMapping("/search/{term}")
+    public ResponseEntity<List<AssociationResponseDTO>> searchBooks(@CurrentUser UUID userId,
                                                                     @PathVariable String term) {
         List<AssociationResponseDTO> books = searchBookUseCase.execute(userId, term);
         return ResponseEntity.ok(books);
