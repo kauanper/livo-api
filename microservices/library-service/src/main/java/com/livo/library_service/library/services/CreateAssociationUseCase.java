@@ -14,6 +14,8 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class CreateAssociationUseCase {
@@ -23,12 +25,12 @@ public class CreateAssociationUseCase {
     private final UserClient userClient;
     private final BookClient bookClient;
 
-    public AssociationResponseDTO execute(AssociationRegisterDTO register) {
+    public AssociationResponseDTO execute(AssociationRegisterDTO register, UUID userID) {
 
         try {
-            userClient.getById(register.getUserId());
+            userClient.getById(userID);
         } catch (FeignException.NotFound ex) {
-            throw new UserNotFoundException(register.getUserId());
+            throw new UserNotFoundException(userID);
         }
 
         try {
@@ -37,12 +39,12 @@ public class CreateAssociationUseCase {
             throw new BookNotFoundException(register.getBookId());
         }
 
-        boolean exists = libraryRepository.existsByUserIdAndBookId(register.getUserId(), register.getBookId());
+        boolean exists = libraryRepository.existsByUserIdAndBookId(userID, register.getBookId());
         if (exists) {
             throw new ExistingAssociationException();
         }
 
-        UserBookEntity entity = associationMappers.toEntity(register);
+        UserBookEntity entity = AssociationMappers.toEntity(register, userID);
         UserBookEntity saved = libraryRepository.save(entity);
 
         return AssociationMappers.toResponseDTO(saved);
