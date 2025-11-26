@@ -54,4 +54,9 @@ public class GlobalHandler {
         return ResponseEntity.status(ex.getStatus()).body(error);
     }
 
+    @ExceptionHandler({io.jsonwebtoken.JwtException.class, IllegalArgumentException.class})
+    public ResponseEntity<String> handleJwtErrors(Exception e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
 }

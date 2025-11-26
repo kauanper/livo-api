@@ -9,6 +9,7 @@ import com.livo.library_service.library.services.ListLibraryBooksUseCase;
 import com.livo.library_service.search_book.SearchBookUseCase;
 import com.livo.library_service.shared.clients.BookClient;
 import com.livo.library_service.shared.clients.UserClient;
+import com.livo.library_service.shared.notations.CurrentUser;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,9 @@ public class LibraryController {
 
 
     @PostMapping
-    public ResponseEntity<AssociationResponseDTO> save(@RequestBody @Valid AssociationRegisterDTO dto){
-        AssociationResponseDTO response = createAssociationUseCase.execute(dto);
+    public ResponseEntity<AssociationResponseDTO> save(@RequestBody @Valid AssociationRegisterDTO dto,
+                                                       @CurrentUser UUID currentUser){
+        AssociationResponseDTO response = createAssociationUseCase.execute(dto, currentUser);
         return ResponseEntity.ok(response);
     }
 
@@ -43,14 +45,14 @@ public class LibraryController {
         return ResponseEntity.ok("Associação removida com sucesso.");
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<AssociationResponseDTO>> getLibraryByUserId(@PathVariable UUID userId) {
+    @GetMapping("/my")
+    public ResponseEntity<List<AssociationResponseDTO>> getLibraryByUserId(@CurrentUser UUID userId) {
         List<AssociationResponseDTO> books = listLibraryBooksUseCase.execute(userId);
         return ResponseEntity.ok(books);
     }
 
-    @GetMapping("/user/{userId}/search/{term}")
-    public ResponseEntity<List<AssociationResponseDTO>> searchBooks(@PathVariable UUID userId,
+    @GetMapping("/search/{term}")
+    public ResponseEntity<List<AssociationResponseDTO>> searchBooks(@CurrentUser UUID userId,
                                                                     @PathVariable String term) {
         List<AssociationResponseDTO> books = searchBookUseCase.execute(userId, term);
         return ResponseEntity.ok(books);

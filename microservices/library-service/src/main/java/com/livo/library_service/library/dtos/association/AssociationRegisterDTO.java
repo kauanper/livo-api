@@ -14,10 +14,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AssociationRegisterDTO {
-
-    @NotNull(message = "UserId é obrigatório")
-    private UUID userId;
-
     @NotBlank(message = "BookId não pode estar vazio")
     @Size(max = 50, message = "BookId não pode ter mais que 50 caracteres")
     private String bookId;

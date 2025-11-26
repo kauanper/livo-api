@@ -32,5 +32,3 @@ public class UserBookEntity {
     //implementar status
 
 }
-
-// representação da biblioteca
