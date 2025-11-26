@@ -5,15 +5,17 @@ import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class AssociationMappers {
-    public static UserBookEntity toEntity(AssociationRegisterDTO dto) {
+    public static UserBookEntity toEntity(AssociationRegisterDTO dto, UUID userId) {
         if (dto == null) {
             return null;
         }
 
         UserBookEntity entity = new UserBookEntity();
-        entity.setUserId(dto.getUserId());
+        entity.setUserId(userId);
         entity.setBookId(dto.getBookId());
         entity.setThumbnail(dto.getThumbnail());
         entity.setReadingProgress(0); //user não começou a ler
