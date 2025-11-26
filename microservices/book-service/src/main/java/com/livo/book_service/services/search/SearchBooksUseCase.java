@@ -10,6 +10,7 @@ import com.livo.book_service.services.search.order_strategies.OrderByStrategyFac
 import com.livo.book_service.services.search.q_strategies.SearchStrategy;
 import com.livo.book_service.services.search.q_strategies.SearchStrategyFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class SearchBooksUseCase {
     private final OrderByStrategyFactory orderByStrategyFactory;
     private final BookMapper mapper;
 
+    @Cacheable(value = "booksSearch", key = "#query + '-' + #type + '-' + #orderBy")
     public List<BookSummaryResponse> execute(String query, String type, String orderBy) {
 
         validate(query, type, orderBy);
