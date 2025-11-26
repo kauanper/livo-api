@@ -6,6 +6,7 @@ import com.livo.book_service.exceptions.custom.BookNotFoundException;
 import com.livo.book_service.exceptions.custom.InvalidRequestException;
 import com.livo.book_service.mappers.BookMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,7 @@ public class GetBookByIdUseCase {
     private final GoogleBooksClient googleBooksClient;
     private final BookMapper bookMapper;
 
+    @Cacheable(value = "bookById", key = "#bookId")
     public BookSummaryResponse execute(String bookId) {
 
         if (bookId == null || bookId.isBlank()) {
