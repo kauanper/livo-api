@@ -4,6 +4,7 @@ import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
 import com.livo.library_service.library.services.CreateAssociationUseCase;
 import com.livo.library_service.library.services.DeleteByIdUseCase;
+import com.livo.library_service.library.services.ListLibraryBooksByBookStatusUseCase;
 import com.livo.library_service.library.services.ListLibraryBooksUseCase;
 import com.livo.library_service.search_book.SearchBookUseCase;
 import com.livo.library_service.shared.notations.CurrentUser;
@@ -26,6 +27,8 @@ public class LibraryController {
     @Autowired
     private ListLibraryBooksUseCase listLibraryBooksUseCase;
     @Autowired
+    private ListLibraryBooksByBookStatusUseCase listLibraryBooksByBookStatusUseCase;
+    @Autowired
     private SearchBookUseCase searchBookUseCase;
 
 
@@ -45,6 +48,13 @@ public class LibraryController {
     @GetMapping("/my")
     public ResponseEntity<List<AssociationResponseDTO>> getLibraryByUserId(@CurrentUser UUID userId) {
         List<AssociationResponseDTO> books = listLibraryBooksUseCase.execute(userId);
+        return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/my/byStatus")
+    public ResponseEntity<List<AssociationResponseDTO>> getLibraryByStatus(@CurrentUser UUID userId,
+                                                                           @RequestParam @Valid BookStatus bookStatus) {
+        List<AssociationResponseDTO> books = listLibraryBooksByBookStatusUseCase.execute(userId, bookStatus);
         return ResponseEntity.ok(books);
     }
 
