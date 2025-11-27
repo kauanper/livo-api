@@ -17,11 +17,11 @@ public class AssociationMappers {
         UserBookEntity entity = new UserBookEntity();
         entity.setUserId(userId);
         entity.setBookId(dto.bookId());
+        entity.setBookStatus((dto.bookStatus()));
         entity.setThumbnail(dto.thumbnail());
         entity.setReadingProgress(0); //user não começou a ler
         entity.setPersonalRatting(null); //user não deu seu voto pessoal
         entity.setTitle(dto.title());
-        // entity.setStatus(ainda não implementado
 
         return entity;
     }
@@ -33,6 +33,7 @@ public class AssociationMappers {
 
         return new AssociationResponseDTO(
                 entity.getId(),
+                entity.getBookStatus(),
                 entity.getThumbnail(),
                 entity.getTitle(),
                 entity.getReadingProgress(),

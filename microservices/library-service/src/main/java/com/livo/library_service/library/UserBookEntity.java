@@ -1,5 +1,6 @@
 package com.livo.library_service.library;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,8 +26,9 @@ public class UserBookEntity {
     private String thumbnail;
     private String title;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    BookStatus bookStatus;
+    private BookStatus bookStatus;
 
     //talvez essas entidades derivadas sumirão e serão geradas em tempo de execução.
     private Integer readingProgress;
