@@ -3,13 +3,14 @@ package com.livo.library_service.library.mappers;
 import com.livo.library_service.library.UserBookEntity;
 import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
+import com.livo.library_service.library.dtos.book.BookSummaryResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
 public class AssociationMappers {
-    public static UserBookEntity toEntity(AssociationRegisterDTO dto, UUID userId) {
+    public static UserBookEntity toEntity(AssociationRegisterDTO dto, BookSummaryResponse bookDto, UUID userId) {
         if (dto == null) {
             return null;
         }
@@ -18,10 +19,10 @@ public class AssociationMappers {
         entity.setUserId(userId);
         entity.setBookId(dto.bookId());
         entity.setBookStatus((dto.bookStatus()));
-        entity.setThumbnail(dto.thumbnail());
+        entity.setThumbnail(bookDto.thumbnail());
         entity.setReadingProgress(0); //user não começou a ler
         entity.setPersonalRatting(null); //user não deu seu voto pessoal
-        entity.setTitle(dto.title());
+        entity.setTitle(bookDto.title());
 
         return entity;
     }

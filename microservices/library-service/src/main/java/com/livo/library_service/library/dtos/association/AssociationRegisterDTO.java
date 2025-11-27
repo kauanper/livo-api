@@ -12,17 +12,7 @@ public record AssociationRegisterDTO(
         String bookId,
 
         @NotNull(message = "BookStatus não pode estar vazio")
-        BookStatus bookStatus,
-
-        @Pattern(
-                regexp = "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$",
-                message = "Thumbnail deve ser uma URL válida"
-        )
-        String thumbnail,
-
-        @NotBlank(message = "Título não pode estar vazio")
-        @Size(max = 200, message = "Título não pode ter mais que 200 caracteres")
-        String title
+        BookStatus bookStatus
 ) {
 }
 
