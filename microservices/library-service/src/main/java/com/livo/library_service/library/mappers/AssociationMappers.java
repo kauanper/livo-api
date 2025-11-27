@@ -3,7 +3,7 @@ package com.livo.library_service.library.mappers;
 import com.livo.library_service.library.UserBookEntity;
 import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
-import com.livo.library_service.library.dtos.book.BookSummaryResponse;
+import com.livo.library_service.shared.dtos.book.BookSummaryResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
