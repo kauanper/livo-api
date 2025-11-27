@@ -2,13 +2,10 @@ package com.livo.library_service.library;
 
 import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
-import com.livo.library_service.library.dtos.book.BookSummaryResponse;
 import com.livo.library_service.library.services.CreateAssociationUseCase;
 import com.livo.library_service.library.services.DeleteByIdUseCase;
 import com.livo.library_service.library.services.ListLibraryBooksUseCase;
 import com.livo.library_service.search_book.SearchBookUseCase;
-import com.livo.library_service.shared.clients.BookClient;
-import com.livo.library_service.shared.clients.UserClient;
 import com.livo.library_service.shared.notations.CurrentUser;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

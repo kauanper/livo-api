@@ -1,4 +1,4 @@
-package com.livo.library_service.library.dtos.user;
+package com.livo.library_service.shared.dtos.user;
 
 import java.util.UUID;
 

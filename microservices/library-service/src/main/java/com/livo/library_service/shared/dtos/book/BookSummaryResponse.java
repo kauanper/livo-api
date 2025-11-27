@@ -1,4 +1,4 @@
-package com.livo.library_service.library.dtos.book;
+package com.livo.library_service.shared.dtos.book;
 
 import java.util.List;
 
