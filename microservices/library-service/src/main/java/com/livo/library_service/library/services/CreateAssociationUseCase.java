@@ -34,12 +34,12 @@ public class CreateAssociationUseCase {
         }
 
         try {
-            bookClient.getBookById(register.getBookId());
+            bookClient.getBookById(register.bookId());
         } catch (FeignException.NotFound ex) {
-            throw new BookNotFoundException(register.getBookId());
+            throw new BookNotFoundException(register.bookId());
         }
 
-        boolean exists = libraryRepository.existsByUserIdAndBookId(userID, register.getBookId());
+        boolean exists = libraryRepository.existsByUserIdAndBookId(userID, register.bookId());
         if (exists) {
             throw new ExistingAssociationException();
         }

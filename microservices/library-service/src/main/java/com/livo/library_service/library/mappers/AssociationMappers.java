@@ -16,11 +16,11 @@ public class AssociationMappers {
 
         UserBookEntity entity = new UserBookEntity();
         entity.setUserId(userId);
-        entity.setBookId(dto.getBookId());
-        entity.setThumbnail(dto.getThumbnail());
+        entity.setBookId(dto.bookId());
+        entity.setThumbnail(dto.thumbnail());
         entity.setReadingProgress(0); //user não começou a ler
         entity.setPersonalRatting(null); //user não deu seu voto pessoal
-        entity.setTitle(dto.getTitle());
+        entity.setTitle(dto.title());
         // entity.setStatus(ainda não implementado
 
         return entity;

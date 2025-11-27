@@ -25,10 +25,11 @@ public class UserBookEntity {
     private String thumbnail;
     private String title;
 
-    //para ajudar na logica interna
+    @Enumerated(EnumType.STRING)
+    BookStatus bookStatus;
+
+    //talvez essas entidades derivadas sumirão e serão geradas em tempo de execução.
     private Integer readingProgress;
     private Integer personalRatting = null;
-
-    //implementar status
 
 }
