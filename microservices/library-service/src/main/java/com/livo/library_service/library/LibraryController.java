@@ -47,7 +47,7 @@ public class LibraryController {
     }
 
 
-    @GetMapping("/my")
+    @GetMapping
     public ResponseEntity<List<AssociationResponseDTO>> getLibraryByUserId(@CurrentUser UUID userId,
                                                                            @RequestParam(required = false) @Valid BookStatus status) {
         List<AssociationResponseDTO> books = listLibraryBooksUseCase.execute(userId, Optional.ofNullable(status));
@@ -60,4 +60,5 @@ public class LibraryController {
         List<AssociationResponseDTO> books = searchBookUseCase.execute(userId, term);
         return ResponseEntity.ok(books);
     }
+
 }
