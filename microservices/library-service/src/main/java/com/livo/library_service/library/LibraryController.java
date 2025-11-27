@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -45,16 +46,11 @@ public class LibraryController {
         return ResponseEntity.ok("Associação removida com sucesso.");
     }
 
-    @GetMapping("/my")
-    public ResponseEntity<List<AssociationResponseDTO>> getLibraryByUserId(@CurrentUser UUID userId) {
-        List<AssociationResponseDTO> books = listLibraryBooksUseCase.execute(userId);
-        return ResponseEntity.ok(books);
-    }
 
-    @GetMapping("/my/byStatus")
-    public ResponseEntity<List<AssociationResponseDTO>> getLibraryByStatus(@CurrentUser UUID userId,
-                                                                           @RequestParam @Valid BookStatus bookStatus) {
-        List<AssociationResponseDTO> books = listLibraryBooksByBookStatusUseCase.execute(userId, bookStatus);
+    @GetMapping("/my")
+    public ResponseEntity<List<AssociationResponseDTO>> getLibraryByUserId(@CurrentUser UUID userId,
+                                                                           @RequestParam(required = false) @Valid BookStatus status) {
+        List<AssociationResponseDTO> books = listLibraryBooksUseCase.execute(userId, Optional.ofNullable(status));
         return ResponseEntity.ok(books);
     }
 

@@ -1,5 +1,6 @@
 package com.livo.library_service.library.services;
 
+import com.livo.library_service.library.BookStatus;
 import com.livo.library_service.library.LibraryRepository;
 import com.livo.library_service.library.UserBookEntity;
 import com.livo.library_service.library.custonExceptions.EmptyPersonalLibraryException;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,10 +22,9 @@ import java.util.stream.Collectors;
 public class ListLibraryBooksUseCase {
 
     private final LibraryRepository libraryRepository;
-    private final AssociationMappers associationMappers;
     private final UserClient userClient;
 
-    public List<AssociationResponseDTO> execute(UUID userId) {
+    public List<AssociationResponseDTO> execute(UUID userId, Optional<BookStatus> status) {
 
         try {
             userClient.getById(userId);
@@ -31,7 +32,11 @@ public class ListLibraryBooksUseCase {
             throw new UserNotFoundException(userId);
         }
 
-        List<UserBookEntity> entities = libraryRepository.findAllByUserId(userId);
+        List<UserBookEntity> entities;
+        if (status.isEmpty())
+            entities = libraryRepository.findAllByUserId(userId);
+        else
+            entities = libraryRepository.findAllByuserIdAndBookStatus(userId, status.get());
 
         if (entities.isEmpty()) {
             throw new EmptyPersonalLibraryException();
