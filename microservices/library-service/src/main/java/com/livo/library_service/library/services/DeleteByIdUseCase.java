@@ -2,6 +2,7 @@ package com.livo.library_service.library.services;
 
 import com.livo.library_service.library.LibraryRepository;
 import com.livo.library_service.library.custonExceptions.AssociationNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ public class DeleteByIdUseCase {
 
     private final LibraryRepository libraryRepository;
 
+    @Transactional
     public void execute(Long userBookId) {
 
         var entity = libraryRepository.findById(userBookId)
