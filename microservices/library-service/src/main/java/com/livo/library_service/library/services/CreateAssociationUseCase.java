@@ -12,6 +12,7 @@ import com.livo.library_service.shared.clients.UserClient;
 import com.livo.library_service.shared.globalExceptions.custon.BookNotFoundException;
 import com.livo.library_service.shared.globalExceptions.custon.UserNotFoundException;
 import feign.FeignException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class CreateAssociationUseCase {
     private final UserClient userClient;
     private final BookClient bookClient;
 
+    @Transactional
     public AssociationResponseDTO execute(AssociationRegisterDTO register, UUID userID) {
 
         try {

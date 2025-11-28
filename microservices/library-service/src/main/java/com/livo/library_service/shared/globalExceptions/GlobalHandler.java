@@ -1,5 +1,7 @@
 package com.livo.library_service.shared.globalExceptions;
 
+import com.livo.library_service.shared.globalExceptions.custon.EntityDoesNotBelongToAnotherEntityException;
+import com.livo.library_service.shared.globalExceptions.custon.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -57,6 +59,30 @@ public class GlobalHandler {
     @ExceptionHandler({io.jsonwebtoken.JwtException.class, IllegalArgumentException.class})
     public ResponseEntity<String> handleJwtErrors(Exception e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
+    @ExceptionHandler(EntityDoesNotBelongToAnotherEntityException.class)
+    public ResponseEntity<ErrorResponseDTO> handleException(EntityDoesNotBelongToAnotherEntityException e) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                e.getField(),
+                e.getMessage(),
+                status.value(),
+                status.getReasonPhrase()
+        );
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleException(ResourceNotFoundException e) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                e.getField(),
+                e.getMessage(),
+                status.value(),
+                status.getReasonPhrase()
+        );
+        return ResponseEntity.status(status).body(error);
     }
 
 }
