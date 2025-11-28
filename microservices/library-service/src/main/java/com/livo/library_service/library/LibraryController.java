@@ -1,11 +1,9 @@
 package com.livo.library_service.library;
 
+import com.livo.library_service.library.dtos.BookStatusPatchDTO;
 import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
-import com.livo.library_service.library.services.CreateAssociationUseCase;
-import com.livo.library_service.library.services.DeleteByIdUseCase;
-import com.livo.library_service.library.services.ListLibraryBooksByBookStatusUseCase;
-import com.livo.library_service.library.services.ListLibraryBooksUseCase;
+import com.livo.library_service.library.services.*;
 import com.livo.library_service.search_book.SearchBookUseCase;
 import com.livo.library_service.shared.notations.CurrentUser;
 import jakarta.validation.Valid;
@@ -20,17 +18,20 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/library")
 public class LibraryController {
-
     @Autowired
     private CreateAssociationUseCase createAssociationUseCase;
+
     @Autowired
     private DeleteByIdUseCase deleteByIdUseCase;
+
     @Autowired
     private ListLibraryBooksUseCase listLibraryBooksUseCase;
-    @Autowired
-    private ListLibraryBooksByBookStatusUseCase listLibraryBooksByBookStatusUseCase;
+
     @Autowired
     private SearchBookUseCase searchBookUseCase;
+
+    @Autowired
+    private PatchAssociationUseCase patchAssociationUseCase;
 
 
     @PostMapping
@@ -61,4 +62,11 @@ public class LibraryController {
         return ResponseEntity.ok(books);
     }
 
+    @PatchMapping("/{userBookId}")
+    public ResponseEntity<AssociationResponseDTO> patchByBookStatus(@CurrentUser UUID userId,
+                                                                    @PathVariable Long userBookId,
+                                                                    @RequestBody BookStatusPatchDTO dto){
+        AssociationResponseDTO book = patchAssociationUseCase.execute(userId, userBookId, dto);
+        return ResponseEntity.ok(book);
+    }
 }

@@ -31,7 +31,7 @@ public class ListLibraryBooksByBookStatusUseCase {
             throw new UserNotFoundException(userId);
         }
 
-        List<UserBookEntity> entities = libraryRepository.findAllByuserIdAndBookStatus(userId, bookStatus);
+        List<UserBookEntity> entities = libraryRepository.findAllByUserIdAndBookStatus(userId, bookStatus);
 
         if (entities.isEmpty()) {
             throw new EmptyPersonalLibraryException();
