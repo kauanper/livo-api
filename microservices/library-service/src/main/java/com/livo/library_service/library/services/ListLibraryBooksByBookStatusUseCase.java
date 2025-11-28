@@ -13,18 +13,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ListLibraryBooksUseCase {
+public class ListLibraryBooksByBookStatusUseCase {
 
     private final LibraryRepository libraryRepository;
     private final UserClient userClient;
 
-    public List<AssociationResponseDTO> execute(UUID userId, Optional<BookStatus> status) {
+    public List<AssociationResponseDTO> execute(UUID userId, BookStatus bookStatus) {
 
         try {
             userClient.getById(userId);
@@ -32,11 +31,7 @@ public class ListLibraryBooksUseCase {
             throw new UserNotFoundException(userId);
         }
 
-        List<UserBookEntity> entities;
-        if (status.isEmpty())
-            entities = libraryRepository.findAllByUserId(userId);
-        else
-            entities = libraryRepository.findAllByUserIdAndBookStatus(userId, status.get());
+        List<UserBookEntity> entities = libraryRepository.findAllByUserIdAndBookStatus(userId, bookStatus);
 
         if (entities.isEmpty()) {
             throw new EmptyPersonalLibraryException();
