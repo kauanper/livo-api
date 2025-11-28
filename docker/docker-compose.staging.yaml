@@ -121,6 +121,7 @@ services:
     environment:
       EUREKA_SERVER_URL: http://discovery-server:8761/eureka
       JWT_SECRET: ${JWT_SECRET}
+      USER_SERVICE_URL: http://user-service:8082
     networks:
       - livo-network
 

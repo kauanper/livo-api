@@ -45,6 +45,7 @@ feign:
         readTimeout: 10000
         loggerLevel: basic
       user-service:
+        url: ${USER_SERVICE_URL:http://localhost:8082}
         connectTimeout: 5000
         readTimeout: 10000
         loggerLevel: basic
