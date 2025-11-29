@@ -1,4 +1,4 @@
-package com.livo.library_service.shelf.dtos;
+package com.livo.library_service.shelf.entity.dtos;
 
 import com.livo.library_service.shelf.bookShelf.dto.BookShelfDto;
 

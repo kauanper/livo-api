@@ -1,4 +1,4 @@
-package com.livo.library_service.shelf;
+package com.livo.library_service.shelf.entity;
 
 import com.livo.library_service.shelf.bookShelf.BookShelf;
 import jakarta.persistence.*;
