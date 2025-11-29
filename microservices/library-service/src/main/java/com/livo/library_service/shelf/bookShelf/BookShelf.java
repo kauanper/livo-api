@@ -20,10 +20,10 @@ public class BookShelf {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private Long id;
+    private UUID id;
 
     @Column(name = "book_id", nullable = false)
-    private Long book_id;
+    private String book_id;
 
     @Column(name = "user_id", nullable = false)
     private UUID userId;

@@ -11,18 +11,18 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(
-    name = "shelf",
-    uniqueConstraints = {
-            @UniqueConstraint(columnNames = {"user_id", "shelf_id"})
-    }
-)
+@Table(name = "shelf", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "user_id", "shelf_id" })
+})
 public class Shelf {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     private String name;
+
+    private String description;
 
     @Column(name = "user_id")
     private UUID userId;
