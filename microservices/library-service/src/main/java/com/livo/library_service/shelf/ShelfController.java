@@ -4,7 +4,6 @@ import com.livo.library_service.shared.notations.CurrentUser;
 import com.livo.library_service.shelf.entity.dtos.ShelfDto;
 import com.livo.library_service.shelf.entity.dtos.ShelfPostDto;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +40,7 @@ public class ShelfController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ShelfDto> getbyId(@PathParam("id") UUID id, @CurrentUser UUID userId) {
+    public ResponseEntity<ShelfDto> getbyId(@PathVariable("id") UUID id, @CurrentUser UUID userId) {
         ShelfDto shelf = shelfService.findById(id, userId);
         return ResponseEntity.ok().body(shelf);
     }
@@ -49,7 +48,7 @@ public class ShelfController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ShelfDto> update(
-            @PathParam("id") UUID id,
+            @PathVariable("id") UUID id,
             @Valid @RequestBody ShelfPostDto postDto,
             @CurrentUser UUID userId
     ) {
@@ -59,7 +58,7 @@ public class ShelfController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> delete(@PathParam("id") UUID id, @CurrentUser UUID userId) {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id, @CurrentUser UUID userId) {
         shelfService.delete(id, userId);
         return ResponseEntity.noContent().build();
     }
