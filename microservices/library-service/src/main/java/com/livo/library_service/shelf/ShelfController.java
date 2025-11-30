@@ -3,6 +3,9 @@ package com.livo.library_service.shelf;
 import com.livo.library_service.shared.notations.CurrentUser;
 import com.livo.library_service.shelf.entity.dtos.ShelfDto;
 import com.livo.library_service.shelf.entity.dtos.ShelfPostDto;
+import com.livo.library_service.shelf.bookShelf.BookShelfService;
+import com.livo.library_service.shelf.bookShelf.dto.BookShelfDto;
+import com.livo.library_service.shelf.bookShelf.dto.BookShelfPostDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,12 +23,14 @@ public class ShelfController {
     @Autowired
     private ShelfService shelfService;
 
+    @Autowired
+    private BookShelfService bookShelfService;
+
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ShelfDto> register(
             @Valid @RequestBody ShelfPostDto postDto,
-            @CurrentUser UUID userId
-            ) {
+            @CurrentUser UUID userId) {
         ShelfDto dto = shelfService.save(postDto, userId);
         URI uri = URI.create("/shelfs/" + dto.id());
         return ResponseEntity.created(uri).body(dto);
@@ -50,8 +55,7 @@ public class ShelfController {
     public ResponseEntity<ShelfDto> update(
             @PathVariable("id") UUID id,
             @Valid @RequestBody ShelfPostDto postDto,
-            @CurrentUser UUID userId
-    ) {
+            @CurrentUser UUID userId) {
         ShelfDto dto = shelfService.update(id, postDto, userId);
         return ResponseEntity.ok().body(dto);
     }
@@ -60,6 +64,26 @@ public class ShelfController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id, @CurrentUser UUID userId) {
         shelfService.delete(id, userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/books")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<BookShelfDto> addBook(
+            @PathVariable("id") UUID id,
+            @Valid @RequestBody BookShelfPostDto postDto,
+            @CurrentUser UUID userId) {
+        BookShelfDto dto = bookShelfService.addBookToShelf(id, postDto, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    }
+
+    @DeleteMapping("/{id}/books/{bookId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> removeBook(
+            @PathVariable("id") UUID id,
+            @PathVariable("bookId") String bookId,
+            @CurrentUser UUID userId) {
+        bookShelfService.removeBookFromShelf(id, bookId, userId);
         return ResponseEntity.noContent().build();
     }
 }
