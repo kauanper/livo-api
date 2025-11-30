@@ -31,11 +31,11 @@ public class ShelfValidate {
         return shelf;
     }
 
-    public void validateBooksExist(List<UUID> bookIds) {
+    public void validateBooksExist(List<Long> bookIds) {
         if (bookIds == null || bookIds.isEmpty()) {
             return;
         }
-        for (UUID bookId : bookIds) {
+        for (Long bookId : bookIds) {
             try {
                 BookSummaryResponse book = bookClient.getBookById(bookId.toString());
                 if (book == null) {

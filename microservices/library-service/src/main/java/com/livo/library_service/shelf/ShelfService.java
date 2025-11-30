@@ -6,9 +6,9 @@ import com.livo.library_service.shelf.entity.Shelf;
 import com.livo.library_service.shelf.entity.dtos.ShelfDto;
 import com.livo.library_service.shelf.entity.dtos.ShelfPostDto;
 import com.livo.library_service.shelf.mappers.ShelfMapper;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,8 +56,10 @@ public class ShelfService {
         return shelfMapper.toDto(shelf);
     }
 
+    @Transactional(readOnly = true)
     public List<ShelfDto> findAll(UUID userId) {
         List<Shelf> shelves = shelfRepository.findByUserId(userId);
+
         return shelfMapper.toDtoList(shelves);
     }
 
@@ -93,7 +95,7 @@ public class ShelfService {
                 bookShelf.setStatus(BookStatus.QUERO_LER);
                 bookShelf.setAdded_at(LocalDateTime.now());
                 return bookShelf;
-            }).collect(Collectors.toList());
+            }).toList();
 
             shelf.getBookShelves().addAll(newBooks);
         }
