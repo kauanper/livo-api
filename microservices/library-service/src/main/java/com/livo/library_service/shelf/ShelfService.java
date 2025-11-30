@@ -40,7 +40,7 @@ public class ShelfService {
         if (dto.books() != null && !dto.books().isEmpty()) {
             List<BookShelf> bookShelves = dto.books().stream().map(bookId -> {
                 BookShelf bookShelf = new BookShelf();
-                bookShelf.setBook_id(bookId.toString());
+                bookShelf.setBookId(bookId.toString());
                 bookShelf.setUserId(userId);
                 bookShelf.setShelf(finalShelf);
                 bookShelf.setStatus(BookStatus.QUERO_LER); // Default status
@@ -89,7 +89,7 @@ public class ShelfService {
 
             List<BookShelf> newBooks = dto.books().stream().map(bookId -> {
                 BookShelf bookShelf = new BookShelf();
-                bookShelf.setBook_id(bookId.toString());
+                bookShelf.setBookId(bookId.toString());
                 bookShelf.setUserId(userId);
                 bookShelf.setShelf(finalShelf);
                 bookShelf.setStatus(BookStatus.QUERO_LER);

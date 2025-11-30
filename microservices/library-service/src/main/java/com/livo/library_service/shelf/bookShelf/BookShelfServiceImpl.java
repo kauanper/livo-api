@@ -49,13 +49,13 @@ public class BookShelfServiceImpl implements BookShelfService {
         }
 
         // Validate Duplication
-        if (bookShelfRepository.existsByShelfIdAndBook_id(shelfId, postDto.bookId())) {
+        if (bookShelfRepository.existsByShelfIdAndBookId(shelfId, postDto.bookId())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Book already exists in this shelf");
         }
 
         // Create and Save BookShelf
         BookShelf bookShelf = new BookShelf();
-        bookShelf.setBook_id(postDto.bookId());
+        bookShelf.setBookId(postDto.bookId());
         bookShelf.setUserId(userId);
         bookShelf.setShelf(shelf);
         bookShelf.setStatus(postDto.status());
@@ -77,7 +77,7 @@ public class BookShelfServiceImpl implements BookShelfService {
 
         // Find BookShelf
         BookShelf bookShelf = bookShelfRepository
-                .findByShelfIdAndBook_id(shelfId, bookId)
+                .findByShelfIdAndBookId(shelfId, bookId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found in this shelf"));
 
         bookShelfRepository.delete(bookShelf);

@@ -67,9 +67,9 @@ public abstract class ShelfMapper {
         return dtos;
     }
 
-     @Mapping(target = "bookId", source = "book_id")
+     @Mapping(target = "bookId", source = "bookId")
      @Mapping(target = "addedAt", source = "added_at")
-     abstract BookShelfDto toBookShelfDto(BookShelf bookShelf);
+     public abstract BookShelfDto toBookShelfDto(BookShelf bookShelf);
 
 //    public BookShelfDto toBookShelfDto(BookShelf bookShelf) {
 //        if (bookShelf == null) {

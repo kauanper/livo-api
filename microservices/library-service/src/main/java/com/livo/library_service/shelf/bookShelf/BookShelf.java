@@ -23,7 +23,7 @@ public class BookShelf {
     private UUID id;
 
     @Column(name = "book_id", nullable = false)
-    private String book_id;
+    private String bookId;
 
     @Column(name = "user_id", nullable = false)
     private UUID userId;
