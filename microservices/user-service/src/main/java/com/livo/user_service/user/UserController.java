@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<?> getProfile() {
+    public ResponseEntity<?> getProfile(@CurrentUser UUID currentUser) {
         return ResponseEntity.ok("perfil funcionando!");
     }
     
