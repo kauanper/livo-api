@@ -34,6 +34,9 @@ public class LibraryController {
     @Autowired
     private PatchAssociationUseCase patchAssociationUseCase;
 
+    @Autowired
+    private BookCountUseCase bookCountUseCase;
+
 
     @PostMapping
     public ResponseEntity<AssociationResponseDTO> save(@RequestBody @Valid AssociationRegisterDTO dto,
@@ -71,8 +74,9 @@ public class LibraryController {
         return ResponseEntity.ok(book);
     }
 
-    @GetMapping("/internal/book-count/{userBookId}")
+    @GetMapping("/internal/book-count/{userId}")
     public ResponseEntity<BookCountResponse> getBookCount(@PathVariable UUID userId) {
-        return null;
+        BookCountResponse response = bookCountUseCase.execute(userId);
+        return ResponseEntity.ok(response);
     }
 }
