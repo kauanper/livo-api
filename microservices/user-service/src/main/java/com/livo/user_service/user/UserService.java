@@ -1,9 +1,7 @@
 package com.livo.user_service.user;
 
-import com.livo.user_service.user.dto.UserAuthRequest;
-import com.livo.user_service.user.dto.UserAuthResponse;
-import com.livo.user_service.user.dto.UserDto;
-import com.livo.user_service.user.dto.UserRegisterDTO;
+import com.livo.user_service.user.dto.*;
+import com.livo.user_service.utils.notations.currentUser.CurrentUser;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -84,6 +82,13 @@ public class UserService {
         UserDto dto = toUserDto(user);
         
         return ResponseEntity.ok(dto);
+    }
+
+    public UserProfileResponse getProfile(UUID id) {
+
+
+
+        return null;
     }
 
     private UserDto toUserDto(User user) {
