@@ -1,5 +1,6 @@
 package com.livo.user_service.user;
 
+import com.livo.user_service.user.dto.UserProfileResponse;
 import com.livo.user_service.user.dto.UserRegisterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,5 +21,19 @@ public class UserMapper {
         user.setProfilePictureUrl(dto.profilePictureUrl());
 
         return user;
+    }
+
+    public static UserProfileResponse toProfile(User entity){
+        if(entity == null){
+            return null;
+        }
+
+        return new UserProfileResponse(
+                entity.getUsername(),
+                entity.getEmail(),
+                entity.getProfilePictureUrl(),
+                0,
+                0
+        );
     }
 }
