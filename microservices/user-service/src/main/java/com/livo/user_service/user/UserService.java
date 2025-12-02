@@ -2,6 +2,7 @@ package com.livo.user_service.user;
 
 import com.livo.user_service.user.dto.*;
 import com.livo.user_service.utils.notations.currentUser.CurrentUser;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,11 +34,9 @@ public class UserService {
     }
 
     public UserProfileResponse getProfile(UUID id) {
-        User user = userRepository.findById(id).orElse(null);
-
-        if(user == null){
-            return null;
-        }
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado: " + id));
+        //sla, achei q não compensava fazer a custon pois essa exception nunca acontecerá
 
         return UserMapper.toProfile(user);
     }
