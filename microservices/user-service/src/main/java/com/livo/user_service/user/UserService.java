@@ -2,6 +2,7 @@ package com.livo.user_service.user;
 
 import com.livo.user_service.user.dto.*;
 import com.livo.user_service.utils.clients.LibraryClient;
+import com.livo.user_service.utils.dtos.BookCountResponse;
 import com.livo.user_service.utils.notations.currentUser.CurrentUser;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.NoArgsConstructor;
@@ -40,13 +41,18 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado: " + id));
 
+        int reading = 0;
+        int read = 0;
         try {
-            libraryClient.getBookCount( id);
+            BookCountResponse bookCount = libraryClient.getBookCount(id);
+            reading = bookCount.reading();
+            read = bookCount.read();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return UserMapper.toProfile(user);
+
+        return UserMapper.toProfile(user, reading, read);
     }
 
 

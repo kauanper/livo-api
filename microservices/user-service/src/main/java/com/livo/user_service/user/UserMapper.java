@@ -23,7 +23,7 @@ public class UserMapper {
         return user;
     }
 
-    public static UserProfileResponse toProfile(User entity){
+    public static UserProfileResponse toProfile(User entity, int reading, int read){
         if(entity == null){
             return null;
         }
@@ -32,8 +32,8 @@ public class UserMapper {
                 entity.getUsername(),
                 entity.getEmail(),
                 entity.getProfilePictureUrl(),
-                0,
-                0
+                reading,
+                read
         );
     }
 }
