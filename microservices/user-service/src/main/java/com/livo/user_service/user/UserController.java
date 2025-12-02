@@ -24,8 +24,8 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<?> getProfile(@CurrentUser UUID currentUser) {
-        return ResponseEntity.ok("perfil funcionando!");
+    public String getProfile(@CurrentUser UUID currentUser) {
+        return "Seu ID é " + currentUser;
     }
     
     @GetMapping
