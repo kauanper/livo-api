@@ -3,6 +3,7 @@ package com.livo.library_service.library;
 import com.livo.library_service.library.dtos.BookStatusPatchDTO;
 import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
+import com.livo.library_service.library.dtos.book_count.BookCountResponse;
 import com.livo.library_service.library.services.*;
 import com.livo.library_service.search_book.SearchBookUseCase;
 import com.livo.library_service.shared.notations.CurrentUser;
@@ -68,5 +69,10 @@ public class LibraryController {
                                                                     @RequestBody BookStatusPatchDTO dto){
         AssociationResponseDTO book = patchAssociationUseCase.execute(userId, userBookId, dto);
         return ResponseEntity.ok(book);
+    }
+
+    @GetMapping("/internal/book-count/{userBookId}")
+    public ResponseEntity<BookCountResponse> getBookCount(@PathVariable UUID userId) {
+        return null;
     }
 }
