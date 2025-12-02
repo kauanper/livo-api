@@ -1,9 +1,6 @@
 package com.livo.user_service.user;
 
-import com.livo.user_service.user.dto.UserAuthRequest;
-import com.livo.user_service.user.dto.UserAuthResponse;
-import com.livo.user_service.user.dto.UserDto;
-import com.livo.user_service.user.dto.UserRegisterDTO;
+import com.livo.user_service.user.dto.*;
 import com.livo.user_service.utils.notations.currentUser.CurrentUser;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +21,9 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String getProfile(@CurrentUser UUID currentUser) {
-        return "Seu ID é " + currentUser;
+    public ResponseEntity<UserProfileResponse> getProfile(@CurrentUser UUID currentUser) {
+        UserProfileResponse profileResponse = userService.getProfile(currentUser);
+        return ResponseEntity.ok(profileResponse);
     }
     
     @GetMapping
