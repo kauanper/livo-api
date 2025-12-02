@@ -32,6 +32,16 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    public UserProfileResponse getProfile(UUID id) {
+        User user = userRepository.findById(id).orElse(null);
+
+        if(user == null){
+            return null;
+        }
+
+        return UserMapper.toProfile(user);
+    }
+
     // Autentica um usuário validando email e senha.
     public ResponseEntity<UserAuthResponse> authenticate(UserAuthRequest request) {
         Optional<User> userOpt = userRepository.findByEmail(request.email());
@@ -82,13 +92,6 @@ public class UserService {
         UserDto dto = toUserDto(user);
         
         return ResponseEntity.ok(dto);
-    }
-
-    public UserProfileResponse getProfile(UUID id) {
-
-
-
-        return null;
     }
 
     private UserDto toUserDto(User user) {
