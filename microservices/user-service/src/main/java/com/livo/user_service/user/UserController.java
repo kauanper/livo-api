@@ -4,6 +4,7 @@ import com.livo.user_service.user.dto.UserAuthRequest;
 import com.livo.user_service.user.dto.UserAuthResponse;
 import com.livo.user_service.user.dto.UserDto;
 import com.livo.user_service.user.dto.UserRegisterDTO;
+import com.livo.user_service.utils.notations.currentUser.CurrentUser;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
