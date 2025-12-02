@@ -27,12 +27,12 @@ public class BookCountUseCase {
         int[] counts = new int[BookStatus.values().length + 1];
 
 
-        for(int i = 0; i < BookStatus.values().length; i++) {
+        for (int i = 0; i < BookStatus.values().length; i++) {
             BookStatus status = BookStatus.values()[i];
-
             books = libraryRepository.findAllByUserIdAndBookStatus(userId, status);
             counts[i] = books.size();
             counts[BookStatus.values().length] += counts[i];
+            books.clear();
         }
 
         return new BookCountResponse(
