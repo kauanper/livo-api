@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "library-service")
+@FeignClient(
+        name = "library-service",
+        url = "http://localhost:8085"   // agora usando a URL fixa
+)
 public interface LibraryClient {
 
     @GetMapping("/library/internal/book-count/{userId}")
     BookCountResponse getBookCount(
-            @RequestHeader("Authorization") String bearerToken,
             @PathVariable("userId") UUID userId
     );
 }
+

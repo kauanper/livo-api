@@ -21,11 +21,17 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserProfileResponse> getProfile(@CurrentUser UUID currentUser) {
-        UserProfileResponse profileResponse = userService.getProfile(currentUser);
+    public ResponseEntity<UserProfileResponse> getProfile(
+            @CurrentUser UUID currentUser,
+            @RequestHeader("Authorization") String authorizationHeader
+    ) {
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        UserProfileResponse profileResponse = userService.getProfile(currentUser, token);
         return ResponseEntity.ok(profileResponse);
     }
-    
+
+
     @GetMapping
     public ResponseEntity<?> test() {
         return ResponseEntity.ok("User service funcionando!");

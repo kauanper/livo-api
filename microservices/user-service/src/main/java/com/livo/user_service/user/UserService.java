@@ -1,6 +1,7 @@
 package com.livo.user_service.user;
 
 import com.livo.user_service.user.dto.*;
+import com.livo.user_service.utils.clients.LibraryClient;
 import com.livo.user_service.utils.notations.currentUser.CurrentUser;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,8 @@ public class UserService {
     private UserMapper userMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private LibraryClient libraryClient;
 
     public ResponseEntity<?> register(UserRegisterDTO dto){
         System.out.println("iniciou1");
@@ -33,13 +36,19 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public UserProfileResponse getProfile(UUID id) {
+    public UserProfileResponse getProfile(UUID id, String token) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado: " + id));
-        //sla, achei q não compensava fazer a custon pois essa exception nunca acontecerá
+
+        try {
+            libraryClient.getBookCount( id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return UserMapper.toProfile(user);
     }
+
 
     // Autentica um usuário validando email e senha.
     public ResponseEntity<UserAuthResponse> authenticate(UserAuthRequest request) {
