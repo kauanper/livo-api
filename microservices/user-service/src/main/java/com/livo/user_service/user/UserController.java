@@ -21,6 +21,11 @@ public class UserController {
     public ResponseEntity<?> create(@RequestBody @Valid UserRegisterDTO dto) {
         return userService.register(dto);
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile() {
+        return ResponseEntity.ok("perfil funcionando!");
+    }
     
     @GetMapping
     public ResponseEntity<?> test() {
