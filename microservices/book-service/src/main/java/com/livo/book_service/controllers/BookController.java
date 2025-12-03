@@ -1,6 +1,7 @@
 package com.livo.book_service.controllers;
 
 import com.livo.book_service.dtos.BookSummaryResponse;
+import com.livo.book_service.services.FindBookByIdUseCase;
 import com.livo.book_service.services.GetBookByIdUseCase;
 import com.livo.book_service.services.search.SearchBooksUseCase;
 import com.livo.book_service.util.notations.CurrentUser;
@@ -19,7 +20,10 @@ public class BookController {
     private SearchBooksUseCase searchBooksUseCase;
 
     @Autowired
-    GetBookByIdUseCase getBookByIdUseCase;
+    private GetBookByIdUseCase getBookByIdUseCase;
+
+    @Autowired
+    private FindBookByIdUseCase findBookByIdUseCase;
 
     @GetMapping("/search")
     public ResponseEntity<List<BookSummaryResponse>> searchBooks(
@@ -30,10 +34,11 @@ public class BookController {
             @RequestParam String orderBy) {
         String token = authorizationHeader.replace("Bearer ", "");
 
+        List<BookSummaryResponse> responses = searchBooksUseCase.execute(query, type, orderBy);
 
-        System.out.println(" meu id é: " + currentUser);
+        responses = findBookByIdUseCase.execute(responses, currentUser);
 
-        return ResponseEntity.ok(searchBooksUseCase.execute(query, type, orderBy));
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{id}")
