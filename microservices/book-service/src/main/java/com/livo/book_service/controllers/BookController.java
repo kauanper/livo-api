@@ -54,8 +54,8 @@ public class BookController {
     }
 
     //----------------------INTERNAL
-    @GetMapping("/internal{id}")
-    public ResponseEntity<BookSummaryResponse> getBookById(
+    @GetMapping("/internal/{id}")
+    public ResponseEntity<BookSummaryResponse> getBookByIdInternal(
             @PathVariable String id) {
 
         BookSummaryResponse book = internalGetByIdUseCase.execute(id);
