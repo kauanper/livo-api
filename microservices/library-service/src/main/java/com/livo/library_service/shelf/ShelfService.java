@@ -1,7 +1,6 @@
 package com.livo.library_service.shelf;
 
 import com.livo.library_service.shelf.bookShelf.BookShelf;
-import com.livo.library_service.shelf.entity.BookStatus;
 import com.livo.library_service.shelf.entity.Shelf;
 import com.livo.library_service.shelf.entity.dtos.ShelfDto;
 import com.livo.library_service.shelf.entity.dtos.ShelfPostDto;
@@ -85,12 +84,12 @@ public class ShelfService {
     }
 
     private void extractBooks(Shelf shelf, ShelfPostDto dto, UUID userId) {
-        List<BookShelf> bookShelves = dto.books().stream().map(bookId -> {
+        List<BookShelf> bookShelves = dto.books().stream().map(bookShelfPostDto -> {
             BookShelf bookShelf = new BookShelf();
-            bookShelf.setBookId(bookId);
+            bookShelf.setBookId(bookShelfPostDto.id());
             bookShelf.setUserId(userId);
             bookShelf.setShelf(shelf);
-            bookShelf.setStatus(BookStatus.QUERO_LER); // Default status
+            bookShelf.setStatus(bookShelfPostDto.status());
             bookShelf.setAdded_at(LocalDateTime.now());
             return bookShelf;
         }).collect(Collectors.toList());

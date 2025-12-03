@@ -3,6 +3,7 @@ package com.livo.library_service.shelf;
 import com.livo.library_service.shared.clients.BookClient;
 import com.livo.library_service.shared.dtos.book.BookSummaryResponse;
 import com.livo.library_service.shared.globalExceptions.custon.BookNotFoundException;
+import com.livo.library_service.shelf.bookShelf.dto.BookShelfPostDto;
 import com.livo.library_service.shelf.entity.Shelf;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,18 +30,18 @@ public class ShelfValidate {
         return shelf;
     }
 
-    public void validateBooksExist(List<Long> bookIds) {
-        if (bookIds == null || bookIds.isEmpty()) {
+    public void validateBooksExist(List<BookShelfPostDto> books) {
+        if (books == null || books.isEmpty()) {
             return;
         }
-        for (Long bookId : bookIds) {
+        for (BookShelfPostDto dto : books) {
             try {
-                BookSummaryResponse book = bookClient.getBookById(String.valueOf(bookId));
+                BookSummaryResponse book = bookClient.getBookById(dto.bookId());
                 if (book == null) {
-                    throw new BookNotFoundException("Book not found with ID: " + bookId);
+                    throw new BookNotFoundException("Book not found with ID: " + dto.bookId());
                 }
             } catch (Exception e) {
-                throw new BookNotFoundException("Book not found with ID: " + bookId);
+                throw new BookNotFoundException("Book not found with ID: " + dto.bookId());
             }
         }
     }
