@@ -78,6 +78,7 @@ public class LibraryController {
         return ResponseEntity.ok(book);
     }
 
+    //-------------------------------ROTAS INTERNAS
     @GetMapping("/internal/book-count/{userId}")
     public ResponseEntity<BookCountResponse> getBookCount(@PathVariable UUID userId) {
         BookCountResponse response = bookCountUseCase.execute(userId);
