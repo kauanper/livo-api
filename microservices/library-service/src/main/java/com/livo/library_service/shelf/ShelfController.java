@@ -1,6 +1,7 @@
 package com.livo.library_service.shelf;
 
 import com.livo.library_service.shared.notations.CurrentUser;
+import com.livo.library_service.shelf.entity.BookStatus;
 import com.livo.library_service.shelf.entity.dtos.ShelfDto;
 import com.livo.library_service.shelf.entity.dtos.ShelfPostDto;
 import com.livo.library_service.shelf.bookShelf.BookShelfService;
@@ -48,6 +49,16 @@ public class ShelfController {
     public ResponseEntity<ShelfDto> getbyId(@PathVariable("id") UUID id, @CurrentUser UUID userId) {
         ShelfDto shelf = shelfService.findById(id, userId);
         return ResponseEntity.ok().body(shelf);
+    }
+
+    @GetMapping("/{id}/books")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<BookShelfDto>> getBooksByStatus(
+            @PathVariable("id") UUID id,
+            @RequestParam("status") BookStatus status,
+            @CurrentUser UUID userId) {
+        List<BookShelfDto> bookShelves = shelfService.findBookShelvesByStatus(id, status, userId);
+        return ResponseEntity.ok().body(bookShelves);
     }
 
     @PutMapping("/{id}")

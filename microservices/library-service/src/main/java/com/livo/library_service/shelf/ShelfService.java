@@ -1,9 +1,13 @@
 package com.livo.library_service.shelf;
 
 import com.livo.library_service.shelf.bookShelf.BookShelf;
+import com.livo.library_service.shelf.bookShelf.BookShelfRepository;
+import com.livo.library_service.shelf.bookShelf.dto.BookShelfDto;
+import com.livo.library_service.shelf.entity.BookStatus;
 import com.livo.library_service.shelf.entity.Shelf;
 import com.livo.library_service.shelf.entity.dtos.ShelfDto;
 import com.livo.library_service.shelf.entity.dtos.ShelfPostDto;
+import com.livo.library_service.shelf.mappers.BookShelfMapper;
 import com.livo.library_service.shelf.mappers.ShelfMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,8 @@ public class ShelfService {
     private final ShelfRepository shelfRepository;
     private final ShelfMapper shelfMapper;
     private final ShelfValidate shelfValidate;
+    private final BookShelfRepository bookShelfRepository;
+    private final BookShelfMapper bookShelfMapper;
 
     @Transactional
     public ShelfDto save(ShelfPostDto dto, UUID userId) {
@@ -84,6 +90,15 @@ public class ShelfService {
     public void delete(UUID id, UUID userId) {
         Shelf shelf = shelfValidate.validateShelfOwnership(id, userId);
         shelfRepository.delete(shelf);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookShelfDto> findBookShelvesByStatus(UUID shelfId, BookStatus status, UUID userId) {
+        Shelf shelf = shelfValidate.validateShelfOwnership(shelfId, userId);
+        List<BookShelf> bookShelves = bookShelfRepository.findByShelfIdAndStatus(shelf.getId(), status);
+        return bookShelves.stream()
+                .map(bookShelfMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     private void extractBooks(Shelf shelf, ShelfPostDto dto, UUID userId) {
