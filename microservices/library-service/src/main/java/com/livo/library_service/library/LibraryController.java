@@ -79,4 +79,10 @@ public class LibraryController {
         BookCountResponse response = bookCountUseCase.execute(userId);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/internal/booksId/{userId}")
+    public ResponseEntity<BookCountResponse> getId(@PathVariable UUID userId){
+        BookCountResponse response = bookCountUseCase.execute(userId);
+        return ResponseEntity.ok(response);
+    }
 }
