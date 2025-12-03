@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Repository
 public interface BookShelfRepository extends JpaRepository<BookShelf, UUID> {
-    Optional<BookShelf> findByShelfIdAndBookId(UUID shelfId, String bookId);
+    Optional<BookShelf> findByShelfIdAndBookId(UUID shelfId, Long bookId);
 
     boolean existsByShelfIdAndBookId(UUID shelfId, Long bookId);
 }

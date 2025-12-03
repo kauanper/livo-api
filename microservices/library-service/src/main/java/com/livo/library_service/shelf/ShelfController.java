@@ -81,7 +81,7 @@ public class ShelfController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> removeBook(
             @PathVariable("id") UUID id,
-            @PathVariable("bookId") String bookId,
+            @PathVariable("bookId") Long bookId,
             @CurrentUser UUID userId) {
         bookShelfService.removeBookFromShelf(id, bookId, userId);
         return ResponseEntity.noContent().build();

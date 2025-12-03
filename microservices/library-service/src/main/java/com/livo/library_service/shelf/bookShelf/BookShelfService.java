@@ -8,5 +8,5 @@ import java.util.UUID;
 public interface BookShelfService {
     BookShelfDto addBookToShelf(UUID shelfId, BookShelfPostDto postDto, UUID userId);
 
-    void removeBookFromShelf(UUID shelfId, String bookId, UUID userId);
+    void removeBookFromShelf(UUID shelfId, Long bookId, UUID userId);
 }

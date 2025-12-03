@@ -71,7 +71,7 @@ public class BookShelfServiceImpl implements BookShelfService {
 
     @Override
     @Transactional
-    public void removeBookFromShelf(UUID shelfId, String bookId, UUID userId) {
+    public void removeBookFromShelf(UUID shelfId, Long bookId, UUID userId) {
         // Validate Shelf Ownership
         shelfValidate.validateShelfOwnership(shelfId, userId);
 
