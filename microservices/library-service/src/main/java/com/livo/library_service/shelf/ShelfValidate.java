@@ -3,6 +3,7 @@ package com.livo.library_service.shelf;
 import com.livo.library_service.shared.clients.BookClient;
 import com.livo.library_service.shared.dtos.book.BookSummaryResponse;
 import com.livo.library_service.shared.globalExceptions.custon.BookNotFoundException;
+import com.livo.library_service.shared.globalExceptions.custon.ShelfNameAlreadyExistsException;
 import com.livo.library_service.shelf.bookShelf.dto.BookShelfPostDto;
 import com.livo.library_service.shelf.entity.Shelf;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,22 @@ public class ShelfValidate {
                 }
             } catch (Exception e) {
                 throw new BookNotFoundException("Book not found with ID: " + dto.bookId());
+            }
+        }
+    }
+
+    public void validateShelfNameNotExists(String shelfName, UUID userId) {
+        if (shelfName != null && shelfRepository.existsByNameAndUserId(shelfName, userId)) {
+            throw new ShelfNameAlreadyExistsException(shelfName);
+        }
+    }
+
+    public void validateShelfNameNotExists(String shelfName, UUID userId, UUID shelfId) {
+        if (shelfName != null) {
+            Shelf existingShelf = shelfRepository.findByNameAndUserId(shelfName, userId)
+                    .orElse(null);
+            if (existingShelf != null && !existingShelf.getId().equals(shelfId)) {
+                throw new ShelfNameAlreadyExistsException(shelfName);
             }
         }
     }

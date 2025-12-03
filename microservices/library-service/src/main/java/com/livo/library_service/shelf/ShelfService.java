@@ -25,6 +25,7 @@ public class ShelfService {
 
     @Transactional
     public ShelfDto save(ShelfPostDto dto, UUID userId) {
+        shelfValidate.validateShelfNameNotExists(dto.name(), userId);
         shelfValidate.validateBooksExist(dto.books());
 
         Shelf shelf = shelfMapper.toEntity(dto);
@@ -56,8 +57,10 @@ public class ShelfService {
     public ShelfDto update(UUID id, ShelfPostDto dto, UUID userId) {
         Shelf shelf = shelfValidate.validateShelfOwnership(id, userId);
 
-        if (dto.name() != null)
+        if (dto.name() != null) {
+            shelfValidate.validateShelfNameNotExists(dto.name(), userId, id);
             shelf.setName(dto.name());
+        }
         if (dto.description() != null)
             shelf.setDescription(dto.description());
 
