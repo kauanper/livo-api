@@ -35,15 +35,17 @@ public class BookController {
         String token = authorizationHeader.replace("Bearer ", "");
 
         List<BookSummaryResponse> responses = searchBooksUseCase.execute(query, type, orderBy);
-
         responses = findBookByIdUseCase.execute(responses, currentUser);
-
         return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookSummaryResponse> getBookById(@PathVariable String id) {
-        BookSummaryResponse book = getBookByIdUseCase.execute(id);
+    public ResponseEntity<BookSummaryResponse> getBookById(
+            @CurrentUser UUID currentUser,
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable String id) {
+
+        BookSummaryResponse book = getBookByIdUseCase.execute(id, currentUser);
         return ResponseEntity.ok(book);
     }
 
