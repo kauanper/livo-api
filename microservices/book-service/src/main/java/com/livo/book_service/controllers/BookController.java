@@ -3,6 +3,7 @@ package com.livo.book_service.controllers;
 import com.livo.book_service.dtos.BookSummaryResponse;
 import com.livo.book_service.services.FindBookByIdUseCase;
 import com.livo.book_service.services.GetBookByIdUseCase;
+import com.livo.book_service.services.InternalGetByIdUseCase;
 import com.livo.book_service.services.search.SearchBooksUseCase;
 import com.livo.book_service.util.notations.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class BookController {
     @Autowired
     private FindBookByIdUseCase findBookByIdUseCase;
 
+    @Autowired
+    private InternalGetByIdUseCase internalGetByIdUseCase;
+
     @GetMapping("/search")
     public ResponseEntity<List<BookSummaryResponse>> searchBooks(
             @CurrentUser UUID currentUser,
@@ -46,6 +50,15 @@ public class BookController {
             @PathVariable String id) {
 
         BookSummaryResponse book = getBookByIdUseCase.execute(id, currentUser);
+        return ResponseEntity.ok(book);
+    }
+
+    //----------------------INTERNAL
+    @GetMapping("/internal{id}")
+    public ResponseEntity<BookSummaryResponse> getBookById(
+            @PathVariable String id) {
+
+        BookSummaryResponse book = internalGetByIdUseCase.execute(id);
         return ResponseEntity.ok(book);
     }
 
