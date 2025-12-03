@@ -35,19 +35,8 @@ public class ShelfService {
         Shelf shelf = shelfMapper.toEntity(dto);
         shelf.setUserId(userId);
 
-        final Shelf finalShelf = shelf;
-
         if (dto.books() != null && !dto.books().isEmpty()) {
-            List<BookShelf> bookShelves = dto.books().stream().map(bookId -> {
-                BookShelf bookShelf = new BookShelf();
-                bookShelf.setBookId(bookId.toString());
-                bookShelf.setUserId(userId);
-                bookShelf.setShelf(finalShelf);
-                bookShelf.setStatus(BookStatus.QUERO_LER); // Default status
-                bookShelf.setAdded_at(LocalDateTime.now());
-                return bookShelf;
-            }).collect(Collectors.toList());
-            shelf.setBookShelves(bookShelves);
+            this.extractBooks(shelf, dto, userId);
         } else {
             shelf.setBookShelves(new ArrayList<>());
         }
@@ -85,19 +74,9 @@ public class ShelfService {
 
             shelf.getBookShelves().clear();
 
-            final Shelf finalShelf = shelf;
+            this.extractBooks(shelf, dto, userId);
 
-            List<BookShelf> newBooks = dto.books().stream().map(bookId -> {
-                BookShelf bookShelf = new BookShelf();
-                bookShelf.setBookId(bookId.toString());
-                bookShelf.setUserId(userId);
-                bookShelf.setShelf(finalShelf);
-                bookShelf.setStatus(BookStatus.QUERO_LER);
-                bookShelf.setAdded_at(LocalDateTime.now());
-                return bookShelf;
-            }).toList();
-
-            shelf.getBookShelves().addAll(newBooks);
+            shelf.getBookShelves().addAll(shelf.getBookShelves());
         }
 
         shelf = shelfRepository.save(shelf);
@@ -107,5 +86,18 @@ public class ShelfService {
     public void delete(UUID id, UUID userId) {
         Shelf shelf = shelfValidate.validateShelfOwnership(id, userId);
         shelfRepository.delete(shelf);
+    }
+
+    private void extractBooks(Shelf shelf, ShelfPostDto dto, UUID userId) {
+        List<BookShelf> bookShelves = dto.books().stream().map(bookId -> {
+            BookShelf bookShelf = new BookShelf();
+            bookShelf.setBookId(bookId.toString());
+            bookShelf.setUserId(userId);
+            bookShelf.setShelf(shelf);
+            bookShelf.setStatus(BookStatus.QUERO_LER); // Default status
+            bookShelf.setAdded_at(LocalDateTime.now());
+            return bookShelf;
+        }).collect(Collectors.toList());
+        shelf.setBookShelves(bookShelves);
     }
 }
