@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface BookClient {
 
     @GetMapping("/books/internal/{id}")
-    BookSummaryResponse getBookById(@PathVariable("id") String id);
+    BookSummaryResponse getBookByIdInternal(@PathVariable("id") String id);
 
 }
