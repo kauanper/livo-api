@@ -24,7 +24,6 @@ public class GetBookByIdUseCase {
     private final BookMapper bookMapper;
     private final LibraryClient libraryClient;
 
-    @Cacheable(value = "bookById", key = "#bookId")
     public BookSummaryResponse execute(String bookId, UUID userId) {
 
         if (bookId == null || bookId.isBlank()) {
@@ -52,6 +51,6 @@ public class GetBookByIdUseCase {
         boolean hasBook = userBookIds.contains(bookId);
         response.setPersonalLibrary(hasBook);
 
-        return bookMapper.toSummary(bookItem);
+        return response;
     }
 }
