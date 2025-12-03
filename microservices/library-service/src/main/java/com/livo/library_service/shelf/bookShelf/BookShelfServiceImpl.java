@@ -8,7 +8,7 @@ import com.livo.library_service.shelf.bookShelf.dto.BookShelfDto;
 import com.livo.library_service.shelf.bookShelf.dto.BookShelfPostDto;
 import com.livo.library_service.shelf.entity.Shelf;
 import com.livo.library_service.shelf.mappers.BookShelfMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,19 +18,13 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class BookShelfServiceImpl implements BookShelfService {
 
-    @Autowired
-    private BookShelfRepository bookShelfRepository;
-
-    @Autowired
-    private ShelfValidate shelfValidate;
-
-    @Autowired
-    private BookShelfMapper bookShelfMapper;
-
-    @Autowired
-    private BookClient bookClient;
+    private final BookShelfRepository bookShelfRepository;
+    private final ShelfValidate shelfValidate;
+    private final BookShelfMapper bookShelfMapper;
+    private final BookClient bookClient;
 
     @Override
     @Transactional
@@ -40,7 +34,7 @@ public class BookShelfServiceImpl implements BookShelfService {
 
         // Validate Book Existence
         try {
-            BookSummaryResponse book = bookClient.getBookById(String.valueOf(postDto.bookId()));
+            BookSummaryResponse book = bookClient.getBookById(postDto.bookId());
             if (book == null) {
                 throw new BookNotFoundException("Book not found with ID: " + postDto.bookId());
             }
@@ -49,13 +43,13 @@ public class BookShelfServiceImpl implements BookShelfService {
         }
 
         // Validate Duplication
-        if (bookShelfRepository.existsByShelfIdAndBookId(shelfId, postDto.bookId())) {
+        if (bookShelfRepository.existsByShelfIdAndBookId(shelfId, postDto.id())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Book already exists in this shelf");
         }
 
         // Create and Save BookShelf
         BookShelf bookShelf = new BookShelf();
-        bookShelf.setBookId(postDto.bookId());
+        bookShelf.setBookId(postDto.id());
         bookShelf.setUserId(userId);
         bookShelf.setShelf(shelf);
         bookShelf.setStatus(postDto.status());
