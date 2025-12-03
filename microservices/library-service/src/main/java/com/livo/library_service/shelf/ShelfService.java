@@ -6,7 +6,7 @@ import com.livo.library_service.shelf.entity.Shelf;
 import com.livo.library_service.shelf.entity.dtos.ShelfDto;
 import com.livo.library_service.shelf.entity.dtos.ShelfPostDto;
 import com.livo.library_service.shelf.mappers.ShelfMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,16 +17,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ShelfService {
 
-    @Autowired
-    private ShelfRepository shelfRepository;
-
-    @Autowired
-    private ShelfMapper shelfMapper;
-
-    @Autowired
-    private ShelfValidate shelfValidate;
+    private final ShelfRepository shelfRepository;
+    private final ShelfMapper shelfMapper;
+    private final ShelfValidate shelfValidate;
 
     @Transactional
     public ShelfDto save(ShelfPostDto dto, UUID userId) {
@@ -91,7 +87,7 @@ public class ShelfService {
     private void extractBooks(Shelf shelf, ShelfPostDto dto, UUID userId) {
         List<BookShelf> bookShelves = dto.books().stream().map(bookId -> {
             BookShelf bookShelf = new BookShelf();
-            bookShelf.setBookId(bookId.toString());
+            bookShelf.setBookId(bookId);
             bookShelf.setUserId(userId);
             bookShelf.setShelf(shelf);
             bookShelf.setStatus(BookStatus.QUERO_LER); // Default status

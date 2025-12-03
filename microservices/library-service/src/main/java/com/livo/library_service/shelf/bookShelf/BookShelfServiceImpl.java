@@ -40,7 +40,7 @@ public class BookShelfServiceImpl implements BookShelfService {
 
         // Validate Book Existence
         try {
-            BookSummaryResponse book = bookClient.getBookById(postDto.bookId());
+            BookSummaryResponse book = bookClient.getBookById(String.valueOf(postDto.bookId()));
             if (book == null) {
                 throw new BookNotFoundException("Book not found with ID: " + postDto.bookId());
             }

@@ -4,7 +4,7 @@ import com.livo.library_service.shared.clients.BookClient;
 import com.livo.library_service.shared.dtos.book.BookSummaryResponse;
 import com.livo.library_service.shared.globalExceptions.custon.BookNotFoundException;
 import com.livo.library_service.shelf.entity.Shelf;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,13 +13,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ShelfValidate {
 
-    @Autowired
-    private ShelfRepository shelfRepository;
-
-    @Autowired
-    private BookClient bookClient;
+    private final ShelfRepository shelfRepository;
+    private final BookClient bookClient;
 
     public Shelf validateShelfOwnership(UUID shelfId, UUID userId) {
         Shelf shelf = shelfRepository.findById(shelfId)
@@ -37,7 +35,7 @@ public class ShelfValidate {
         }
         for (Long bookId : bookIds) {
             try {
-                BookSummaryResponse book = bookClient.getBookById(bookId.toString());
+                BookSummaryResponse book = bookClient.getBookById(String.valueOf(bookId));
                 if (book == null) {
                     throw new BookNotFoundException("Book not found with ID: " + bookId);
                 }

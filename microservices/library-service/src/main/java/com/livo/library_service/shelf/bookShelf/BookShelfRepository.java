@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface BookShelfRepository extends JpaRepository<BookShelf, UUID> {
     Optional<BookShelf> findByShelfIdAndBookId(UUID shelfId, String bookId);
 
-    boolean existsByShelfIdAndBookId(UUID shelfId, String bookId);
+    boolean existsByShelfIdAndBookId(UUID shelfId, Long bookId);
 }

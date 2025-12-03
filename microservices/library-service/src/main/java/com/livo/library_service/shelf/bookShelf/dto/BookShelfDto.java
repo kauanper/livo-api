@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public record BookShelfDto(
         UUID id,
-        String bookId,
+        Long bookId,
         BookStatus status,
         LocalDateTime addedAt,
         Float rating) {

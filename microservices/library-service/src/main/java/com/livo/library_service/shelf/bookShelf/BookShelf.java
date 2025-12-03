@@ -22,8 +22,9 @@ public class BookShelf {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    // aqui é o ID da entidade que guardamos do livro na biblioteca, esse, sim, contem o ID do livro no Google Books
     @Column(name = "book_id", nullable = false)
-    private String bookId;
+    private Long bookId;
 
     @Column(name = "user_id", nullable = false)
     private UUID userId;
