@@ -1,5 +1,6 @@
 package com.livo.library_service.shared.globalExceptions;
 
+import com.livo.library_service.library.custonExceptions.DeniedAccessException;
 import com.livo.library_service.shared.globalExceptions.custon.EntityDoesNotBelongToAnotherEntityException;
 import com.livo.library_service.shared.globalExceptions.custon.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -85,4 +86,15 @@ public class GlobalHandler {
         return ResponseEntity.status(status).body(error);
     }
 
+    @ExceptionHandler(DeniedAccessException.class)
+    public ResponseEntity<ErrorResponseDTO> handleDeniedAccessException(DeniedAccessException e) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                e.getField(),
+                e.getMessage(),
+                status.value(),
+                status.getReasonPhrase()
+        );
+        return ResponseEntity.status(status).body(error);
+    }
 }

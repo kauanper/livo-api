@@ -1,15 +1,15 @@
 package com.livo.library_service.shelf;
 
+import com.livo.library_service.library.custonExceptions.DeniedAccessException;
 import com.livo.library_service.shared.clients.BookClient;
 import com.livo.library_service.shared.dtos.book.BookSummaryResponse;
 import com.livo.library_service.shared.globalExceptions.custon.BookNotFoundException;
+import com.livo.library_service.shared.globalExceptions.custon.ResourceNotFoundException;
 import com.livo.library_service.shared.globalExceptions.custon.ShelfNameAlreadyExistsException;
 import com.livo.library_service.shelf.bookShelf.dto.BookShelfPostDto;
 import com.livo.library_service.shelf.entity.Shelf;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,11 +22,12 @@ public class ShelfValidate {
     private final BookClient bookClient;
 
     public Shelf validateShelfOwnership(UUID shelfId, UUID userId) {
-        Shelf shelf = shelfRepository.findById(shelfId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shelf not found"));
+        Shelf shelf = shelfRepository
+                .findById(shelfId)
+                .orElseThrow(() -> new ResourceNotFoundException("Pratileira com o ID " + shelfId + " não não encontrada."));
 
         if (!shelf.getUserId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to access this shelf");
+            throw new DeniedAccessException("Você não tem permissão para acessar essa prateleira.");
         }
         return shelf;
     }

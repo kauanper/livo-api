@@ -1,5 +1,6 @@
 package com.livo.library_service.shelf.bookShelf;
 
+import com.livo.library_service.library.custonExceptions.ExistingAssociationException;
 import com.livo.library_service.shared.clients.BookClient;
 import com.livo.library_service.shared.dtos.book.BookSummaryResponse;
 import com.livo.library_service.shared.globalExceptions.custon.BookNotFoundException;
@@ -36,15 +37,15 @@ public class BookShelfServiceImpl implements BookShelfService {
         try {
             BookSummaryResponse book = bookClient.getBookById(postDto.bookId());
             if (book == null) {
-                throw new BookNotFoundException("Book not found with ID: " + postDto.bookId());
+                throw new BookNotFoundException("Livro como o ID: " + postDto.bookId() + " não encontrado");
             }
         } catch (Exception e) {
-            throw new BookNotFoundException("Book not found with ID: " + postDto.bookId());
+            throw new BookNotFoundException("Livro como o ID: " + postDto.bookId() + " não encontrado");
         }
 
         // Validate Duplication
         if (bookShelfRepository.existsByShelfIdAndBookId(shelfId, postDto.id())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Book already exists in this shelf");
+            throw new ExistingAssociationException("prateleira");
         }
 
         // Create and Save BookShelf

@@ -45,7 +45,7 @@ public class CreateAssociationUseCase {
 
         boolean exists = libraryRepository.existsByUserIdAndBookId(userID, register.bookId());
         if (exists) {
-            throw new ExistingAssociationException();
+            throw new ExistingAssociationException("biblioteca");
         }
 
         UserBookEntity entity = AssociationMappers.toEntity(register, bookDto,userID);
