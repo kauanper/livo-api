@@ -18,13 +18,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class GetBookByIdUseCase {
+public class InternalGetByIdUseCase {
 
     private final GoogleBooksClient googleBooksClient;
     private final BookMapper bookMapper;
     private final LibraryClient libraryClient;
 
-    public BookSummaryResponse execute(String bookId, UUID userId) {
+    @Cacheable(value = "bookById", key = "#bookId")
+    public BookSummaryResponse execute(String bookId) {
 
         if (bookId == null || bookId.isBlank()) {
             throw new InvalidRequestException("O ID do livro não pode estar vazio.");
@@ -36,21 +37,6 @@ public class GetBookByIdUseCase {
             throw new BookNotFoundException("Livro com ID '" + bookId + "' não foi encontrado.");
         }
 
-        //buscar IDs da biblioteca do usuário
-        List<BookIdResponse> booksIdResponse = libraryClient.getBooksId(userId);
-
-        //transformar em Set para busca eficiente
-        Set<String> userBookIds = booksIdResponse.stream()
-                .map(BookIdResponse::getBookId)
-                .collect(Collectors.toSet());
-
-        //mapear GoogleBook → BookSummaryResponse
-        BookSummaryResponse response = bookMapper.toSummary(bookItem);
-
-        //verificar se o usuário possui esse livro
-        boolean hasBook = userBookIds.contains(bookId);
-        response.setPersonalLibrary(hasBook);
-
-        return response;
+        return bookMapper.toSummary(bookItem);
     }
 }

@@ -38,7 +38,7 @@ public class CreateAssociationUseCase {
 
         BookSummaryResponse bookDto;
         try {
-            bookDto = bookClient.getBookById(register.bookId());
+            bookDto = bookClient.getBookByIdInternal(register.bookId());
         } catch (FeignException.NotFound ex) {
             throw new BookNotFoundException(register.bookId());
         }

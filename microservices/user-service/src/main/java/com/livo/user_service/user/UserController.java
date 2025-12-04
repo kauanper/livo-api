@@ -1,9 +1,7 @@
 package com.livo.user_service.user;
 
-import com.livo.user_service.user.dto.UserAuthRequest;
-import com.livo.user_service.user.dto.UserAuthResponse;
-import com.livo.user_service.user.dto.UserDto;
-import com.livo.user_service.user.dto.UserRegisterDTO;
+import com.livo.user_service.user.dto.*;
+import com.livo.user_service.utils.notations.currentUser.CurrentUser;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +19,19 @@ public class UserController {
     public ResponseEntity<?> create(@RequestBody @Valid UserRegisterDTO dto) {
         return userService.register(dto);
     }
-    
+
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileResponse> getProfile(
+            @CurrentUser UUID currentUser,
+            @RequestHeader("Authorization") String authorizationHeader
+    ) {
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        UserProfileResponse profileResponse = userService.getProfile(currentUser, token);
+        return ResponseEntity.ok(profileResponse);
+    }
+
+
     @GetMapping
     public ResponseEntity<?> test() {
         return ResponseEntity.ok("User service funcionando!");

@@ -34,6 +34,7 @@ public class AssociationMappers {
 
         return new AssociationResponseDTO(
                 entity.getId(),
+                entity.getBookId(),
                 entity.getBookStatus(),
                 entity.getThumbnail(),
                 entity.getTitle(),

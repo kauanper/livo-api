@@ -1,9 +1,10 @@
 package com.livo.user_service.user;
 
-import com.livo.user_service.user.dto.UserAuthRequest;
-import com.livo.user_service.user.dto.UserAuthResponse;
-import com.livo.user_service.user.dto.UserDto;
-import com.livo.user_service.user.dto.UserRegisterDTO;
+import com.livo.user_service.user.dto.*;
+import com.livo.user_service.utils.clients.LibraryClient;
+import com.livo.user_service.utils.dtos.BookCountResponse;
+import com.livo.user_service.utils.notations.currentUser.CurrentUser;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,8 @@ public class UserService {
     private UserMapper userMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private LibraryClient libraryClient;
 
     public ResponseEntity<?> register(UserRegisterDTO dto){
         System.out.println("iniciou1");
@@ -33,6 +36,25 @@ public class UserService {
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    public UserProfileResponse getProfile(UUID id, String token) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado: " + id));
+
+        int reading = 0;
+        int read = 0;
+        try {
+            BookCountResponse bookCount = libraryClient.getBookCount(id);
+            reading = bookCount.reading();
+            read = bookCount.read();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return UserMapper.toProfile(user, reading, read);
+    }
+
 
     // Autentica um usuário validando email e senha.
     public ResponseEntity<UserAuthResponse> authenticate(UserAuthRequest request) {
