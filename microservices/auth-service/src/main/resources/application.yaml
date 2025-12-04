@@ -22,7 +22,7 @@ eureka:
 auth:
   jwt:
     secret-env-var: ${JWT_SECRET:jwt-secret-long-test-key-for-development}
-    access-token-exp-ms: ${AUTH_ACCESS_EXP_MS:900000}       # 15 minutos
+    access-token-exp-ms: ${AUTH_ACCESS_EXP_MS:604800000}       # 2 semanas
     refresh-token-exp-ms: ${AUTH_REFRESH_EXP_MS:604800000}  # 7 dias
 
 jwt:
