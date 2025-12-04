@@ -4,6 +4,7 @@ import com.livo.library_service.library.BookStatus;
 
 public record AssociationResponseDTO(
         Long id,
+        String bookId,
         BookStatus bookStatus,
         String thumbnail,
         String title,
