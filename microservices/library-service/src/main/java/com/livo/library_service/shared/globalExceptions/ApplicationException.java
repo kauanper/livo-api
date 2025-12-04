@@ -1,7 +1,9 @@
 package com.livo.library_service.shared.globalExceptions;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public abstract class ApplicationException extends RuntimeException {
 
     private final String field;
@@ -13,11 +15,4 @@ public abstract class ApplicationException extends RuntimeException {
         this.status = status;
     }
 
-    public String getField() {
-        return field;
-    }
-
-    public HttpStatus getStatus() {
-        return status;
-    }
 }
