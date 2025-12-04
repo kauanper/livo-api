@@ -38,7 +38,7 @@ public class ShelfValidate {
         }
         for (BookShelfPostDto dto : books) {
             try {
-                BookSummaryResponse book = bookClient.getBookById(dto.bookId());
+                BookSummaryResponse book = bookClient.getBookByIdInternal(dto.bookId());
                 if (book == null) {
                     throw new BookNotFoundException("Book not found with ID: " + dto.bookId());
                 }

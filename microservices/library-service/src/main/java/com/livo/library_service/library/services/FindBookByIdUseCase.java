@@ -33,6 +33,6 @@ public class FindBookByIdUseCase {
                 .findById(id)
                 .orElseThrow(EmptyPersonalLibraryException::new);
 
-        return bookClient.getBookById(bookId);
+        return bookClient.getBookByIdInternal(bookId);
     }
 }
