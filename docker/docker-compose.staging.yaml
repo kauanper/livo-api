@@ -60,20 +60,6 @@ services:
     networks:
       - livo-network
 
-  postgres-review:
-    image: postgres:14-alpine
-    container_name: postgres-review
-    ports:
-      - "5437:5432"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${REVIEW_DB}
-    volumes:
-      - pgdata-review:/var/lib/postgresql/data
-    networks:
-      - livo-network
-
   # ---------------------- #
   # 🧰 PGADMIN             #
   # ---------------------- #
@@ -233,8 +219,6 @@ volumes:
   pgdata-book:
     driver: local
   pgdata-auth:
-    driver: local
-  pgdata-review:
     driver: local
   pgadmindata-dev:
     driver: local
