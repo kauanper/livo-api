@@ -14,12 +14,12 @@ public class LibraryValidationService {
     @Autowired
     LibraryRepository libraryRepository;
 
-    public UserBookEntity validateUserBookBelongsToUser(UUID userId, Long userBookId){
+    public UserBookEntity validateLibraryBookBelongsToUser(UUID userId, Long userBookId){
         return libraryRepository.findByIdAndUserId(userBookId, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("libraryBookId", "Essa associação de livro não foi encontrada para o usuário autenticado"));
     }
 
     public UserBookEntity validateToPatch(UUID userId, Long userBookId){
-        return validateUserBookBelongsToUser(userId, userBookId);
+        return validateLibraryBookBelongsToUser(userId, userBookId);
     }
 }

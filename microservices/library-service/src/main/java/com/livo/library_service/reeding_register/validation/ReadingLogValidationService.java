@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class ReedingRegisterValidationService {
+public class ReadingLogValidationService {
     @Autowired
     private LibraryValidationService libraryValidator;
 
@@ -33,7 +33,7 @@ public class ReedingRegisterValidationService {
     }
 
     public void validateToAddReedingRegister(ReadingLogRegisterDTO dto, UUID userId){
-        UserBookEntity userBook = libraryValidator.validateUserBookBelongsToUser(userId, dto.libraryBookId());
+        UserBookEntity userBook = libraryValidator.validateLibraryBookBelongsToUser(userId, dto.libraryBookId());
         validatePagesRead(dto.pagesRead(), userBook.getBookId());
         validateBookCanReciveReedingRegisters(userBook);
     }
