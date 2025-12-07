@@ -1,5 +1,6 @@
 package com.livo.library_service.reeding_register.dtos;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record ReadingLogResponseDTO(
@@ -9,6 +10,6 @@ public record ReadingLogResponseDTO(
         String text,
         LocalDateTime time,
         Integer pagesRead,
-        Double percentageRead
+        BigDecimal percentageRead
 ) {
 }

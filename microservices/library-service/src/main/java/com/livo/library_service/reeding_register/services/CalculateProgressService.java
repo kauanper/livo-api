@@ -6,6 +6,9 @@ import com.livo.library_service.shared.dtos.book.BookSummaryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @Service
 public class CalculateProgressService {
     @Autowired
@@ -14,11 +17,12 @@ public class CalculateProgressService {
     @Autowired
     ReadingLogRepository readingLogRepository;
 
-    public Double getReedingProgresByPagesRead(Integer pagesRead, String bookId){
+    public BigDecimal getReedingProgresByPagesRead(Integer pagesRead, String bookId){
         BookSummaryResponse book = findBookByIdUseCase.execute(bookId);
-        double percentage = 0.0;
+        BigDecimal percentage = BigDecimal.ZERO;
         if (book.pageCount() != null && book.pageCount() > 0 && pagesRead != null) {
-            percentage = (pagesRead * 100.0) / book.pageCount();
+            percentage = BigDecimal.valueOf((double) pagesRead / book.pageCount() * 100)
+                    .setScale(0, RoundingMode.HALF_DOWN);
         }
         return percentage;
     }

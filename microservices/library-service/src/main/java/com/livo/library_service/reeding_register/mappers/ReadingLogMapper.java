@@ -11,6 +11,8 @@ import com.livo.library_service.shared.globalExceptions.custon.ResourceNotFoundE
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class ReadingLogMapper {
     @Autowired
@@ -32,7 +34,7 @@ public class ReadingLogMapper {
     }
 
     public ReadingLogResponseDTO toDto(ReadingLog entity){
-        Double percentageRead = calculateProgressService.getReedingProgresByPagesRead(entity.getPagesRead(), entity.getUserBook().getBookId());
+        BigDecimal percentageRead = calculateProgressService.getReedingProgresByPagesRead(entity.getPagesRead(), entity.getUserBook().getBookId());
         ReadingLogResponseDTO dto = new ReadingLogResponseDTO(
                 entity.getId(),
                 entity.getUserBook().getId(),
