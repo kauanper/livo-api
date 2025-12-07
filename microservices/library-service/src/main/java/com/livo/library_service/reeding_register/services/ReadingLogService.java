@@ -23,7 +23,7 @@ public class ReadingLogService {
     private ReadingLogMapper readingLogMapper;
 
     public ReadingLogResponseDTO save(ReadingLogRegisterDTO dto, UUID userId) {
-        reedingRegisterValidator.validateToAddReedingRegister(dto.libraryBookId(), userId);
+        reedingRegisterValidator.validateToAddReedingRegister(dto, userId);
         ReadingLog entity = readingLogMapper.toEntity(dto);
         return readingLogMapper.toDto(readingLogRepository.save(entity));
     }
