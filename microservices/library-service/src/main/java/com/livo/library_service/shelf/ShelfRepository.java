@@ -19,12 +19,13 @@ public interface ShelfRepository extends JpaRepository<Shelf, UUID> {
     Optional<Shelf> findByNameAndUserId(String name, UUID userId);
 
     @Query("""
-        SELECT bs
-        FROM BookShelf bs
-        JOIN UserBookEntity ub ON ub.id = bs.bookId
-        WHERE bs.userId = :userId
-        AND LOWER(ub.title) LIKE LOWER(CONCAT('%', :searchTerm, '%'))
+      SELECT bs
+      FROM BookShelf bs
+      JOIN UserBookEntity ub ON ub.id = bs.bookId
+      WHERE bs.shelf.id = :shelfId
+                AND bs.userId = :userId
+                AND LOWER(ub.title) LIKE LOWER(CONCAT('%', :searchTerm, '%'))
     """)
-    List<BookShelf> searchByTitle(UUID userId, String searchTerm);
+    List<BookShelf> searchByShelfAndTitle(UUID shelfId, UUID userId, String searchTerm);
 
 }
