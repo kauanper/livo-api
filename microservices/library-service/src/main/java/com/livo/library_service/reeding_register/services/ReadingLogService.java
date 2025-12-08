@@ -9,6 +9,7 @@ import com.livo.library_service.reeding_register.mappers.ReadingLogMapper;
 import com.livo.library_service.reeding_register.validation.ReadingLogValidationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,5 +51,10 @@ public class ReadingLogService {
         ReadingLog log = readingLogMapper.toEntity(dto, readingLogId);
         log = readingLogRepository.save(log);
         return readingLogMapper.toDto(log);
+    }
+
+    public void delete(Long readingLogId, UUID userId) {
+        ReadingLog log = readingLogValidator.validateReadingLogBelongsToUserAndGet(readingLogId, userId);
+        readingLogRepository.delete(log);
     }
 }

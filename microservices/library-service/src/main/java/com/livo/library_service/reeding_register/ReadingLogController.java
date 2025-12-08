@@ -48,4 +48,10 @@ public class ReadingLogController {
         URI uri = URI.create("/library/reading-logs/" + response.id());
         return ResponseEntity.created(uri).body(response);
     }
+
+    @DeleteMapping("/{readingLogId}")
+    public ResponseEntity<Void> deleteReadingLog(@PathVariable Long readingLogId, @CurrentUser UUID userId){
+        readingLogService.delete(readingLogId, userId);
+        return ResponseEntity.noContent().build();
+    }
 }
