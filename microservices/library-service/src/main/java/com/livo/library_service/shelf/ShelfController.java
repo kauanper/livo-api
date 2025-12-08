@@ -1,5 +1,9 @@
 package com.livo.library_service.shelf;
 
+import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
+import com.livo.library_service.search_book.SearchBookUseCase;
+import com.livo.library_service.search_book.strategies.SearchRequest;
+import com.livo.library_service.search_book.strategies.SearchType;
 import com.livo.library_service.shared.notations.CurrentUser;
 import com.livo.library_service.shelf.entity.BookStatus;
 import com.livo.library_service.shelf.entity.dtos.ShelfDto;
@@ -8,7 +12,7 @@ import com.livo.library_service.shelf.bookShelf.BookShelfService;
 import com.livo.library_service.shelf.bookShelf.dto.BookShelfDto;
 import com.livo.library_service.shelf.bookShelf.dto.BookShelfPostDto;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +23,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/library/shelfs")
+@RequiredArgsConstructor
 public class ShelfController {
 
-    @Autowired
-    private ShelfService shelfService;
-
-    @Autowired
-    private BookShelfService bookShelfService;
+    private final ShelfService shelfService;
+    private final BookShelfService bookShelfService;
+    private final SearchBookUseCase searchBookUseCase;
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
@@ -96,5 +99,13 @@ public class ShelfController {
             @CurrentUser UUID userId) {
         bookShelfService.removeBookFromShelf(id, bookId, userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{shelfId}/search/{term}")
+    public ResponseEntity<List<AssociationResponseDTO>> searchBooks(@CurrentUser UUID userId,
+                                                                    @PathVariable UUID shelfId,
+                                                                    @PathVariable String term) {
+        List<AssociationResponseDTO> books = searchBookUseCase.execute(new SearchRequest(userId, term, shelfId, SearchType.TITLE_SHELVES));
+        return ResponseEntity.ok(books);
     }
 }
