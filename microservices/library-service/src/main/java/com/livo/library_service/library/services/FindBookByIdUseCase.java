@@ -19,20 +19,8 @@ public class FindBookByIdUseCase {
 
     private final UserClient userClient;
     private final BookClient bookClient;
-    private final LibraryRepository libraryRepository;
 
-    public BookSummaryResponse execute(UUID userId, Long id, String bookId) {
-
-        try {
-            userClient.getById(userId);
-        } catch (FeignException.NotFound e) {
-            throw new UserNotFoundException(userId);
-        }
-
-        UserBookEntity book = libraryRepository
-                .findById(id)
-                .orElseThrow(EmptyPersonalLibraryException::new);
-
+    public BookSummaryResponse execute(String bookId) {
         return bookClient.getBookByIdInternal(bookId);
     }
 }
