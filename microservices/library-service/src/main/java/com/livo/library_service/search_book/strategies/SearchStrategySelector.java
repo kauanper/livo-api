@@ -1,5 +1,7 @@
 package com.livo.library_service.search_book.strategies;
 
+import com.livo.library_service.search_book.TitleLibrarySearchStrategy;
+import com.livo.library_service.search_book.TitleShelvesSearchStrategy;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
