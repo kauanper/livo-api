@@ -1,7 +1,9 @@
 package com.livo.library_service.shelf;
 
+import com.livo.library_service.shelf.bookShelf.BookShelf;
 import com.livo.library_service.shelf.entity.Shelf;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,4 +17,14 @@ public interface ShelfRepository extends JpaRepository<Shelf, UUID> {
     boolean existsByNameAndUserId(String name, UUID userId);
     
     Optional<Shelf> findByNameAndUserId(String name, UUID userId);
+
+    @Query("""
+    SELECT bs
+    FROM BookShelf bs
+    JOIN UserBook ub ON ub.id = bs.bookId
+    WHERE bs.userId = :userId
+      AND LOWER(ub.title) LIKE LOWER(CONCAT('%', :searchTerm, '%'))
+""")
+    List<BookShelf> searchByTitle(UUID userId, String searchTerm);
+
 }
