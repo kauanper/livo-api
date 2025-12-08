@@ -1,6 +1,7 @@
 package com.livo.library_service.search_book;
 
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
+import com.livo.library_service.search_book.strategies.SearchRequest;
 import com.livo.library_service.search_book.strategies.SearchStrategy;
 import com.livo.library_service.search_book.strategies.SearchStrategySelector;
 import com.livo.library_service.search_book.strategies.SearchType;
@@ -20,13 +21,13 @@ public class SearchBookUseCase {
     private final UserClient userClient;
     private final SearchStrategySelector strategySelector;
 
-    public List<AssociationResponseDTO> execute(UUID userId, String searchTerm, SearchType type) {
+    public List<AssociationResponseDTO> execute(SearchRequest request) {
 
-        this.validateUser(userId);
+        this.validateUser(request.getUserId());
 
-        SearchStrategy strategy = this.strategySelector.get(type);
+        SearchStrategy strategy = this.strategySelector.get(request.getType());
 
-        return strategy.search(userId, searchTerm);
+        return strategy.search(request);
     }
 
     private void validateUser(UUID userId) {
