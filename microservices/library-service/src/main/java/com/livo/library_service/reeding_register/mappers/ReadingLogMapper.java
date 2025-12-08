@@ -33,6 +33,19 @@ public class ReadingLogMapper {
         return entity;
     }
 
+    public ReadingLog toEntity(ReadingLogRegisterDTO dto, Long readingLogId){
+        UserBookEntity userBook = libraryRepository.findById(dto.libraryBookId()).orElseThrow(() -> new ResourceNotFoundException("libraryBookId"));
+
+        ReadingLog entity = new ReadingLog();
+        entity.setId(readingLogId);
+        entity.setTitle(dto.title());
+        entity.setText(dto.text());
+        entity.setTime(dto.time());
+        entity.setUserBook(userBook);
+        entity.setPagesRead(dto.pagesRead());
+        return entity;
+    }
+
     public ReadingLogResponseDTO toDto(ReadingLog entity){
         BigDecimal percentageRead = calculateProgressService.getReedingProgresByPagesRead(entity.getPagesRead(), entity.getUserBook().getBookId());
         ReadingLogResponseDTO dto = new ReadingLogResponseDTO(

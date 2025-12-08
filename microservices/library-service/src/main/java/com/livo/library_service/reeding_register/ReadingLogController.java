@@ -40,5 +40,12 @@ public class ReadingLogController {
         return ResponseEntity.ok(response);
     }
 
-    //public ResponseEntity<ReadingLogResponseDTO>
+    @PutMapping("/{readingLogId}")
+    public ResponseEntity<ReadingLogResponseDTO> updateReadingLog(@RequestBody @Valid ReadingLogRegisterDTO dto,
+                                                                  @PathVariable Long readingLogId,
+                                                                  @CurrentUser UUID userId){
+        var response = readingLogService.update(dto, readingLogId , userId);
+        URI uri = URI.create("/library/reading-logs/" + response.id());
+        return ResponseEntity.created(uri).body(response);
+    }
 }

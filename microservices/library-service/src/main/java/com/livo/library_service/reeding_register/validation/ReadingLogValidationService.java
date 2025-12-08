@@ -40,7 +40,7 @@ public class ReadingLogValidationService {
             throw new BusinessRuleException("pagesRead", "pagesRead não pode ser maior que o total de páginas do livro. Total de páginas do livro: " + book.pageCount());
     }
 
-    public void validateToAddReedingRegister(ReadingLogRegisterDTO dto, UUID userId){
+    public void validateToAddReedingLog(ReadingLogRegisterDTO dto, UUID userId){
         UserBookEntity userBook = libraryValidator.validateLibraryBookBelongsToUserAndGet(userId, dto.libraryBookId());
         validatePagesRead(dto.pagesRead(), userBook.getBookId());
         validateBookCanReciveReedingRegisters(userBook);
@@ -51,5 +51,10 @@ public class ReadingLogValidationService {
         if(log.isEmpty())
             throw new ResourceNotFoundException("readingLogId", "Esse registro de leitura não foi encontrado para o usuário  o usuário autenticado");
         return log.get();
+    }
+
+    public void validateToUpdateReadingLogAndGet(ReadingLogRegisterDTO dto, Long readingLogId, UUID userId) {
+        validateReadingLogBelongsToUserAndGet(readingLogId, userId);
+        validateToAddReedingLog(dto, userId);
     }
 }

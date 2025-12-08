@@ -7,12 +7,11 @@ import com.livo.library_service.reeding_register.dtos.ReadingLogRegisterDTO;
 import com.livo.library_service.reeding_register.dtos.ReadingLogResponseDTO;
 import com.livo.library_service.reeding_register.mappers.ReadingLogMapper;
 import com.livo.library_service.reeding_register.validation.ReadingLogValidationService;
-import com.livo.library_service.shared.globalExceptions.custon.ResourceNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,7 +29,7 @@ public class ReadingLogService {
     private ReadingLogMapper readingLogMapper;
 
     public ReadingLogResponseDTO save(ReadingLogRegisterDTO dto, UUID userId) {
-        readingLogValidator.validateToAddReedingRegister(dto, userId);
+        readingLogValidator.validateToAddReedingLog(dto, userId);
         ReadingLog entity = readingLogMapper.toEntity(dto);
         return readingLogMapper.toDto(readingLogRepository.save(entity));
     }
@@ -43,6 +42,13 @@ public class ReadingLogService {
 
     public ReadingLogResponseDTO findByReadingLogId(Long readingLogId, UUID userId) {
         ReadingLog log = readingLogValidator.validateReadingLogBelongsToUserAndGet(readingLogId, userId);
+        return readingLogMapper.toDto(log);
+    }
+
+    public ReadingLogResponseDTO update(ReadingLogRegisterDTO dto, Long readingLogId, UUID userId) {
+        readingLogValidator.validateToUpdateReadingLogAndGet(dto, readingLogId, userId);
+        ReadingLog log = readingLogMapper.toEntity(dto, readingLogId);
+        log = readingLogRepository.save(log);
         return readingLogMapper.toDto(log);
     }
 }
