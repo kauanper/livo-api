@@ -2,6 +2,8 @@ package com.livo.library_service.search_book;
 
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
 import com.livo.library_service.search_book.strategies.SearchStrategy;
+import com.livo.library_service.search_book.strategies.SearchStrategySelector;
+import com.livo.library_service.search_book.strategies.SearchType;
 import com.livo.library_service.shared.clients.UserClient;
 import com.livo.library_service.shared.globalExceptions.custon.UserNotFoundException;
 import feign.FeignException;
@@ -16,16 +18,22 @@ import java.util.UUID;
 public class SearchBookUseCase {
 
     private final UserClient userClient;
-    private final SearchStrategy titleSearchStrategy;
+    private final SearchStrategySelector strategySelector;
 
-    public List<AssociationResponseDTO> execute(UUID userId, String searchTerm) {
+    public List<AssociationResponseDTO> execute(UUID userId, String searchTerm, SearchType type) {
 
-        try { //validar user
+        this.validateUser(userId);
+
+        SearchStrategy strategy = this.strategySelector.get(type);
+
+        return strategy.search(userId, searchTerm);
+    }
+
+    private void validateUser(UUID userId) {
+        try {
             userClient.getById(userId);
         } catch (FeignException.NotFound ex) {
             throw new UserNotFoundException(userId);
         }
-
-        return titleSearchStrategy.search(userId, searchTerm);
     }
 }

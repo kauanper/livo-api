@@ -7,6 +7,7 @@ import com.livo.library_service.library.dtos.book_count.BookCountResponse;
 import com.livo.library_service.library.dtos.book_count.BookIdResponse;
 import com.livo.library_service.library.services.*;
 import com.livo.library_service.search_book.SearchBookUseCase;
+import com.livo.library_service.search_book.strategies.SearchType;
 import com.livo.library_service.shared.notations.CurrentUser;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class LibraryController {
     @GetMapping("/search/{term}")
     public ResponseEntity<List<AssociationResponseDTO>> searchBooks(@CurrentUser UUID userId,
                                                                     @PathVariable String term) {
-        List<AssociationResponseDTO> books = searchBookUseCase.execute(userId, term);
+        List<AssociationResponseDTO> books = searchBookUseCase.execute(userId, term, SearchType.TITLE_LIBRARY);
         return ResponseEntity.ok(books);
     }
 
