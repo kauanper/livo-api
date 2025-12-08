@@ -27,9 +27,15 @@ public class ReadingLogController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReadingLogResponseDTO>> getReadingLogs(@RequestParam(required = true) Long libraryBookId,
-                                                                      @CurrentUser UUID userId){
+    public ResponseEntity<List<ReadingLogResponseDTO>> getReadingLogsByLibraryBook(@RequestParam(required = true) Long libraryBookId,
+                                                                                   @CurrentUser UUID userId){
         List<ReadingLogResponseDTO> response = readingLogService.findAllByLibraryBookId(libraryBookId, userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{readingLogId}")
+    public ResponseEntity<ReadingLogResponseDTO> getbyReadingLogById(@PathVariable Long readingLogId, @CurrentUser UUID userId){
+        ReadingLogResponseDTO response = readingLogService.findByReadingLogId(readingLogId, userId);
         return ResponseEntity.ok(response);
     }
 }

@@ -7,6 +7,7 @@ import com.livo.library_service.reeding_register.dtos.ReadingLogRegisterDTO;
 import com.livo.library_service.reeding_register.dtos.ReadingLogResponseDTO;
 import com.livo.library_service.reeding_register.mappers.ReadingLogMapper;
 import com.livo.library_service.reeding_register.validation.ReadingLogValidationService;
+import com.livo.library_service.shared.globalExceptions.custon.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,13 @@ public class ReadingLogService {
     }
 
     public List<ReadingLogResponseDTO> findAllByLibraryBookId(Long libraryBookId, UUID userId) {
-        libraryValidator.validateLibraryBookBelongsToUser(userId, libraryBookId);
+        libraryValidator.validateLibraryBookBelongsToUserAndGet(userId, libraryBookId);
         List<ReadingLog> readingLogs = readingLogRepository.findAllByUserBookIdOrderByTimeDesc(libraryBookId);
         return readingLogs.stream().map(log -> readingLogMapper.toDto(log)).toList();
+    }
+
+    public ReadingLogResponseDTO findByReadingLogId(Long readingLogId, UUID userId) {
+        ReadingLog log = readingLogValidator.validateReadingLogBelongsToUserAndGet(readingLogId, userId);
+        return readingLogMapper.toDto(log);
     }
 }
