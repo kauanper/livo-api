@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +24,8 @@ public class ReadingLogController {
     public ResponseEntity<ReadingLogResponseDTO> saveReadingRegister(@RequestBody @Valid ReadingLogRegisterDTO dto,
                                                                      @CurrentUser UUID userId){
         var response = readingLogService.save(dto, userId);
-        return ResponseEntity.ok(response);
+        URI uri = URI.create("/library/reading-logs/" + response.id());
+        return ResponseEntity.created(uri).body(response);
     }
 
     @GetMapping
@@ -38,4 +40,6 @@ public class ReadingLogController {
         ReadingLogResponseDTO response = readingLogService.findByReadingLogId(readingLogId, userId);
         return ResponseEntity.ok(response);
     }
+
+    //public ResponseEntity<ReadingLogResponseDTO>
 }
