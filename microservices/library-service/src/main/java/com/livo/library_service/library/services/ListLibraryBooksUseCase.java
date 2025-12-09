@@ -23,6 +23,7 @@ public class ListLibraryBooksUseCase {
 
     private final LibraryRepository libraryRepository;
     private final UserClient userClient;
+    private final AssociationMappers associationMappers;
 
     public List<AssociationResponseDTO> execute(UUID userId, Optional<BookStatus> status) {
 
@@ -43,7 +44,7 @@ public class ListLibraryBooksUseCase {
         }
 
         return entities.stream()
-                .map(AssociationMappers::toResponseDTO)
+                .map(associationMappers::toResponseDTO)
                 .collect(Collectors.toList());
     }
 }

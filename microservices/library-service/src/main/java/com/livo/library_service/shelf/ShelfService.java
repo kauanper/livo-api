@@ -54,6 +54,7 @@ public class ShelfService {
         return shelfMapper.toDtoList(shelves);
     }
 
+    @Transactional(readOnly = true)
     public ShelfDto findById(UUID id, UUID userId) {
         Shelf shelf = shelfValidate.validateShelfOwnership(id, userId);
         return shelfMapper.toDto(shelf);
