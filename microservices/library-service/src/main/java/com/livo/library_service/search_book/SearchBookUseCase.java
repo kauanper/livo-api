@@ -10,6 +10,7 @@ import com.livo.library_service.shared.globalExceptions.custon.UserNotFoundExcep
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class SearchBookUseCase {
     private final UserClient userClient;
     private final SearchStrategySelector strategySelector;
 
+    @Transactional(readOnly = true)
     public List<AssociationResponseDTO> execute(SearchRequest request) {
 
         this.validateUser(request.getUserId());
