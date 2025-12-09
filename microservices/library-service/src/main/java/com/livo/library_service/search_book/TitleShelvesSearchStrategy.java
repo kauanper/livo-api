@@ -16,6 +16,7 @@ import java.util.UUID;
 public class TitleShelvesSearchStrategy implements SearchStrategy {
 
     private final ShelfRepository shelfRepository;
+    private final AssociationMappers associationMappers;
 
     @Override
     public List<AssociationResponseDTO> search(SearchRequest request) {
@@ -25,7 +26,7 @@ public class TitleShelvesSearchStrategy implements SearchStrategy {
 
         return shelfRepository.searchByShelfAndTitle(shelfId, userId, searchTerm)
                 .stream()
-                .map(AssociationMappers::toResponseDTO)
+                .map(associationMappers::toResponseDTO)
                 .toList();
     }
 }

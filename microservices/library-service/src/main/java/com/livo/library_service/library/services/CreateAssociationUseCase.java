@@ -48,9 +48,9 @@ public class CreateAssociationUseCase {
             throw new ExistingAssociationException("biblioteca");
         }
 
-        UserBookEntity entity = AssociationMappers.toEntity(register, bookDto,userID);
+        UserBookEntity entity = associationMappers.toEntity(register, bookDto,userID);
         UserBookEntity saved = libraryRepository.save(entity);
 
-        return AssociationMappers.toResponseDTO(saved);
+        return associationMappers.toResponseDTO(saved);
     }
 }

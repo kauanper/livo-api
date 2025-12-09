@@ -7,18 +7,19 @@ import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
 import com.livo.library_service.shared.dtos.book.BookSummaryResponse;
 import com.livo.library_service.shared.globalExceptions.custon.ResourceNotFoundException;
 import com.livo.library_service.shelf.bookShelf.BookShelf;
+import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Component
+@Mapper(componentModel = "spring")
 public class AssociationMappers {
 
     @Autowired
-    private static LibraryRepository libraryRepository;
+    private LibraryRepository libraryRepository;
 
-    public static UserBookEntity toEntity(AssociationRegisterDTO dto, BookSummaryResponse bookDto, UUID userId) {
+    public UserBookEntity toEntity(AssociationRegisterDTO dto, BookSummaryResponse bookDto, UUID userId) {
         if (dto == null) {
             return null;
         }
@@ -35,7 +36,7 @@ public class AssociationMappers {
         return entity;
     }
 
-    public static AssociationResponseDTO toResponseDTO(UserBookEntity entity) {
+    public AssociationResponseDTO toResponseDTO(UserBookEntity entity) {
         if (entity == null) {
             return null;
         }
@@ -51,7 +52,7 @@ public class AssociationMappers {
         );
     }
 
-    public static AssociationResponseDTO toResponseDTO(BookShelf entity) {
+    public AssociationResponseDTO toResponseDTO(BookShelf entity) {
         UserBookEntity book = libraryRepository
                 .findById(entity.getBookId())
                 .orElseThrow(() -> new ResourceNotFoundException("Book ID", "O Livro com o ID: " + entity.getBookId() + " não foi encontrado."));

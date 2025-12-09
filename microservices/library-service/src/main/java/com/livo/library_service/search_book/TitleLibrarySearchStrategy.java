@@ -16,6 +16,7 @@ import java.util.UUID;
 public class TitleLibrarySearchStrategy implements SearchStrategy {
 
     private final LibraryRepository libraryRepository;
+    private final AssociationMappers associationMappers;
 
     @Override
     public List<AssociationResponseDTO> search(SearchRequest request) {
@@ -26,7 +27,7 @@ public class TitleLibrarySearchStrategy implements SearchStrategy {
                 .stream()
                 .filter(book -> book.getTitle() != null &&
                         book.getTitle().toLowerCase().contains(searchTerm.toLowerCase()))
-                .map(AssociationMappers::toResponseDTO)
+                .map(associationMappers::toResponseDTO)
                 .toList();
     }
 }
