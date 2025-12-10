@@ -17,7 +17,14 @@ public class ListBooksIdUseCase {
     public List<BookIdResponse> execute(UUID userId){
         return libraryRepository.findAllByUserId(userId)
                 .stream()
-                .map(entity -> new BookIdResponse(entity.getBookId().toString()))
+                .map(entity -> new BookIdResponse(
+                        entity.getBookId(),
+                        entity.getBookStatus(),
+                        entity.getReadingProgress(),
+                        entity.getPersonalRatting(),
+                        null // obs: generalRatting não existe na entidade ainda
+                ))
                 .toList();
     }
 }
+
