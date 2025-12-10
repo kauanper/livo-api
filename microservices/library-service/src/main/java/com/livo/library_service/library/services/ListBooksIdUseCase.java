@@ -20,6 +20,7 @@ public class ListBooksIdUseCase {
                 .map(entity -> new BookIdResponse(
                         entity.getBookId(),
                         entity.getBookStatus(),
+                        entity.getId(),
                         entity.getReadingProgress(),
                         entity.getPersonalRatting(),
                         null // obs: generalRatting não existe na entidade ainda
