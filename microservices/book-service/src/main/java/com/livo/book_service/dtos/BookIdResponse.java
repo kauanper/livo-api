@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookIdResponse {
-    private String bookId;
+    String bookId;
+    BookStatus bookStatus;
+    Long userBookId;
+    Integer readingProgress;
+    Integer personalRatting;
+    Integer generalRatting;
 }
 
