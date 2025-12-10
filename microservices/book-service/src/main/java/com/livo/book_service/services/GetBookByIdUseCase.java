@@ -36,20 +36,26 @@ public class GetBookByIdUseCase {
             throw new BookNotFoundException("Livro com ID '" + bookId + "' não foi encontrado.");
         }
 
-        //buscar IDs da biblioteca do usuário
+        // Buscar IDs da biblioteca do usuário
         List<BookIdResponse> booksIdResponse = libraryClient.getBooksId(userId);
 
-        //transformar em Set para busca eficiente
-        Set<String> userBookIds = booksIdResponse.stream()
-                .map(BookIdResponse::getBookId)
-                .collect(Collectors.toSet());
+        // Encontrar especificamente o livro deste ID
+        BookIdResponse userBookData = booksIdResponse.stream()
+                .filter(b -> b.getBookId().equals(bookId))
+                .findFirst()
+                .orElse(null);
 
-        //mapear GoogleBook → BookSummaryResponse
+        // mapear GoogleBook → BookSummaryResponse
         BookSummaryResponse response = bookMapper.toSummary(bookItem);
 
-        //verificar se o usuário possui esse livro
-        boolean hasBook = userBookIds.contains(bookId);
+        // Verifica se o usuário possui o livro
+        boolean hasBook = userBookData != null;
         response.setPersonalLibrary(hasBook);
+
+        // Se o usuário possuir o livro, adiciona as informações extras
+        if (hasBook) {
+            response.setBookIdResponse(userBookData);
+        }
 
         return response;
     }
