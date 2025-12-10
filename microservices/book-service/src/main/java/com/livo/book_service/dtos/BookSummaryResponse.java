@@ -47,5 +47,5 @@ public class BookSummaryResponse {
     // ver se o usuario possui esse livro na sua biblioteca pessoal
     private Boolean personalLibrary;
 
-    private BookIdResponse bookIdResponse;
+    private BookIdResponse libraryRecord;
 }

@@ -54,7 +54,7 @@ public class GetBookByIdUseCase {
 
         // Se o usuário possuir o livro, adiciona as informações extras
         if (hasBook) {
-            response.setBookIdResponse(userBookData);
+            response.setLibraryRecord(userBookData);
         }
 
         return response;

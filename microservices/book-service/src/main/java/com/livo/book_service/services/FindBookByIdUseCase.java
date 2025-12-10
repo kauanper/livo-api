@@ -32,7 +32,7 @@ public class FindBookByIdUseCase {
             book.setPersonalLibrary(hasBook);
 
             if (hasBook) {
-                book.setBookIdResponse(userBookData);
+                book.setLibraryRecord(userBookData);
             }
         });
 
