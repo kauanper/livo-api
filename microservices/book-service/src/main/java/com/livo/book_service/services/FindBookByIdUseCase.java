@@ -21,15 +21,22 @@ public class FindBookByIdUseCase {
 
         List<BookIdResponse> booksIdResponse = libraryClient.getBooksId(userId);
 
-        Set<String> userBookIds = booksIdResponse.stream()
-                .map(BookIdResponse::getBookId)
-                .collect(Collectors.toSet());
+        var userBooksMap = booksIdResponse.stream()
+                .collect(Collectors.toMap(BookIdResponse::getBookId, b -> b));
 
         responses.forEach(book -> {
-            boolean hasBook = userBookIds.contains(book.getId());
+
+            BookIdResponse userBookData = userBooksMap.get(book.getId());
+
+            boolean hasBook = userBookData != null;
             book.setPersonalLibrary(hasBook);
+
+            if (hasBook) {
+                book.setBookIdResponse(userBookData);
+            }
         });
 
         return responses;
     }
 }
+

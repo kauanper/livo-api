@@ -30,7 +30,9 @@ public class BookMapper {
                 thumbnail,
                 info.getLanguage(),
                 info.getDescription(),
-                false
+                false,
+                null
+
         );
 
     }
