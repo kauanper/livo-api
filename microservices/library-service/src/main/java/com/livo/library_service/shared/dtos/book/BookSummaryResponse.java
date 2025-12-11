@@ -1,5 +1,7 @@
 package com.livo.library_service.shared.dtos.book;
 
+import com.livo.library_service.library.dtos.book_count.BookIdResponse;
+
 import java.util.List;
 
 public record BookSummaryResponse(
@@ -14,5 +16,6 @@ public record BookSummaryResponse(
         String thumbnail,
         String language,
         String description,
-        Boolean personalLibrary
+        Boolean personalLibrary,
+        BookIdResponse libraryRecord
 ) {}
