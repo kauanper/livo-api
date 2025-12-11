@@ -38,7 +38,9 @@ public class CalculateProgressService {
         BigDecimal percentage = BigDecimal.ZERO;
         Optional<ReadingLog> log = readingLogRepository.findMaxByLibraryBookId(userBookId);
         if (log.isEmpty()) return percentage;
+
         BookSummaryResponse book = findBookByIdUseCase.execute(bookId);
+
         readingLogValidator.validateReadingLogBelongsToUserAndGet(log.get().getId(), userId);
 
         if (book.pageCount() != null && book.pageCount() > 0 && log.get().getPagesRead() != null) {
