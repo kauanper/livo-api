@@ -8,8 +8,7 @@ public record AssociationResponseDTO(
         BookStatus bookStatus,
         String thumbnail,
         String title,
-        Integer readingProgress,
-        Integer personalRatting
+        Integer readingProgress
 ) {
 }
 //dto que vai ser listado no front

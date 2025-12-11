@@ -10,6 +10,6 @@ public record BookIdResponse(
         Long userBookId,
         Integer readingProgress,
         Integer personalRatting,
-        Integer generalRatting // no prototipo está como inteiro :b
+        Integer generalRatting //ambos os ratting devem ser inteiros
 ){
 }

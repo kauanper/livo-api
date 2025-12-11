@@ -30,7 +30,7 @@ public class ListBooksIdUseCase {
                                         entity.getUserId()
                                 )
                                 .intValue(),
-                        entity.getPersonalRatting(),
+                        null,
                         null //obs: generalRatting não existe na entidade ainda
                 ))
                 .toList();
