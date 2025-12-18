@@ -23,11 +23,7 @@ public class ListBooksIdUseCase {
                         entity.getBookId().toString(),
                         entity.getId(),
                         entity.getBookStatus(),
-                        readingProgressService.getReadingProgressByLibraryBookId(
-                                entity.getId(),
-                                entity.getBookId().toString(),
-                                userId
-                        ),
+                        null,
                         null, // rating pessoal ainda não implementado
                         null  // média ainda não implementada
                 ))

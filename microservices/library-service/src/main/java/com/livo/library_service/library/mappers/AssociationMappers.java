@@ -30,6 +30,7 @@ public class AssociationMappers {
         entity.setBookStatus((dto.bookStatus()));
         entity.setThumbnail(bookDto.thumbnail());
         entity.setReadingProgress(0); //user não começou a ler
+        entity.setPageCount(bookDto.pageCount()); //para facilitar o calulo de %lida
         entity.setPersonalRatting(null); //user não deu seu voto pessoal
         entity.setTitle(bookDto.title());
 
