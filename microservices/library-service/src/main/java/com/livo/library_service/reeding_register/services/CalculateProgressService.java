@@ -34,17 +34,29 @@ public class CalculateProgressService {
         return percentage;
     }
 
-    public BigDecimal getReadingProgressByLibraryBookId(Long userBookId, String bookId,UUID userId){
+    public BigDecimal getReadingProgressByLibraryBookId(Long userBookId, Integer pageTotal, UUID userId) {
         BigDecimal percentage = BigDecimal.ZERO;
-        Optional<ReadingLog> log = readingLogRepository.findMaxByLibraryBookId(userBookId);
-        if (log.isEmpty()) return percentage;
-        BookSummaryResponse book = findBookByIdUseCase.execute(bookId);
-        readingLogValidator.validateReadingLogBelongsToUserAndGet(log.get().getId(), userId);
 
-        if (book.pageCount() != null && book.pageCount() > 0 && log.get().getPagesRead() != null) {
-            percentage = BigDecimal.valueOf((double) log.get().getPagesRead() / book.pageCount() * 100)
-                    .setScale(0, RoundingMode.HALF_DOWN);
+        Optional<ReadingLog> log = readingLogRepository.findMaxByLibraryBookId(userBookId);
+
+        if (log.isEmpty()) {
+            return percentage;
         }
+
+        // valida se o log pertence ao usuário
+        readingLogValidator.validateReadingLogBelongsToUserAndGet(
+                log.get().getId(),
+                userId
+        );
+
+        // cálculo do progresso
+        if (pageTotal != null && pageTotal > 0 && log.get().getPagesRead() != null) {
+            percentage = BigDecimal.valueOf(
+                    (double) log.get().getPagesRead() / pageTotal * 100
+            ).setScale(0, RoundingMode.HALF_DOWN);
+        }
+
         return percentage;
     }
+
 }
