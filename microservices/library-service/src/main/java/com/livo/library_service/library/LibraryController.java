@@ -5,6 +5,7 @@ import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
 import com.livo.library_service.library.dtos.book_count.BookCountResponse;
 import com.livo.library_service.library.dtos.book_count.BookIdResponse;
+import com.livo.library_service.library.dtos.book_status.BookStatusResponse;
 import com.livo.library_service.library.services.*;
 import com.livo.library_service.search_book.SearchBookUseCase;
 import com.livo.library_service.search_book.strategies.SearchRequest;
@@ -42,6 +43,9 @@ public class LibraryController {
 
     @Autowired
     private ListBooksIdUseCase listBooksIdUseCase;
+
+    @Autowired
+    private GetBookStatusUseCase getBookStatusUseCase;
 
 
     @PostMapping
@@ -90,6 +94,14 @@ public class LibraryController {
     @GetMapping("/internal/booksId/{userId}")
     public ResponseEntity<List<BookIdResponse>> getId(@PathVariable UUID userId){
         List<BookIdResponse> response = listBooksIdUseCase.execute(userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/internal/book-status/{userId}/{bookId}")
+    public ResponseEntity<BookStatusResponse> getBookStatus(
+            @PathVariable UUID userId,
+            @PathVariable String bookId) {
+        BookStatusResponse response = getBookStatusUseCase.execute(userId, bookId);
         return ResponseEntity.ok(response);
     }
 }

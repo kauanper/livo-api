@@ -11,4 +11,5 @@ public interface LibraryRepository extends JpaRepository<UserBookEntity, Long> {
     List<UserBookEntity> findAllByUserIdAndBookStatus(UUID userId, BookStatus status);
     Optional<UserBookEntity> findByIdAndUserId(Long id, UUID userId);
     boolean existsByUserIdAndBookId(UUID userId, String bookId);
+    Optional<UserBookEntity> findByUserIdAndBookId(UUID userId, String bookId);
 }
