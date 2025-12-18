@@ -37,7 +37,7 @@ public class CalculateProgressService {
     public BigDecimal getReadingProgressByLibraryBookId(Long userBookId, Integer pageTotal, UUID userId) {
         BigDecimal percentage = BigDecimal.ZERO;
 
-        Optional<ReadingLog> log = readingLogRepository.findMaxByLibraryBookId(userBookId);
+        Optional<ReadingLog> log = readingLogRepository.findTopByUserBookIdOrderByPagesReadDescTimeDesc(userBookId);
         if (log.isEmpty()) {
             return percentage;
         }
