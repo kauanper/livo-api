@@ -30,8 +30,8 @@ public class UserBookEntity {
     @Enumerated(EnumType.STRING)
     private BookStatus bookStatus;
 
-    //talvez essas entidades derivadas sumirão e serão geradas em tempo de execução.
-    private Integer readingProgress;
+    private Integer pageCount;
+
     private Integer personalRatting = null;
 
 }
