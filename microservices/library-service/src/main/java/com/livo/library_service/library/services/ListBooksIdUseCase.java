@@ -23,10 +23,15 @@ public class ListBooksIdUseCase {
                         entity.getBookId().toString(),
                         entity.getId(),
                         entity.getBookStatus(),
-                        null,
+                        readingProgressService.getReadingProgressByLibraryBookId(
+                                entity.getId(),
+                                entity.getPageCount(),
+                                userId
+                        ),
                         null, // rating pessoal ainda não implementado
                         null  // média ainda não implementada
                 ))
                 .toList();
     }
 }
+
