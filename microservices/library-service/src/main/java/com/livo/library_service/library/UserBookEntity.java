@@ -32,8 +32,6 @@ public class UserBookEntity {
 
     private Integer pageCount;
 
-    //talvez essas entidades derivadas sumirão e serão geradas em tempo de execução.
-    private Integer readingProgress;
     private Integer personalRatting = null;
 
 }
