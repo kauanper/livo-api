@@ -15,4 +15,13 @@ public interface ReadingLogRepository extends JpaRepository<ReadingLog, Long> {
 
     @Query("SELECT MAX(rl.pagesRead) FROM ReadingLog rl WHERE rl.userBook.id = :userBookId")
     Optional<ReadingLog> findMaxByLibraryBookId(Long userBookId);
+
+    @Query("""
+    SELECT rl
+    FROM ReadingLog rl
+    WHERE rl.userBook.id = :userBookId
+    ORDER BY rl.pagesRead DESC, rl.time DESC
+""")
+    Optional<ReadingLog> findTopByLibraryBookId(Long userBookId);
+
 }
