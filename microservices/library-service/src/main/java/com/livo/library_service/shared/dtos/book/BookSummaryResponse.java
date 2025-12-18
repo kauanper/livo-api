@@ -14,5 +14,6 @@ public record BookSummaryResponse(
         String thumbnail,
         String language,
         String description,
-        Boolean personalLibrary
+        Boolean personalLibrary,
+        LibraryRegistration libraryRegistration
 ) {}
