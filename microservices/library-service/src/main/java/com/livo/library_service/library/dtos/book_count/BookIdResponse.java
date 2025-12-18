@@ -10,6 +10,6 @@ public record BookIdResponse(
         BookStatus bookStatus,
         BigDecimal progress,
         Integer ratingPersonal,
-        Double averageRatingOnTheApp
+        Double averageRatingOnLivo
 ){
 }

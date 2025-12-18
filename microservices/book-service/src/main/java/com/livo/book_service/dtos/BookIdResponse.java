@@ -15,6 +15,6 @@ public class BookIdResponse {
     private BookStatus bookStatus;
     private BigDecimal progress;
     private Integer ratingPersonal;
-    private Double averageRatingOnTheApp;
+    private Double averageRatingOnLivo;
 }
 
