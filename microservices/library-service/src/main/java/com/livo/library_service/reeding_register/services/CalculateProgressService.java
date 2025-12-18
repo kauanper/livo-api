@@ -38,18 +38,15 @@ public class CalculateProgressService {
         BigDecimal percentage = BigDecimal.ZERO;
 
         Optional<ReadingLog> log = readingLogRepository.findMaxByLibraryBookId(userBookId);
-
         if (log.isEmpty()) {
             return percentage;
         }
 
-        // valida se o log pertence ao usuário
         readingLogValidator.validateReadingLogBelongsToUserAndGet(
                 log.get().getId(),
                 userId
         );
 
-        // cálculo do progresso
         if (pageTotal != null && pageTotal > 0 && log.get().getPagesRead() != null) {
             percentage = BigDecimal.valueOf(
                     (double) log.get().getPagesRead() / pageTotal * 100
