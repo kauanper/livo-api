@@ -50,6 +50,12 @@ public class GlobalExceptionHandler {
         return buildError(HttpStatus.BAD_REQUEST, "Type Invalid", ex, request);
     }
 
+    @ExceptionHandler(InvalidBookStatusException.class)
+    public ResponseEntity<ApiError> handleInvalidBookStatus(InvalidBookStatusException ex,
+                                                             HttpServletRequest request) {
+        return buildError(HttpStatus.FORBIDDEN, "Invalid Book Status", ex, request);
+    }
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ApiError> handleMissingParam(MissingServletRequestParameterException ex,
                                                        HttpServletRequest request) {
