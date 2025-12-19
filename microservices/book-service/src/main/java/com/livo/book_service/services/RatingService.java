@@ -1,4 +1,4 @@
-package com.livo.book_service.rating.services;
+package com.livo.book_service.services;
 
 import com.livo.book_service.rating.dtos.RatingResponse;
 import com.livo.book_service.rating.dtos.RatingSummaryResponse;
@@ -6,7 +6,6 @@ import com.livo.book_service.rating.entities.BookRating;
 import com.livo.book_service.rating.entities.BookRatingSummary;
 import com.livo.book_service.rating.repositories.RatingRepository;
 import com.livo.book_service.rating.repositories.RatingSummaryRepository;
-import com.livo.book_service.services.RatingValidationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class RatingService {
 
     private final RatingRepository ratingRepository;
