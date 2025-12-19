@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "library-service")
+@FeignClient(
+    name = "library-service",
+    configuration = com.livo.book_service.config.FeignConfig.class
+)
 public interface LibraryClient {
 
     @GetMapping("/library/internal/booksId/{userId}")
