@@ -1,11 +1,14 @@
 package com.livo.book_service.services;
 
+import com.livo.book_service.APIs.LibraryClient;
+import com.livo.book_service.dtos.PersonalRatingUpdateDTO;
 import com.livo.book_service.rating.dtos.RatingResponse;
 import com.livo.book_service.rating.dtos.RatingSummaryResponse;
 import com.livo.book_service.rating.entities.BookRating;
 import com.livo.book_service.rating.entities.BookRatingSummary;
 import com.livo.book_service.rating.repositories.RatingRepository;
 import com.livo.book_service.rating.repositories.RatingSummaryRepository;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ public class RatingService {
     private final RatingRepository ratingRepository;
     private final RatingSummaryRepository ratingSummaryRepository;
     private final RatingValidationService validationService;
+    private final LibraryClient libraryClient;
 
     @Transactional
     public RatingResponse createRating(UUID userId, String bookId, Integer rating) {
@@ -45,6 +49,9 @@ public class RatingService {
         // Atualiza o resumo agregado
         updateSummaryOnCreate(bookId, rating);
 
+        // Atualiza o personalRating no library-service
+        updatePersonalRatingInLibrary(userId, bookId, rating);
+
         return mapToResponse(bookRating);
     }
 
@@ -66,6 +73,9 @@ public class RatingService {
         // Atualiza o resumo agregado
         updateSummaryOnUpdate(bookId, oldRating, rating);
 
+        // Atualiza o personalRating no library-service
+        updatePersonalRatingInLibrary(userId, bookId, rating);
+
         return mapToResponse(updatedRating);
     }
 
@@ -83,6 +93,9 @@ public class RatingService {
 
         // Atualiza o resumo agregado
         updateSummaryOnDelete(bookId, ratingValue);
+
+        // Remove o personalRating no library-service
+        removePersonalRatingFromLibrary(userId, bookId);
     }
 
     // Busca a avaliação de um usuário específico para um livro.
@@ -188,5 +201,47 @@ public class RatingService {
                 .createdAt(rating.getCreatedAt())
                 .updatedAt(rating.getUpdatedAt())
                 .build();
+    }
+
+    // Atualiza o personalRating no library-service.
+    private void updatePersonalRatingInLibrary(UUID userId, String bookId, Integer rating) {
+        try {
+            PersonalRatingUpdateDTO dto = new PersonalRatingUpdateDTO(rating);
+            libraryClient.updatePersonalRating(userId, bookId, dto);
+            log.debug("PersonalRating atualizado no library-service para livro {} do usuário {}: {}", bookId, userId, rating);
+        } catch (FeignException ex) {
+            log.error(
+                    "Erro ao atualizar personalRating no library-service para livro {} do usuário {}. " +
+                            "Status HTTP: {}, Mensagem: {}",
+                    bookId, userId, ex.status(), ex.getMessage()
+            );
+            // Não lança exceção para não interromper o fluxo principal
+            // O personalRating pode ser atualizado posteriormente
+        } catch (Exception ex) {
+            log.error(
+                    "Erro inesperado ao atualizar personalRating no library-service para livro {} do usuário {}: {}",
+                    bookId, userId, ex.getMessage(), ex
+            );
+        }
+    }
+
+    // Remove o personalRating no library-service.
+    private void removePersonalRatingFromLibrary(UUID userId, String bookId) {
+        try {
+            libraryClient.removePersonalRating(userId, bookId);
+            log.debug("PersonalRating removido no library-service para livro {} do usuário {}", bookId, userId);
+        } catch (FeignException ex) {
+            log.error(
+                    "Erro ao remover personalRating no library-service para livro {} do usuário {}. " +
+                            "Status HTTP: {}, Mensagem: {}",
+                    bookId, userId, ex.status(), ex.getMessage()
+            );
+            // Não lança exceção para não interromper o fluxo principal
+        } catch (Exception ex) {
+            log.error(
+                    "Erro inesperado ao remover personalRating no library-service para livro {} do usuário {}: {}",
+                    bookId, userId, ex.getMessage(), ex
+            );
+        }
     }
 }
