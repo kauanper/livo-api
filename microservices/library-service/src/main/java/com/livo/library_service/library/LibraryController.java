@@ -47,6 +47,9 @@ public class LibraryController {
     @Autowired
     private GetBookStatusUseCase getBookStatusUseCase;
 
+    @Autowired
+    private UpdatePersonalRatingUseCase updatePersonalRatingUseCase;
+
 
     @PostMapping
     public ResponseEntity<AssociationResponseDTO> save(@RequestBody @Valid AssociationRegisterDTO dto,
@@ -103,5 +106,22 @@ public class LibraryController {
             @PathVariable String bookId) {
         BookStatusResponse response = getBookStatusUseCase.execute(userId, bookId);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/internal/personal-rating/{userId}/{bookId}")
+    public ResponseEntity<Void> updatePersonalRating(
+            @PathVariable UUID userId,
+            @PathVariable String bookId,
+            @RequestBody @Valid com.livo.library_service.library.dtos.PersonalRatingUpdateDTO dto) {
+        updatePersonalRatingUseCase.execute(userId, bookId, dto.personalRating());
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/internal/personal-rating/{userId}/{bookId}")
+    public ResponseEntity<Void> removePersonalRating(
+            @PathVariable UUID userId,
+            @PathVariable String bookId) {
+        updatePersonalRatingUseCase.removePersonalRating(userId, bookId);
+        return ResponseEntity.noContent().build();
     }
 }
