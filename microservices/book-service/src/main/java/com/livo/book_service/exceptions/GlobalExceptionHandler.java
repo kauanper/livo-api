@@ -50,6 +50,24 @@ public class GlobalExceptionHandler {
         return buildError(HttpStatus.BAD_REQUEST, "Type Invalid", ex, request);
     }
 
+    @ExceptionHandler(InvalidBookStatusException.class)
+    public ResponseEntity<ApiError> handleInvalidBookStatus(InvalidBookStatusException ex,
+                                                             HttpServletRequest request) {
+        return buildError(HttpStatus.FORBIDDEN, "Invalid Book Status", ex, request);
+    }
+
+    @ExceptionHandler(RatingAlreadyExistsException.class)
+    public ResponseEntity<ApiError> handleRatingAlreadyExists(RatingAlreadyExistsException ex,
+                                                               HttpServletRequest request) {
+        return buildError(HttpStatus.CONFLICT, "Rating Already Exists", ex, request);
+    }
+
+    @ExceptionHandler(RatingNotFoundException.class)
+    public ResponseEntity<ApiError> handleRatingNotFound(RatingNotFoundException ex,
+                                                          HttpServletRequest request) {
+        return buildError(HttpStatus.NOT_FOUND, "Rating Not Found", ex, request);
+    }
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ApiError> handleMissingParam(MissingServletRequestParameterException ex,
                                                        HttpServletRequest request) {
