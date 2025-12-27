@@ -38,3 +38,9 @@ eureka:
 
 jwt:
   secret: ${AUTH_JWT_SECRET:jwt-secret-long-test-key-for-development}
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: TRACE
+    reactor.netty.http.client: DEBUG

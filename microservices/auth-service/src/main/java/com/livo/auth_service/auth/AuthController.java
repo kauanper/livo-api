@@ -4,7 +4,6 @@ import com.livo.auth_service.auth.dto.LoginRequest;
 import com.livo.auth_service.auth.dto.LoginResponse;
 import com.livo.auth_service.auth.dto.RefreshRequest;
 import com.livo.auth_service.refresh_token.RefreshToken;
-import com.livo.auth_service.refresh_token.RefreshTokenRepository;
 import com.livo.auth_service.refresh_token.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ public class AuthController {
         return "Auth-Service funcionando!";
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
