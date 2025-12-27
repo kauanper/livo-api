@@ -12,22 +12,22 @@ spring:
           lower-case-service-id: true
       routes:
         - id: user-service
-          uri: lb://user-service
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/user/**
 
         - id: auth-service
-          uri: lb://auth-service
+          uri: lb://AUTH-SERVICE
           predicates:
             - Path=/auth/**
 
         - id: book-service
-          uri: lb://book-service
+          uri: lb://BOOK-SERVICE
           predicates:
             - Path=/books/**
 
         - id: library-service
-          uri: lb://library-service
+          uri: lb://LIBRARY-SERVICE
           predicates:
             - Path=/library/**
 
