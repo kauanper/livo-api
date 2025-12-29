@@ -32,7 +32,7 @@ public class UserController {
     }
 
 
-    @GetMapping
+    @GetMapping("/test")
     public ResponseEntity<?> test() {
         return ResponseEntity.ok("User service funcionando!");
     }
