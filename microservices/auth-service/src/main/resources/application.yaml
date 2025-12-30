@@ -17,6 +17,7 @@ eureka:
   instance:
     prefer-ip-address: true
     hostname: localhost
+    non-secure-port: ${PORT:8083}
 
 # Auth
 auth:
