@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "library-service", url = "${LIBRARY_SERVICE_URL:localhost:8085}", configuration = LibraryClientConfig.class
+@FeignClient(name = "library-service", url = "${library-service.url}", configuration = LibraryClientConfig.class
 // fallback = LibraryClientFallback.class // Lembrar de descomentar quando
 // configurar circuit breaker
 )

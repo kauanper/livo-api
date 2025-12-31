@@ -30,6 +30,8 @@ jwt:
   refreshExpirationMs: 86400000
 
 # User Service Client Configuration
+user-service:
+  url: ${USER_SERVICE_URL:localhost:8082}
 user:
   service:
     # Token para autenticação entre serviços

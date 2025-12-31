@@ -16,11 +16,9 @@ import java.util.UUID;
 //
 // As senhas são enviadas apenas durante a requisição HTTP (via TLS)
 // nunca são armazenadas ou logadas no Auth-Service.
-@FeignClient(
-        name = "user-service",
-        url = "${USER_SERVICE_URL:localhost:8082}",
-        configuration = UserClientConfig.class
-        // fallback = UserClientFallback.class // Lembrar de descomentar quando configurar circuit breaker
+@FeignClient(name = "user-service", url = "${user-service.url}", configuration = UserClientConfig.class
+// fallback = UserClientFallback.class // Lembrar de descomentar quando
+// configurar circuit breaker
 )
 public interface UserClient {
 
