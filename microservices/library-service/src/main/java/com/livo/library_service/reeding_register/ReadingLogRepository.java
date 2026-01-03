@@ -12,4 +12,8 @@ public interface ReadingLogRepository extends JpaRepository<ReadingLog, Long> {
 
     @Query("SELECT rl FROM ReadingLog rl WHERE rl.id = :readingLogId AND rl.userBook.userId = :userId")
     Optional<ReadingLog> findByReadingLogIdAndUserId(Long readingLogId, UUID userId);
+
+    Optional<ReadingLog> findTopByUserBookIdOrderByPagesReadDescTimeDesc(Long userBookId);
+
+
 }

@@ -1,16 +1,28 @@
 package com.livo.library_service.library.mappers;
 
+import com.livo.library_service.library.LibraryRepository;
 import com.livo.library_service.library.UserBookEntity;
 import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
+import com.livo.library_service.reeding_register.services.CalculateProgressService;
 import com.livo.library_service.shared.dtos.book.BookSummaryResponse;
-import org.springframework.stereotype.Component;
+import com.livo.library_service.shared.globalExceptions.custon.ResourceNotFoundException;
+import com.livo.library_service.shelf.bookShelf.BookShelf;
+import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
-@Component
+@Mapper(componentModel = "spring")
 public class AssociationMappers {
-    public static UserBookEntity toEntity(AssociationRegisterDTO dto, BookSummaryResponse bookDto, UUID userId) {
+
+    @Autowired
+    private LibraryRepository libraryRepository;
+    @Autowired
+    private CalculateProgressService calculateProgressService;
+
+    public UserBookEntity toEntity(AssociationRegisterDTO dto, BookSummaryResponse bookDto, UUID userId) {
         if (dto == null) {
             return null;
         }
@@ -20,14 +32,14 @@ public class AssociationMappers {
         entity.setBookId(dto.bookId());
         entity.setBookStatus((dto.bookStatus()));
         entity.setThumbnail(bookDto.thumbnail());
-        entity.setReadingProgress(0); //user não começou a ler
-        entity.setPersonalRatting(null); //user não deu seu voto pessoal
+        entity.setPageCount(bookDto.pageCount());
+        entity.setPersonalRatting(null);//user não deu seu voto pessoal
         entity.setTitle(bookDto.title());
 
         return entity;
     }
 
-    public static AssociationResponseDTO toResponseDTO(UserBookEntity entity) {
+    public AssociationResponseDTO toResponseDTO(UserBookEntity entity) {
         if (entity == null) {
             return null;
         }
@@ -38,8 +50,32 @@ public class AssociationMappers {
                 entity.getBookStatus(),
                 entity.getThumbnail(),
                 entity.getTitle(),
-                entity.getReadingProgress(),
-                entity.getPersonalRatting()
+                calculateProgressService.getReadingProgressByLibraryBookId(
+                        entity.getId(),
+                        entity.getPageCount(),
+                        entity.getUserId()
+                ),
+                entity.getPersonalRatting() //implementar ainda
+        );
+    }
+
+    public AssociationResponseDTO toResponseDTO(BookShelf entity) {
+        UserBookEntity book = libraryRepository
+                .findById(entity.getBookId())
+                .orElseThrow(() -> new ResourceNotFoundException("Book ID", "O Livro com o ID: " + entity.getBookId() + " não foi encontrado."));
+
+        return new AssociationResponseDTO(
+                book.getId(),
+                book.getBookId(),
+                book.getBookStatus(),
+                book.getThumbnail(),
+                book.getTitle(),
+                calculateProgressService.getReadingProgressByLibraryBookId(
+                        book.getId(),
+                        book.getPageCount(),
+                        book.getUserId()
+                ),
+                book.getPersonalRatting()
         );
     }
 }

@@ -15,7 +15,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<?> create(@RequestBody @Valid UserRegisterDTO dto) {
         return userService.register(dto);
     }
@@ -32,7 +32,7 @@ public class UserController {
     }
 
 
-    @GetMapping
+    @GetMapping("/test")
     public ResponseEntity<?> test() {
         return ResponseEntity.ok("User service funcionando!");
     }

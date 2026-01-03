@@ -1,21 +1,28 @@
 package com.livo.library_service.reeding_register.services;
 
 import com.livo.library_service.library.services.FindBookByIdUseCase;
+import com.livo.library_service.reeding_register.ReadingLog;
 import com.livo.library_service.reeding_register.ReadingLogRepository;
+import com.livo.library_service.reeding_register.validation.ReadingLogValidationService;
 import com.livo.library_service.shared.dtos.book.BookSummaryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CalculateProgressService {
     @Autowired
-    FindBookByIdUseCase findBookByIdUseCase;
+    private FindBookByIdUseCase findBookByIdUseCase;
 
     @Autowired
-    ReadingLogRepository readingLogRepository;
+    private ReadingLogRepository readingLogRepository;
+
+    @Autowired
+    private ReadingLogValidationService readingLogValidator;
 
     public BigDecimal getReedingProgresByPagesRead(Integer pagesRead, String bookId){
         BookSummaryResponse book = findBookByIdUseCase.execute(bookId);
@@ -26,4 +33,31 @@ public class CalculateProgressService {
         }
         return percentage;
     }
+
+    public BigDecimal getReadingProgressByLibraryBookId(Long userBookId, Integer pageAll, UUID userId) {
+
+        BigDecimal percentage = BigDecimal.ZERO;
+        Optional<ReadingLog> log = readingLogRepository.findTopByUserBookIdOrderByPagesReadDescTimeDesc(userBookId);
+        if (log.isEmpty() || pageAll == null || pageAll <= 0) {
+            return percentage;
+        }
+
+        readingLogValidator.validateReadingLogBelongsToUserAndGet(
+                log.get().getId(),
+                userId
+        );
+
+        Integer pagesRead = log.get().getPagesRead();
+        if (pagesRead == null) {
+            return percentage;
+        }
+
+        percentage = BigDecimal.valueOf(pagesRead)
+                .multiply(BigDecimal.valueOf(100))
+                .divide(BigDecimal.valueOf(pageAll), 0, RoundingMode.FLOOR);
+
+        return percentage;
+    }
+
+
 }

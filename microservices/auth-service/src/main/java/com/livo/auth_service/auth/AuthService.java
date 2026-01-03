@@ -8,6 +8,7 @@ import com.livo.auth_service.user_client.UserClient;
 import com.livo.auth_service.refresh_token.RefreshToken;
 import com.livo.auth_service.user_client.dto.UserAuthRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -32,9 +34,14 @@ public class AuthService {
     private Long refreshExpMs;
 
     public LoginResponse login(LoginRequest req) {
+        log.info(">>> LOGIN REQUEST RECEBIDA: email={}", req.email());
         var user = userClient.authenticate(new UserAuthRequest(req.email(), req.password()));
-        if (user == null || user.getBody() == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (user == null || user.getBody() == null) {
+            log.error(">>> USUARIO NAO ENCONTRADO OU SENHA INCORRETA");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
 
+        log.info(">>> USUARIO ENCONTRADO: email={}", user.getBody().getEmail());
         String accessToken = generateToken.generateAccessToken(
                 String.valueOf(user.getBody().getId()),
                 user.getBody().getEmail(),

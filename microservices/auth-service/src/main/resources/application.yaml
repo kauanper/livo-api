@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: ${PORT:8083}
 
 spring:
   application:
@@ -17,6 +17,7 @@ eureka:
   instance:
     prefer-ip-address: true
     hostname: localhost
+    non-secure-port: ${PORT:8083}
 
 # Auth
 auth:
@@ -29,6 +30,8 @@ jwt:
   refreshExpirationMs: 86400000
 
 # User Service Client Configuration
+user-service:
+  url: ${USER_SERVICE_URL:localhost:8082}
 user:
   service:
     # Token para autenticação entre serviços

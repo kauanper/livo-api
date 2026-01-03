@@ -22,7 +22,6 @@ public class InternalGetByIdUseCase {
 
     private final GoogleBooksClient googleBooksClient;
     private final BookMapper bookMapper;
-    private final LibraryClient libraryClient;
 
     @Cacheable(value = "bookById", key = "#bookId")
     public BookSummaryResponse execute(String bookId) {
