@@ -54,6 +54,8 @@ public class BookShelfServiceImpl implements BookShelfService {
         bookShelf.setUserId(userId);
         bookShelf.setShelf(shelf);
         bookShelf.setStatus(postDto.status());
+        bookShelf.setThumbnail(book.getThumbnail());
+        bookShelf.setTitle(book.getTitle());
         bookShelf.setAdded_at(LocalDateTime.now());
 
         // A classificação inicial é nula ou 0? A entidade possui classificação do tipo Float

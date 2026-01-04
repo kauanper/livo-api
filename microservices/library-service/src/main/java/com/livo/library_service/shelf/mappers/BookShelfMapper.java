@@ -20,6 +20,8 @@ public abstract class BookShelfMapper {
         bookShelf.setId(dto.id());
         bookShelf.setBookId(dto.bookId());
         bookShelf.setStatus(dto.status());
+        bookShelf.setThumbnail(dto.thumbnail());
+        bookShelf.setTitle(dto.title());
         bookShelf.setAdded_at(dto.addedAt());
         bookShelf.setRating(dto.rating());
 
@@ -35,6 +37,8 @@ public abstract class BookShelfMapper {
                 entity.getId(),
                 entity.getBookId(),
                 entity.getStatus(),
+                entity.getThumbnail(),
+                entity.getTitle(),
                 entity.getAdded_at(),
                 entity.getRating());
     }

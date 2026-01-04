@@ -37,6 +37,12 @@ public class BookShelf {
     @Enumerated(EnumType.STRING)
     private BookStatus status;
 
+    @Column(name = "thumbnail")
+    private String thumbnail;
+
+    @Column(name = "title")
+    private String title;
+
     private LocalDateTime added_at;
 
     private Float rating;
