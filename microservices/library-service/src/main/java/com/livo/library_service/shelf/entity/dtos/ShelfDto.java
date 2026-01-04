@@ -9,6 +9,7 @@ public record ShelfDto(
         UUID id,
         String name,
         Integer quantity,
+        String description,
         List<BookShelfDto> bookShelfDto
 ) {
 }
