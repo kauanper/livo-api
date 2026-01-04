@@ -9,6 +9,7 @@ import com.livo.library_service.shelf.bookShelf.dto.BookShelfDto;
 import com.livo.library_service.shelf.bookShelf.dto.BookShelfPostDto;
 import com.livo.library_service.shelf.entity.Shelf;
 import com.livo.library_service.shelf.mappers.BookShelfMapper;
+import com.livo.library_service.library.LibraryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.UUID;
 public class BookShelfServiceImpl implements BookShelfService {
 
     private final BookShelfRepository bookShelfRepository;
+    private final LibraryRepository libraryRepository;
     private final ShelfValidate shelfValidate;
     private final BookShelfMapper bookShelfMapper;
     private final BookClient bookClient;
@@ -54,12 +56,14 @@ public class BookShelfServiceImpl implements BookShelfService {
         bookShelf.setUserId(userId);
         bookShelf.setShelf(shelf);
         bookShelf.setStatus(postDto.status());
-        bookShelf.setThumbnail(book.getThumbnail());
-        bookShelf.setTitle(book.getTitle());
         bookShelf.setAdded_at(LocalDateTime.now());
 
-        // A classificação inicial é nula ou 0? A entidade possui classificação do tipo Float
-        // O DTO não possui classificação, por enquanto vou deixá-lo nulo
+        // Busca o thumbnail e title do livro na biblioteca do usuário (UserBookEntity)
+        var userBook = libraryRepository.findById(postDto.id());
+        if (userBook.isPresent()) {
+            bookShelf.setThumbnail(userBook.get().getThumbnail());
+            bookShelf.setTitle(userBook.get().getTitle());
+        }
 
         bookShelf = bookShelfRepository.save(bookShelf);
 

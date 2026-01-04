@@ -37,7 +37,7 @@ public class BookShelf {
     @Enumerated(EnumType.STRING)
     private BookStatus status;
 
-    @Column(name = "thumbnail")
+    @Column(name = "thumbnail", columnDefinition = "text")
     private String thumbnail;
 
     @Column(name = "title")
