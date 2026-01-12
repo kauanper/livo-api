@@ -5,7 +5,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "book-service")
+@FeignClient(name = "book-service", url = "${book-service.url}", configuration = BookClientConfig.class
+// fallback = BookClientFallback.class // Lembrar de descomentar quando
+// configurar circuit breaker
+)
 public interface BookClient {
 
     @GetMapping("/books/internal/{id}")

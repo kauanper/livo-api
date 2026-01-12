@@ -53,7 +53,7 @@ class ShelfServiceTest {
         shelf.setName("My Shelf");
         shelf.setBookShelves(new ArrayList<>());
 
-        shelfDto = new ShelfDto(shelfId, "My Shelf", 0, new ArrayList<>());
+        shelfDto = new ShelfDto(shelfId, "My Shelf", 0, "Description", new ArrayList<>());
         shelfPostDto = new ShelfPostDto("My Shelf", "Description", new ArrayList<>());
     }
 

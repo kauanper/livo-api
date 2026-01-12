@@ -60,20 +60,6 @@ services:
     networks:
       - livo-network
 
-  postgres-review:
-    image: postgres:14-alpine
-    container_name: postgres-review
-    ports:
-      - "5437:5432"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${REVIEW_DB}
-    volumes:
-      - pgdata-review:/var/lib/postgresql/data
-    networks:
-      - livo-network
-
   # ---------------------- #
   # 🧰 PGADMIN             #
   # ---------------------- #
@@ -145,6 +131,7 @@ services:
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+      LIBRARY_SERVICE_URL: http://library-service:8085
     networks:
       - livo-network
 
@@ -165,15 +152,16 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       SPRING_DATASOURCE_URL: ${AUTH_SPRING_DATASOURCE_URL_DOCKER}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD} 
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+      USER_SERVICE_URL: http://user-service:8082
     networks:
       - livo-network
     #restart: always
 
-  # ---------------------- #
-  # 📚 BOOK SERVICE        #
-  # ---------------------- #
+    # ---------------------- #
+    # 📚 BOOK SERVICE        #
+    # ---------------------- #
   book-service:
     build:
       context: ../microservices/book-service
@@ -190,9 +178,9 @@ services:
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+      LIBRARY_SERVICE_URL: http://library-service:8085
     networks:
       - livo-network
-
 
   # ---------------------- #
   # 🏛️ LIBRARY SERVICE     #
@@ -233,8 +221,6 @@ volumes:
   pgdata-book:
     driver: local
   pgdata-auth:
-    driver: local
-  pgdata-review:
     driver: local
   pgadmindata-dev:
     driver: local

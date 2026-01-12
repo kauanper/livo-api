@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface SearchStrategy {
-    List<AssociationResponseDTO> search(UUID userId, String searchTerm);
+    List<AssociationResponseDTO> search(SearchRequest request);
 }

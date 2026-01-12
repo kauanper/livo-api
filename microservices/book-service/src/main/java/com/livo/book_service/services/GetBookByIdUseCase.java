@@ -4,6 +4,7 @@ import com.livo.book_service.APIs.GoogleBooksClient;
 import com.livo.book_service.APIs.LibraryClient;
 import com.livo.book_service.dtos.BookIdResponse;
 import com.livo.book_service.dtos.BookSummaryResponse;
+import com.livo.book_service.dtos.LibraryRegistration;
 import com.livo.book_service.exceptions.custom.BookNotFoundException;
 import com.livo.book_service.exceptions.custom.InvalidRequestException;
 import com.livo.book_service.mappers.BookMapper;
@@ -36,20 +37,26 @@ public class GetBookByIdUseCase {
             throw new BookNotFoundException("Livro com ID '" + bookId + "' não foi encontrado.");
         }
 
-        //buscar IDs da biblioteca do usuário
         List<BookIdResponse> booksIdResponse = libraryClient.getBooksId(userId);
-
-        //transformar em Set para busca eficiente
-        Set<String> userBookIds = booksIdResponse.stream()
-                .map(BookIdResponse::getBookId)
-                .collect(Collectors.toSet());
-
-        //mapear GoogleBook → BookSummaryResponse
         BookSummaryResponse response = bookMapper.toSummary(bookItem);
 
-        //verificar se o usuário possui esse livro
-        boolean hasBook = userBookIds.contains(bookId);
-        response.setPersonalLibrary(hasBook);
+        booksIdResponse.stream()
+                .filter(b -> b.getBookId().equals(bookId))
+                .findFirst()
+                .ifPresentOrElse(
+                        book -> {
+                            response.setPersonalLibrary(true);
+                            response.setLibraryRegistration(
+                                    new LibraryRegistration(
+                                            book.getUserBookId(),
+                                            book.getBookStatus(),
+                                            book.getProgress(),
+                                            book.getRatingPersonal()
+                                    )
+                            );
+                        },
+                        () -> response.setPersonalLibrary(false)
+                );
 
         return response;
     }

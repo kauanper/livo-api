@@ -20,11 +20,14 @@ public class PatchAssociationUseCase {
     @Autowired
     LibraryValidationService libraryValidationService;
 
+    @Autowired
+    AssociationMappers associationMappers;
+
     @Transactional
     public AssociationResponseDTO execute(UUID userId, Long userBookId, BookStatusPatchDTO dto){
         UserBookEntity userBook = libraryValidationService.validateToPatch(userId, userBookId);
         userBook.setBookStatus(dto.bookStatus());
         libraryRepository.save(userBook);
-        return AssociationMappers.toResponseDTO(userBook);
+        return associationMappers.toResponseDTO(userBook);
     }
 }

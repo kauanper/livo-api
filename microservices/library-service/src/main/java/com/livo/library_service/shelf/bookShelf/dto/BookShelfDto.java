@@ -9,6 +9,8 @@ public record BookShelfDto(
         UUID id,
         Long bookId,
         BookStatus status,
+        String thumbnail,
+        String title,
         LocalDateTime addedAt,
         Float rating) {
 }

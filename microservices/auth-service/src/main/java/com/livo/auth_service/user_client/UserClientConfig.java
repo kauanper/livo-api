@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 // Inclui interceptores para autenticação entre serviços
 // tratamento de erros e logging
 @Slf4j
-@Configuration
 public class UserClientConfig {
 
     @Value("${user.service.token:}")
@@ -42,7 +41,7 @@ public class UserClientConfig {
     @Bean
     public ErrorDecoder errorDecoder() {
         final ErrorDecoder defaultDecoder = new ErrorDecoder.Default();
-        
+
         return (methodKey, response) -> {
             HttpStatus status = HttpStatus.valueOf(response.status());
 

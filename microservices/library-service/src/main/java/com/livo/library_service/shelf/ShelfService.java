@@ -1,5 +1,6 @@
 package com.livo.library_service.shelf;
 
+import com.livo.library_service.library.LibraryRepository;
 import com.livo.library_service.shelf.bookShelf.BookShelf;
 import com.livo.library_service.shelf.bookShelf.BookShelfRepository;
 import com.livo.library_service.shelf.bookShelf.dto.BookShelfDto;
@@ -28,6 +29,7 @@ public class ShelfService {
     private final ShelfValidate shelfValidate;
     private final BookShelfRepository bookShelfRepository;
     private final BookShelfMapper bookShelfMapper;
+    private final LibraryRepository libraryRepository;
 
     @Transactional
     public ShelfDto save(ShelfPostDto dto, UUID userId) {
@@ -54,6 +56,7 @@ public class ShelfService {
         return shelfMapper.toDtoList(shelves);
     }
 
+    @Transactional(readOnly = true)
     public ShelfDto findById(UUID id, UUID userId) {
         Shelf shelf = shelfValidate.validateShelfOwnership(id, userId);
         return shelfMapper.toDto(shelf);
@@ -109,6 +112,13 @@ public class ShelfService {
             bookShelf.setShelf(shelf);
             bookShelf.setStatus(bookShelfPostDto.status());
             bookShelf.setAdded_at(LocalDateTime.now());
+
+            // Busca o thumbnail e title do livro na biblioteca do usuário (UserBookEntity)
+            libraryRepository.findById(bookShelfPostDto.id()).ifPresent(userBook -> {
+                bookShelf.setThumbnail(userBook.getThumbnail());
+                bookShelf.setTitle(userBook.getTitle());
+            });
+
             return bookShelf;
         }).collect(Collectors.toList());
         shelf.setBookShelves(bookShelves);

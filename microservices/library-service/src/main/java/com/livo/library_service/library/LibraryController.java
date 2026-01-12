@@ -5,8 +5,11 @@ import com.livo.library_service.library.dtos.association.AssociationRegisterDTO;
 import com.livo.library_service.library.dtos.association.AssociationResponseDTO;
 import com.livo.library_service.library.dtos.book_count.BookCountResponse;
 import com.livo.library_service.library.dtos.book_count.BookIdResponse;
+import com.livo.library_service.library.dtos.book_status.BookStatusResponse;
 import com.livo.library_service.library.services.*;
 import com.livo.library_service.search_book.SearchBookUseCase;
+import com.livo.library_service.search_book.strategies.SearchRequest;
+import com.livo.library_service.search_book.strategies.SearchType;
 import com.livo.library_service.shared.notations.CurrentUser;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,12 @@ public class LibraryController {
     @Autowired
     private ListBooksIdUseCase listBooksIdUseCase;
 
+    @Autowired
+    private GetBookStatusUseCase getBookStatusUseCase;
+
+    @Autowired
+    private UpdatePersonalRatingUseCase updatePersonalRatingUseCase;
+
 
     @PostMapping
     public ResponseEntity<AssociationResponseDTO> save(@RequestBody @Valid AssociationRegisterDTO dto,
@@ -66,7 +75,7 @@ public class LibraryController {
     @GetMapping("/search/{term}")
     public ResponseEntity<List<AssociationResponseDTO>> searchBooks(@CurrentUser UUID userId,
                                                                     @PathVariable String term) {
-        List<AssociationResponseDTO> books = searchBookUseCase.execute(userId, term);
+        List<AssociationResponseDTO> books = searchBookUseCase.execute(new SearchRequest(userId, term, null, SearchType.TITLE_LIBRARY));
         return ResponseEntity.ok(books);
     }
 
@@ -89,5 +98,30 @@ public class LibraryController {
     public ResponseEntity<List<BookIdResponse>> getId(@PathVariable UUID userId){
         List<BookIdResponse> response = listBooksIdUseCase.execute(userId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/internal/book-status/{userId}/{bookId}")
+    public ResponseEntity<BookStatusResponse> getBookStatus(
+            @PathVariable UUID userId,
+            @PathVariable String bookId) {
+        BookStatusResponse response = getBookStatusUseCase.execute(userId, bookId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/internal/personal-rating/{userId}/{bookId}")
+    public ResponseEntity<Void> updatePersonalRating(
+            @PathVariable UUID userId,
+            @PathVariable String bookId,
+            @RequestBody @Valid com.livo.library_service.library.dtos.PersonalRatingUpdateDTO dto) {
+        updatePersonalRatingUseCase.execute(userId, bookId, dto.personalRating());
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/internal/personal-rating/{userId}/{bookId}")
+    public ResponseEntity<Void> removePersonalRating(
+            @PathVariable UUID userId,
+            @PathVariable String bookId) {
+        updatePersonalRatingUseCase.removePersonalRating(userId, bookId);
+        return ResponseEntity.noContent().build();
     }
 }
