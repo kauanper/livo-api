@@ -15,4 +15,9 @@ public interface BookShelfRepository extends JpaRepository<BookShelf, UUID> {
     boolean existsByShelfIdAndBookId(UUID shelfId, Long bookId);
     
     List<BookShelf> findByShelfIdAndStatus(UUID shelfId, BookStatus status);
+    
+    // Métodos para sincronização com a biblioteca
+    List<BookShelf> findAllByBookId(Long bookId);
+    
+    void deleteAllByBookId(Long bookId);
 }

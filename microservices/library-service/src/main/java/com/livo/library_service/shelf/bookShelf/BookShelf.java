@@ -26,6 +26,9 @@ public class BookShelf {
     @Column(name = "book_id", nullable = false)
     private Long bookId;
 
+    @Column(name = "google_book_id", nullable = false)
+    private String googleBookId;
+
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 

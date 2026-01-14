@@ -53,6 +53,7 @@ public class BookShelfServiceImpl implements BookShelfService {
         // Create and Save BookShelf
         BookShelf bookShelf = new BookShelf();
         bookShelf.setBookId(postDto.id());
+        bookShelf.setGoogleBookId(postDto.bookId());
         bookShelf.setUserId(userId);
         bookShelf.setShelf(shelf);
         bookShelf.setStatus(postDto.status());

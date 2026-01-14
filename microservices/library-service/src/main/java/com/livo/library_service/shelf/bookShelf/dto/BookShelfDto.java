@@ -8,6 +8,7 @@ import java.util.UUID;
 public record BookShelfDto(
         UUID id,
         Long bookId,
+        String googleBookId,
         BookStatus status,
         String thumbnail,
         String title,
