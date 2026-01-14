@@ -108,6 +108,7 @@ public class ShelfService {
         List<BookShelf> bookShelves = dto.books().stream().map(bookShelfPostDto -> {
             BookShelf bookShelf = new BookShelf();
             bookShelf.setBookId(bookShelfPostDto.id());
+            bookShelf.setGoogleBookId(bookShelfPostDto.bookId());
             bookShelf.setUserId(userId);
             bookShelf.setShelf(shelf);
             bookShelf.setStatus(bookShelfPostDto.status());
